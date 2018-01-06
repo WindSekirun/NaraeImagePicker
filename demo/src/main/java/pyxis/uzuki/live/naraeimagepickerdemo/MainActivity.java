@@ -3,12 +3,10 @@ package pyxis.uzuki.live.naraeimagepickerdemo;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -36,7 +34,7 @@ import pyxis.uzuki.live.pyxinjector.base.InjectActivity;
 public class MainActivity extends InjectActivity {
     private @BindView RecyclerView recyclerView;
     private ArrayList<String> itemList = new ArrayList<>();
-    private ListAdapter adapter;
+    private ListAdapter adapter = new ListAdapter();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

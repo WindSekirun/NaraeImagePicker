@@ -107,10 +107,13 @@ class ImageFragment : BaseFragment() {
 
         fun bind(item: ImageItem) {
             Glide.with(activity).load(item.imagePath).thumbnail(0.5f).into(itemView.imgThumbnail)
+            itemView.imgCheck.isSelected = SelectedItem.contains(item)
+            itemView.opacity.isSelected = SelectedItem.contains(item)
+
             itemView.setOnClickListener {
                 if (SelectedItem.contains(item)) {
-                    itemView.imgCheck.isSelected = false
                     SelectedItem.removeItem(item)
+                    adapter.notifyDataSetChanged()
                     return@setOnClickListener
                 }
 
@@ -120,6 +123,8 @@ class ImageFragment : BaseFragment() {
                                 getString(R.string.narae_image_picker_limit_exceed).format(SelectedItem.getLimits()),
                                 Toast.LENGTH_SHORT).show()
                     }
+
+                    adapter.notifyDataSetChanged()
                 })
             }
         }

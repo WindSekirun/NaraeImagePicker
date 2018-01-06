@@ -9,6 +9,12 @@
         android:scaleType="centerCrop"
         android:layout_height="match_parent" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/opacity"
+        android:background="@drawable/image_opacity"/>
+
     <ImageView
         android:id="@+id/imgCheck"
         android:layout_width="24dp"
