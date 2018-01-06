@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dip">
+
+    <ImageView
+        android:id="@+id/imgThumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/imgCheck"
+        android:layout_width="20dip"
+        android:layout_height="20dip"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="7dip"
+        android:layout_marginTop="7dip"
+        android:src="@drawable/check_blank" />
+
+</FrameLayout>
