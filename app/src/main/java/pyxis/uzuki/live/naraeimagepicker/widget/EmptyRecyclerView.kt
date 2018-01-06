@@ -50,6 +50,7 @@ open class EmptyRecyclerView(context: Context, private val attrs: AttributeSet? 
 
     fun notifyDataSetChanged() {
         adapter?.registerAdapterDataObserver(mObserver)
+        adapter?.notifyDataSetChanged()
         mObserver.onChanged()
     }
 }

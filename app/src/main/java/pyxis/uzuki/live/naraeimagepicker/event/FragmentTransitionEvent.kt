@@ -8,4 +8,4 @@ package pyxis.uzuki.live.naraeimagepicker.event
  * Description:
  */
 
-data class FragmentTransitionEvent(val isImage: Boolean, val name: String, val imageCount: Int)
+data class FragmentTransitionEvent(val isImage: Boolean, val name: String)

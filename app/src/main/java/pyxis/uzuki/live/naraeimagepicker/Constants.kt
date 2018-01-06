@@ -12,5 +12,5 @@ object Constants {
 
     const val EXTRA_LIMIT = "limit"
     const val EXTRA_NAME = "displayName"
-    const val EXTRA_ITEM_COUNT = "itemCount";
+    const val EXTRA_IMAGE_LIST = "imageList"
 }

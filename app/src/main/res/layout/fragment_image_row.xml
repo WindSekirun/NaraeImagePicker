@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="160dip"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="120dp">
 
     <ImageView
         android:id="@+id/imgThumbnail"
@@ -11,11 +10,11 @@
         android:layout_height="match_parent" />
 
     <ImageView
-        android:id="@+id/img_check"
-        android:layout_width="30dip"
-        android:layout_height="30dip"
+        android:id="@+id/imgCheck"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:src="@drawable/check_selector"
         android:layout_gravity="bottom|top"
-        android:layout_marginLeft="10dip"
-        android:layout_marginTop="10dip" />
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="6dp" />
 </FrameLayout>

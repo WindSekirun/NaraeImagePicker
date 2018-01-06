@@ -1,4 +1,4 @@
-package pyxis.uzuki.live.naraeimagepicker.folder
+package pyxis.uzuki.live.naraeimagepicker.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -16,6 +16,7 @@ import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.event.FragmentTransitionEvent
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
+import pyxis.uzuki.live.naraeimagepicker.utils.AdjustableGridItemDecoration
 import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
@@ -38,11 +39,14 @@ class AlbumFragment : BaseFragment() {
 
         sendEvent(ToolbarEvent(getString(R.string.narae_image_picker_album_title)))
 
+        val rectF = AdjustableGridItemDecoration.getRectFObject(activity)
+
         recyclerView.mEmptyView = containerEmpty
         recyclerView.mLoadingView = progressBar
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
         recyclerView.setHasFixedSize(true)
+        recyclerView.addItemDecoration(AdjustableGridItemDecoration(rectF, itemList, 3))
 
         runAsync { loadItem() }
     }
@@ -94,7 +98,7 @@ class AlbumFragment : BaseFragment() {
         fun bind(item: AlbumItem) {
             itemView.txtName.text = "${item.name} (${item.itemCount})"
             Glide.with(activity).load(item.imagePath).thumbnail(0.5f).into(itemView.imgThumbnail)
-            itemView.setOnClickListener { sendEvent(FragmentTransitionEvent(true, item.name, item.itemCount)) }
+            itemView.setOnClickListener { sendEvent(FragmentTransitionEvent(true, item.name)) }
         }
     }
 }
