@@ -4,6 +4,10 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+androidExtensions {
+    experimental = true
+}
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -35,4 +39,6 @@ dependencies {
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.5.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
+    // EventBus
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }

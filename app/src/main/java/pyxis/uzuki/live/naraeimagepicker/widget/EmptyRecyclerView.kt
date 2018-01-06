@@ -15,10 +15,11 @@ import android.view.View
 
 open class EmptyRecyclerView(context: Context, private val attrs: AttributeSet? = null) : RecyclerView(context, attrs) {
     var mEmptyView: View? = null
-    private var mEmptyObserver: RecyclerView.AdapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+    var mLoadingView: View? = null
+
+    private var mObserver: RecyclerView.AdapterDataObserver = object : RecyclerView.AdapterDataObserver() {
 
         override fun onChanged() {
-            val adapter = adapter
             if (adapter == null) {
                 return
             }
@@ -26,6 +27,8 @@ open class EmptyRecyclerView(context: Context, private val attrs: AttributeSet? 
             if (mEmptyView == null) {
                 throw NullPointerException("Empty view in RecyclerView is null-state")
             }
+
+            mLoadingView!!.visibility = View.GONE // whatever state is changed, mLoadingView need to gone.
 
             val newStateEmptyView = if (adapter.itemCount == 0) View.VISIBLE else View.GONE
             val newStateRecyclerView = if (adapter.itemCount == 0) View.GONE else View.VISIBLE
@@ -37,8 +40,17 @@ open class EmptyRecyclerView(context: Context, private val attrs: AttributeSet? 
 
     override fun setAdapter(adapter: RecyclerView.Adapter<*>?) {
         super.setAdapter(adapter)
-        adapter?.registerAdapterDataObserver(mEmptyObserver)
-        mEmptyObserver.onChanged()
+
+        if (mLoadingView == null) {
+            throw NullPointerException("Loading view in RecyclerView is null-state")
+        }
+
+        mLoadingView!!.visibility = View.VISIBLE
+    }
+
+    fun notifyDataSetChanged() {
+        adapter?.registerAdapterDataObserver(mObserver)
+        mObserver.onChanged()
     }
 }
 

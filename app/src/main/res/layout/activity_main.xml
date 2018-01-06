@@ -3,11 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="56dip"
-        android:id="@+id/toolBar"/>
+        android:background="#222222"
+        android:id="@+id/toolbar"/>
 
     <FrameLayout
         android:layout_width="match_parent"
