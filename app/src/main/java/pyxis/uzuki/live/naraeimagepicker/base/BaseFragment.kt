@@ -1,4 +1,4 @@
-package pyxis.uzuki.live.naraeimagepicker.folder
+package pyxis.uzuki.live.naraeimagepicker.base
 
 import android.app.Fragment
 import android.os.Bundle
