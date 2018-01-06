@@ -14,6 +14,7 @@ import pyxis.uzuki.live.naraeimagepicker.R
 import pyxis.uzuki.live.naraeimagepicker.event.FragmentTransitionEvent
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.fragment.AlbumFragment
+import pyxis.uzuki.live.naraeimagepicker.fragment.AllFragment
 import pyxis.uzuki.live.naraeimagepicker.fragment.ImageFragment
 import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
 import pyxis.uzuki.live.richutilskt.utils.RPermission
@@ -49,7 +50,7 @@ class NaraePickerActivity : AppCompatActivity() {
         val fragment = when (mode) {
             NaraePickerActivity.FragmentMode.Album -> AlbumFragment()
             NaraePickerActivity.FragmentMode.Image -> ImageFragment()
-            NaraePickerActivity.FragmentMode.All -> AlbumFragment()
+            NaraePickerActivity.FragmentMode.All -> AllFragment()
         }
 
         val bundle = Bundle()
@@ -87,7 +88,8 @@ class NaraePickerActivity : AppCompatActivity() {
             return
         }
 
-        super.onBackPressed()
+        setResult(Activity.RESULT_CANCELED)
+        finish()
     }
 
     @Subscribe

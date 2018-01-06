@@ -1,6 +1,5 @@
 package pyxis.uzuki.live.naraeimagepickerdemo;
 
-import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 
 import pyxis.uzuki.live.naraeimagepicker.Constants;
 import pyxis.uzuki.live.naraeimagepicker.NaraeImagePicker;
-import pyxis.uzuki.live.naraeimagepicker.activity.NaraePickerActivity;
 import pyxis.uzuki.live.naraeimagepicker.impl.OnPickResultListener;
 import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration;
 import pyxis.uzuki.live.pyxinjector.PyxInjector;
@@ -54,7 +52,7 @@ public class MainActivity extends InjectActivity {
 
     @OnClick(R.id.btnSelect)
     private void clickSelect() {
-        NaraeImagePicker.instance.start(this, 5, new OnPickResultListener() {
+        NaraeImagePicker.instance.startAll(this, Constants.LIMIT_UNLIMITED, new OnPickResultListener() {
             @Override
             public void onSelect(int resultCode, @NotNull ArrayList<String> imageList) {
                 if (resultCode == NaraeImagePicker.PICK_SUCCESS) {

@@ -15,6 +15,7 @@ import pyxis.uzuki.live.naraeimagepicker.R
 import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.event.FragmentTransitionEvent
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
+import pyxis.uzuki.live.naraeimagepicker.fragment.adapter.AlbumAdapter
 import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
 import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration
 import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
@@ -30,22 +31,17 @@ import pyxis.uzuki.live.richutilskt.utils.toFile
  * Description:
  */
 
-class AlbumFragment : BaseFragment() {
-    private val adapter = ListAdapter()
+class AlbumFragment : BaseFragment<AlbumItem>() {
+    private lateinit var adapter: AlbumAdapter
     private val itemList = arrayListOf<AlbumItem>()
+
+    override fun getItemList() = itemList
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sendEvent(ToolbarEvent(getString(R.string.narae_image_picker_album_title)))
-        val rectF = AdjustableGridItemDecoration.getRectFObject(activity)
 
-        recyclerView.mEmptyView = containerEmpty
-        recyclerView.mLoadingView = progressBar
+        adapter = AlbumAdapter(activity, itemList)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = GridLayoutManager(activity, 2)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.addItemDecoration(AdjustableGridItemDecoration(rectF, itemList, 3))
-
         runAsync { loadItem() }
     }
 
@@ -76,27 +72,5 @@ class AlbumFragment : BaseFragment() {
         itemList.addAll(items)
         items.clear()
         runOnUiThread { recyclerView.notifyDataSetChanged() }
-    }
-
-    inner class ListAdapter : RecyclerView.Adapter<ListHolder>() {
-        override fun onBindViewHolder(holder: ListHolder?, position: Int) {
-            holder?.bind(itemList[position])
-        }
-
-        override fun getItemCount() = itemList.size
-
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
-                ListHolder(LayoutInflater.from(activity).inflate(R.layout.fragment_album_row, parent, false))
-    }
-
-
-    inner class ListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        @SuppressLint("SetTextI18n")
-        fun bind(item: AlbumItem) {
-            itemView.txtName.text = "${item.name} (${item.itemCount})"
-            Glide.with(activity).load(item.imagePath).thumbnail(0.5f).into(itemView.imgThumbnail)
-            itemView.setOnClickListener { sendEvent(FragmentTransitionEvent(true, item.name)) }
-        }
     }
 }
