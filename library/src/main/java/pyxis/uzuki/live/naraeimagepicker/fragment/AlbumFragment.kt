@@ -36,6 +36,7 @@ class AlbumFragment : BaseFragment<AlbumItem>() {
     private val itemList = arrayListOf<AlbumItem>()
 
     override fun getItemList() = itemList
+    override fun getItemKind() = AlbumItem::class.simpleName ?: ""
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,12 +47,8 @@ class AlbumFragment : BaseFragment<AlbumItem>() {
     }
 
     private fun loadItem() {
-        val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(MediaStore.Images.Media.BUCKET_DISPLAY_NAME, MediaStore.Images.Media.DATA)
-        val orderBy = MediaStore.Images.Media.DATE_ADDED + " DESC"
-        val cursor = activity.contentResolver.query(uri, projection, null, null, orderBy)
-        val displayNameColumn = MediaStore.Images.Media.BUCKET_DISPLAY_NAME
-        val pathColumn = MediaStore.Images.Media.DATA
+        val cursor = activity.contentResolver.query(cursorUri, projection, null, null, orderBy)
         val items = HashSet<AlbumItem>()
 
         cursor.use {

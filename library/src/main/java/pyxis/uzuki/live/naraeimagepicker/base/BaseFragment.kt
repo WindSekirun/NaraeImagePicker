@@ -1,7 +1,9 @@
 package pyxis.uzuki.live.naraeimagepicker.base
 
 import android.app.Fragment
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.annotation.Nullable
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
@@ -11,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_list.*
 import org.greenrobot.eventbus.EventBus
 import pyxis.uzuki.live.naraeimagepicker.R
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
+import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
 import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration
 
 
@@ -22,10 +25,18 @@ import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration
  * Description:
  */
 
-abstract class BaseFragment<T> : Fragment() {
+abstract class BaseFragment<T: Any> : Fragment() {
     private lateinit var mRootView: View
 
+    // for cursor parsing
+    val cursorUri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+    val idColumn = MediaStore.Images.Media._ID
+    val pathColumn = MediaStore.Images.Media.DATA
+    val displayNameColumn = MediaStore.Images.Media.BUCKET_DISPLAY_NAME
+    val orderBy = MediaStore.Images.Media.DATE_ADDED + " DESC"
+
     abstract fun getItemList() : ArrayList<T>
+    abstract fun getItemKind(): String
 
     @Nullable
     override fun onCreateView(inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
@@ -38,12 +49,14 @@ abstract class BaseFragment<T> : Fragment() {
         sendEvent(ToolbarEvent(getString(R.string.narae_image_picker_album_title)))
 
         val rectF = AdjustableGridItemDecoration.getRectFObject(activity)
+        val column = if (getItemKind() == ImageItem::class.simpleName) 3 else 2
+
+        recyclerView.layoutManager = GridLayoutManager(activity, column)
 
         recyclerView.mEmptyView = containerEmpty
         recyclerView.mLoadingView = progressBar
-        recyclerView.layoutManager = GridLayoutManager(activity, 2)
         recyclerView.setHasFixedSize(true)
-        recyclerView.addItemDecoration(AdjustableGridItemDecoration(rectF, getItemList(), 3))
+        recyclerView.addItemDecoration(AdjustableGridItemDecoration(rectF, getItemList(), column))
     }
 
     override fun onDestroyView() {
