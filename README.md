@@ -1,4 +1,4 @@
-## NaraeImagePicker [![](https://jitpack.io/v/WindSekirun/NaraeImagePicker.svg)](https://jitpack.io/#WindSekirun/NaraeImagePicker)
+## NaraeImagePicker [![](https://jitpack.io/v/WindSekirun/NaraeImagePicker.svg)](https://jitpack.io/#WindSekirun/NaraeImagePicker) [![CircleCI](https://circleci.com/gh/WindSekirun/NaraeImagePicker.svg?style=svg)](https://circleci.com/gh/WindSekirun/NaraeImagePicker)
 
 [![Kotlin](https://img.shields.io/badge/kotlin-1.2.0-blue.svg)](http://kotlinlang.org)	[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 
@@ -36,7 +36,7 @@ NaraeImagePicker.instance.start(this, Constants.LIMIT_UNLIMITED, new OnPickResul
             public void onSelect(int resultCode, @NotNull ArrayList<String> imageList) {
                
             }
-        });
+});
 ```
 
 No need to implement ```onActivityResult```, NaraeImagePicker will handle ```startActivityForResult```, ```onActivityResult``` for you. 
