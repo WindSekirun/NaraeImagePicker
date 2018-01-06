@@ -11,32 +11,43 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_album_row.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
+import pyxis.uzuki.live.naraeimagepicker.Constants
 import pyxis.uzuki.live.naraeimagepicker.R
 import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.event.FragmentTransitionEvent
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
+import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
 import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 import pyxis.uzuki.live.richutilskt.utils.toFile
+import java.nio.file.Files.exists
+
+
 
 /**
  * NaraeImagePicker
- * Class: AlbumFragment
+ * Class: ImageFragment
  * Created by Pyxis on 1/6/18.
  *
  * Description:
  */
 
-class AlbumFragment : BaseFragment() {
+class ImageFragment : BaseFragment() {
     private val adapter = ListAdapter()
-    private val itemList = arrayListOf<AlbumItem>()
+    private val itemList = arrayListOf<ImageItem>()
+
+    private var albumName = ""
+    private var imageCount = ""
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sendEvent(ToolbarEvent(getString(R.string.narae_image_picker_album_title)))
+        albumName = arguments.getString(Constants.EXTRA_NAME)
+        imageCount = arguments.getString(Constants.EXTRA_ITEM_COUNT)
+
+        sendEvent(ToolbarEvent("$albumName ($imageCount)", true))
 
         recyclerView.mEmptyView = containerEmpty
         recyclerView.mLoadingView = progressBar
@@ -49,24 +60,25 @@ class AlbumFragment : BaseFragment() {
 
     private fun loadItem() {
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        val projection = arrayOf(MediaStore.Images.Media.BUCKET_DISPLAY_NAME, MediaStore.Images.Media.DATA)
+        val projection = arrayOf(MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA)
+        val selection = MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " =?"
+        val selectionArg = arrayOf(albumName)
         val orderBy = MediaStore.Images.Media.DATE_ADDED + " DESC"
-        val cursor = activity.contentResolver.query(uri, projection, null, null, orderBy)
-        val displayNameColumn = MediaStore.Images.Media.BUCKET_DISPLAY_NAME
+        val cursor = activity.contentResolver.query(uri, projection, selection, selectionArg, orderBy)
+        val idColumn = MediaStore.Images.Media._ID
         val pathColumn = MediaStore.Images.Media.DATA
-        val items = HashSet<AlbumItem>()
+        val items = HashSet<ImageItem>()
 
         cursor.use {
             if (cursor.moveToFirst()) {
                 do {
-                    val album = cursor.getColumnString(displayNameColumn)
                     val image = cursor.getColumnString(pathColumn)
+                    val id = cursor.getColumnString(idColumn)
                     val file = image.toFile()
 
                     if (!file.exists()) continue
 
-                    val fileList = file.parentFile.list() ?: continue
-                    items.add(AlbumItem(album, image, fileList.size))
+                    items.add(ImageItem(id, image))
                 } while (cursor.moveToNext())
             }
         }
@@ -84,17 +96,17 @@ class AlbumFragment : BaseFragment() {
         override fun getItemCount() = itemList.size
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
-                ListHolder(LayoutInflater.from(activity).inflate(R.layout.fragment_album_row, parent, false))
+                ListHolder(LayoutInflater.from(activity).inflate(R.layout.fragment_image_row, parent, false))
     }
 
 
     inner class ListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        @SuppressLint("SetTextI18n")
-        fun bind(item: AlbumItem) {
-            itemView.txtName.text = "${item.name} (${item.itemCount})"
+        fun bind(item: ImageItem) {
             Glide.with(activity).load(item.imagePath).thumbnail(0.5f).into(itemView.imgThumbnail)
-            itemView.setOnClickListener { sendEvent(FragmentTransitionEvent(true, item.name, item.itemCount)) }
+            itemView.setOnClickListener {
+
+            }
         }
     }
 }

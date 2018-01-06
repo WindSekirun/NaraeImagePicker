@@ -8,4 +8,4 @@ package pyxis.uzuki.live.naraeimagepicker.event
  * Description:
  */
 
-data class ToolbarEvent(val item: String)
+data class ToolbarEvent(val item: String, val isUp: Boolean = false)
