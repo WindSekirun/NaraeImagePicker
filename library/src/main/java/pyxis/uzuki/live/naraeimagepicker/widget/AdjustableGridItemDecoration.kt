@@ -40,11 +40,13 @@ class AdjustableGridItemDecoration(private val spacing: RectF, private val colle
 
     companion object {
 
-        @JvmStatic fun getRectFObject(context: Context, left: Int, top: Int, right: Int, bottom: Int): RectF {
+        @JvmStatic
+        fun getRectFObject(context: Context, left: Int, top: Int, right: Int, bottom: Int): RectF {
             return RectF(context.dip2px(left).toFloat(), context.dip2px(top).toFloat(), context.dip2px(right).toFloat(), context.dip2px(bottom).toFloat())
         }
 
-        @JvmStatic fun getRectFObject(context: Context): RectF {
+        @JvmStatic
+        fun getRectFObject(context: Context): RectF {
             return getRectFObject(context, 1, 1, 1, 1)
         }
     }

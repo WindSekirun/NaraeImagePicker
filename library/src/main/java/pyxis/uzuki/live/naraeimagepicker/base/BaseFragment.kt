@@ -25,7 +25,7 @@ import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration
  * Description:
  */
 
-abstract class BaseFragment<T: Any> : Fragment() {
+abstract class BaseFragment<T : Any> : Fragment() {
     private lateinit var mRootView: View
 
     // for cursor parsing
@@ -35,7 +35,7 @@ abstract class BaseFragment<T: Any> : Fragment() {
     val displayNameColumn = MediaStore.Images.Media.BUCKET_DISPLAY_NAME
     val orderBy = MediaStore.Images.Media.DATE_ADDED + " DESC"
 
-    abstract fun getItemList() : ArrayList<T>
+    abstract fun getItemList(): ArrayList<T>
     abstract fun getItemKind(): String
 
     @Nullable

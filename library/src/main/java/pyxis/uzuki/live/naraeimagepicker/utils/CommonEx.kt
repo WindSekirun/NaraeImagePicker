@@ -1,7 +1,6 @@
 package pyxis.uzuki.live.naraeimagepicker.utils
 
 import android.database.Cursor
-import android.util.ArraySet
 
 /**
  * NaraeImagePicker

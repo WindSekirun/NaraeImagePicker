@@ -12,9 +12,6 @@ import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 import pyxis.uzuki.live.richutilskt.utils.toFile
-import java.io.File
-import java.io.FileFilter
-import java.io.FilenameFilter
 
 /**
  * NaraeImagePicker
@@ -54,7 +51,7 @@ class AlbumFragment : BaseFragment<AlbumItem>() {
                     if (!file.exists()) continue
 
                     val fileList =
-                            file.parentFile.list({_, name ->  name.filterByExtensions()})
+                            file.parentFile.list({ _, name -> name.filterByExtensions() })
                                     ?: continue
                     items.add(AlbumItem(album, image, fileList.size))
                 } while (cursor.moveToNext())
