@@ -1,27 +1,20 @@
 package pyxis.uzuki.live.naraeimagepicker.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_album_row.view.*
 import kotlinx.android.synthetic.main.fragment_list.*
-import pyxis.uzuki.live.naraeimagepicker.R
 import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
-import pyxis.uzuki.live.naraeimagepicker.event.FragmentTransitionEvent
-import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.fragment.adapter.AlbumAdapter
 import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
-import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration
+import pyxis.uzuki.live.naraeimagepicker.utils.filterByExtensions
 import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 import pyxis.uzuki.live.richutilskt.utils.toFile
+import java.io.File
+import java.io.FileFilter
+import java.io.FilenameFilter
 
 /**
  * NaraeImagePicker
@@ -60,7 +53,9 @@ class AlbumFragment : BaseFragment<AlbumItem>() {
 
                     if (!file.exists()) continue
 
-                    val fileList = file.parentFile.list() ?: continue
+                    val fileList =
+                            file.parentFile.list({_, name ->  name.filterByExtensions()})
+                                    ?: continue
                     items.add(AlbumItem(album, image, fileList.size))
                 } while (cursor.moveToNext())
             }
