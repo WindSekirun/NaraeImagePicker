@@ -9,7 +9,9 @@ import android.widget.ListAdapter
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_image_row.view.*
+import org.greenrobot.eventbus.EventBus
 import pyxis.uzuki.live.naraeimagepicker.R
+import pyxis.uzuki.live.naraeimagepicker.event.DetailEvent
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
 import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
 
@@ -39,6 +41,10 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
             Glide.with(mContext).load(item.imagePath).thumbnail(0.5f).into(itemView.imgThumbnail)
             itemView.imgCheck.isSelected = SelectedItem.contains(item)
             itemView.opacity.isSelected = SelectedItem.contains(item)
+
+            itemView.btnMaximise.setOnClickListener {
+                EventBus.getDefault().post(DetailEvent(item.imagePath))
+            }
 
             itemView.setOnClickListener {
                 if (SelectedItem.contains(item)) {

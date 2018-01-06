@@ -11,6 +11,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pyxis.uzuki.live.naraeimagepicker.Constants
 import pyxis.uzuki.live.naraeimagepicker.R
+import pyxis.uzuki.live.naraeimagepicker.event.DetailEvent
 import pyxis.uzuki.live.naraeimagepicker.event.FragmentTransitionEvent
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.fragment.AlbumFragment
@@ -106,6 +107,13 @@ class NaraePickerActivity : AppCompatActivity() {
         } else {
             initFragment(FragmentMode.Album)
         }
+    }
+
+    @Subscribe
+    fun onShowDetail(event: DetailEvent) {
+        val intent = Intent(this, ImageDetailsActivity::class.java)
+        intent.putExtra(Constants.EXTRA_DETAIL_IMAGE, event.path)
+        startActivity(intent)
     }
 
     private fun sendTo() {

@@ -52,7 +52,7 @@ public class MainActivity extends InjectActivity {
 
     @OnClick(R.id.btnSelect)
     private void clickSelect() {
-        NaraeImagePicker.instance.startAll(this, Constants.LIMIT_UNLIMITED, new OnPickResultListener() {
+        NaraeImagePicker.instance.start(this, Constants.LIMIT_UNLIMITED, new OnPickResultListener() {
             @Override
             public void onSelect(int resultCode, @NotNull ArrayList<String> imageList) {
                 if (resultCode == NaraeImagePicker.PICK_SUCCESS) {

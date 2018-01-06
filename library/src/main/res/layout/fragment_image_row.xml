@@ -20,7 +20,14 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/check_selector"
-        android:layout_gravity="bottom|top"
-        android:layout_marginLeft="6dp"
-        android:layout_marginTop="6dp" />
+        android:layout_gravity="top"
+        android:layout_margin="6dp" />
+
+    <ImageView
+        android:id="@+id/btnMaximise"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_photo_maximise"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="6dp" />
 </FrameLayout>
