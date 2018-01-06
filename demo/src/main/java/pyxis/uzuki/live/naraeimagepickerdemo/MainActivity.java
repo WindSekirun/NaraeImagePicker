@@ -1,10 +1,12 @@
 package pyxis.uzuki.live.naraeimagepickerdemo;
 
+import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,9 +18,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import pyxis.uzuki.live.naraeimagepicker.Constants;
 import pyxis.uzuki.live.naraeimagepicker.NaraeImagePicker;
+import pyxis.uzuki.live.naraeimagepicker.activity.NaraePickerActivity;
 import pyxis.uzuki.live.naraeimagepicker.impl.OnPickResultListener;
-import pyxis.uzuki.live.naraeimagepicker.utils.AdjustableGridItemDecoration;
+import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration;
 import pyxis.uzuki.live.pyxinjector.PyxInjector;
 import pyxis.uzuki.live.pyxinjector.annotation.BindView;
 import pyxis.uzuki.live.pyxinjector.annotation.OnClick;
@@ -67,7 +71,7 @@ public class MainActivity extends InjectActivity {
 
         @Override
         public ListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ListHolder(View.inflate(parent.getContext(), R.layout.activity_main_row, parent));
+            return new ListHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_main_row, parent, false));
         }
 
         @Override

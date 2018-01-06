@@ -37,7 +37,14 @@ object SelectedItem {
 
     fun getLimits() = this.count
 
-    fun getImageList() = items.map { it.imagePath }.toList()
+    fun getImageList(): ArrayList<String> = ArrayList<String>().apply {
+        addAll(items.map { it.imagePath }.toList())
+    }
 
     fun isNotEmpty() = items.isNotEmpty()
+
+    fun clear() {
+        items.clear()
+        items.trimToSize()
+    }
 }

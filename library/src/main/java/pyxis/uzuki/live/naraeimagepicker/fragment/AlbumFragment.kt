@@ -16,7 +16,7 @@ import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.event.FragmentTransitionEvent
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
-import pyxis.uzuki.live.naraeimagepicker.utils.AdjustableGridItemDecoration
+import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration
 import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
@@ -36,9 +36,7 @@ class AlbumFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         sendEvent(ToolbarEvent(getString(R.string.narae_image_picker_album_title)))
-
         val rectF = AdjustableGridItemDecoration.getRectFObject(activity)
 
         recyclerView.mEmptyView = containerEmpty

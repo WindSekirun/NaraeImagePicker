@@ -1,4 +1,4 @@
-package pyxis.uzuki.live.naraeimagepicker.utils
+package pyxis.uzuki.live.naraeimagepicker.widget
 
 import android.content.Context
 import android.graphics.Rect

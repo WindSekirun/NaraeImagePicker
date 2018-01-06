@@ -1,8 +1,11 @@
 package pyxis.uzuki.live.naraeimagepicker.activity
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import android.view.MenuItem
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -12,10 +15,12 @@ import pyxis.uzuki.live.naraeimagepicker.event.FragmentTransitionEvent
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.fragment.AlbumFragment
 import pyxis.uzuki.live.naraeimagepicker.fragment.ImageFragment
+import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
 import pyxis.uzuki.live.richutilskt.utils.RPermission
 
 class NaraePickerActivity : AppCompatActivity() {
     private var lastFragmentMode = FragmentMode.Album
+    private var isRequestAllMode = false
 
     private enum class FragmentMode {
         Album, Image, All
@@ -24,12 +29,16 @@ class NaraePickerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_picker)
+        SelectedItem.setLimits(intent.getIntExtra(Constants.EXTRA_LIMIT, Constants.LIMIT_UNLIMITED))
+        isRequestAllMode = intent.getBooleanExtra(Constants.EXTRA_REQUEST_ALL_MODE, false)
 
         EventBus.getDefault().register(this)
         RPermission.instance.checkPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE), { integer, _ ->
             if (integer == RPermission.PERMISSION_GRANTED) {
-                initFragment(FragmentMode.Album)
+                initFragment(if (isRequestAllMode) FragmentMode.All else FragmentMode.Album)
+            } else {
+                setResult(Activity.RESULT_CANCELED)
             }
         })
     }
@@ -57,9 +66,16 @@ class NaraePickerActivity : AppCompatActivity() {
         fragmentManager.beginTransaction().replace(R.id.container, fragment, mode.toString()).commitAllowingStateLoss()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.narae_picker, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
-        if (menuItem.itemId == android.R.id.home) {
-            onBackPressed()
+        when {
+            menuItem.itemId == android.R.id.home -> onBackPressed()
+            menuItem.itemId == R.id.done -> sendTo()
         }
         return super.onOptionsItemSelected(menuItem)
     }
@@ -89,4 +105,19 @@ class NaraePickerActivity : AppCompatActivity() {
             initFragment(FragmentMode.Album)
         }
     }
+
+    private fun sendTo() {
+        val lists = arrayListOf<String>()
+        lists.addAll(SelectedItem.getImageList())
+
+        if (lists.isEmpty()) return
+
+        SelectedItem.clear()
+
+        val intent = Intent()
+        intent.putExtra(Constants.EXTRA_IMAGE_LIST, lists)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
 }

@@ -9,11 +9,12 @@ import android.app.FragmentManager
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
-import pyxis.uzuki.live.naraeimagepicker.impl.OnPickResultListener
 import pyxis.uzuki.live.naraeimagepicker.activity.NaraePickerActivity
+import pyxis.uzuki.live.naraeimagepicker.impl.OnPickResultListener
+import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 
 class NaraeImagePicker private constructor() {
-    private val requestCode = -72
+    private val requestCode = 72
 
     private fun getActivity(context: Context): Activity? {
         var c = context
@@ -29,18 +30,26 @@ class NaraeImagePicker private constructor() {
 
     @JvmOverloads
     fun start(context: Context, limit: Int = Constants.LIMIT_UNLIMITED, callback: OnPickResultListener) =
-            requestStart(context, limit, {result, list -> callback.onSelect(result, list)})
+            requestStart(context, limit, false, { result, list -> callback.onSelect(result, list) })
 
     fun start(context: Context, limit: Int = Constants.LIMIT_UNLIMITED, callback: (Int, ArrayList<String>) -> Unit) =
-            requestStart(context, limit, callback)
+            requestStart(context, limit, false, callback)
+
+    @JvmOverloads
+    fun startAll(context: Context, limit: Int = Constants.LIMIT_UNLIMITED, callback: OnPickResultListener) =
+            requestStart(context, limit, true, { result, list -> callback.onSelect(result, list) })
+
+    fun startAll(context: Context, limit: Int = Constants.LIMIT_UNLIMITED, callback: (Int, ArrayList<String>) -> Unit) =
+            requestStart(context, limit, true, callback)
 
     @SuppressLint("ValidFragment")
-    private fun requestStart(context: Context, limit: Int, callback: (Int, ArrayList<String>) -> Unit) {
+    private fun requestStart(context: Context, limit: Int, allMode: Boolean = false, callback: (Int, ArrayList<String>) -> Unit) {
 
         val fm = getActivity(context)?.fragmentManager
 
-        val intent = Intent(context, NaraePickerActivity::class.java)
+        val intent = Intent(getActivity(context), NaraePickerActivity::class.java)
         intent.putExtra(Constants.EXTRA_LIMIT, limit)
+        intent.putExtra(Constants.EXTRA_REQUEST_ALL_MODE, allMode)
 
         val fragment = ResultFragment(fm as FragmentManager, callback)
         fm.beginTransaction().add(fragment, "FRAGMENT_TAG").commitAllowingStateLoss()
@@ -63,9 +72,9 @@ class NaraeImagePicker private constructor() {
             super.onActivityResult(requestCode, resultCode, data)
             if (resultCode == Activity.RESULT_OK) {
                 val imageList = data?.getStringArrayListExtra(Constants.EXTRA_IMAGE_LIST)
-                imageList?.let { callback?.invoke(PICK_SUCCESS, it) }
+                imageList?.let { runOnUiThread { callback?.invoke(PICK_SUCCESS, it) } }
             } else {
-                callback?.invoke(PICK_FAILED, arrayListOf())
+                runOnUiThread { callback?.invoke(PICK_FAILED, arrayListOf()) }
             }
 
             fm?.beginTransaction()?.remove(this)?.commit()

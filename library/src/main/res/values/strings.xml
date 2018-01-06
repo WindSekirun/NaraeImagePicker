@@ -1,4 +1,4 @@
 <resources>
-    <string name="narae_image_picker_album_title">Please select a picture.</string>
+    <string name="narae_image_picker_album_title">Please select picture.</string>
     <string name="narae_image_picker_limit_exceed">Can\'t select more than %s pictures</string>
 </resources>

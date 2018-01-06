@@ -17,7 +17,7 @@ import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
 import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
-import pyxis.uzuki.live.naraeimagepicker.utils.AdjustableGridItemDecoration
+import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration
 import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
@@ -40,7 +40,6 @@ class ImageFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         albumName = arguments.getString(Constants.EXTRA_NAME)
 
         sendEvent(ToolbarEvent(albumName, true))
