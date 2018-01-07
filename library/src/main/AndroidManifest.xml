@@ -7,11 +7,12 @@
 
     <application
         android:allowBackup="true"
-        android:largeHeap="true"
-        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+        android:largeHeap="true">
 
-        <activity android:name=".activity.NaraePickerActivity"/>
-        <activity android:name=".activity.ImageDetailsActivity"/>
+        <activity android:name=".activity.NaraePickerActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <activity android:name=".activity.ImageDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
     </application>
 
 </manifest>
