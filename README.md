@@ -25,7 +25,7 @@ allprojects {
 *app/build.gradle*
 ```
 dependencies {
-     implementation 'com.github.WindSekirun:NaraeImagePicker:1.0.0'
+     implementation 'com.github.WindSekirun:NaraeImagePicker:1.0.1'
 }
 ```
 
@@ -46,9 +46,6 @@ No need to implement ```onActivityResult```, NaraeImagePicker will handle ```sta
 
 #### Customize
 I don't have plan of providing customize, but you can customize few options by this methods.
-
-#### Style
-* follow your application's main style automatically.
 
 ##### Title of toolbar
 * Extends ```narae_image_picker_album_title``` resources in Strings.xml
