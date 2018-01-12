@@ -2,11 +2,13 @@ package pyxis.uzuki.live.naraeimagepicker.fragment
 
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.TimingLogger
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_list.*
 import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.fragment.adapter.AlbumAdapter
 import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
+import pyxis.uzuki.live.naraeimagepicker.utils.TimeLogger
 import pyxis.uzuki.live.naraeimagepicker.utils.filterByExtensions
 import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.runAsync
@@ -24,42 +26,51 @@ import pyxis.uzuki.live.richutilskt.utils.toFile
 class AlbumFragment : BaseFragment<AlbumItem>() {
     private lateinit var adapter: AlbumAdapter
     private val itemList = arrayListOf<AlbumItem>()
+    private lateinit var timeLogger: TimeLogger
 
     override fun getItemList() = itemList
     override fun getItemKind() = AlbumItem::class.simpleName ?: ""
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        timeLogger = TimeLogger(AlbumFragment::class.java.simpleName, "loadItem")
+        timeLogger.addPart("start")
         adapter = AlbumAdapter(activity, itemList)
         recyclerView.adapter = adapter
+
         runAsync { loadItem() }
     }
 
     private fun loadItem() {
+        timeLogger.addPart("loadItem")
         val projection = arrayOf(MediaStore.Images.Media.BUCKET_DISPLAY_NAME, MediaStore.Images.Media.DATA)
         val cursor = activity.contentResolver.query(cursorUri, projection, null, null, orderBy)
         val items = HashSet<AlbumItem>()
 
-        cursor.use {
-            if (cursor.moveToFirst()) {
-                do {
-                    val album = cursor.getColumnString(displayNameColumn)
-                    val image = cursor.getColumnString(pathColumn)
-                    val file = image.toFile()
+        timeLogger.addPart("before use")
+        timeLogger.addPart("now using cursor")
+        if (cursor.moveToFirst()) {
+            timeLogger.addPart("moveToFirst")
+            while (cursor.moveToNext()) {
+                val album = cursor.getColumnString(displayNameColumn)
+                val image = cursor.getColumnString(pathColumn)
+                val file = image.toFile()
 
-                    if (!file.exists()) continue
+                if (!file.exists()) continue
 
-                    val fileList =
-                            file.parentFile.list({ _, name -> name.filterByExtensions() })
-                                    ?: continue
-                    items.add(AlbumItem(album, image, fileList.size))
-                } while (cursor.moveToNext())
+                items.add(AlbumItem(album, image, 0))
             }
+            timeLogger.addPart("looping end")
         }
 
+        cursor.close()
         itemList.addAll(items)
+        timeLogger.addPart("addAll")
         items.clear()
-        runOnUiThread { recyclerView.notifyDataSetChanged() }
+        runOnUiThread {
+            timeLogger.addPart("notify")
+            recyclerView.notifyDataSetChanged()
+            timeLogger.println()
+        }
     }
 }

@@ -2,6 +2,7 @@ package pyxis.uzuki.live.naraeimagepicker.fragment
 
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.TimingLogger
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_list.*
 import pyxis.uzuki.live.naraeimagepicker.Constants
@@ -9,6 +10,7 @@ import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.fragment.adapter.ImageAdapter
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
+import pyxis.uzuki.live.naraeimagepicker.utils.TimeLogger
 import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
@@ -48,19 +50,19 @@ class ImageFragment : BaseFragment<ImageItem>() {
         val cursor = activity.contentResolver.query(cursorUri, projection, selection, selectionArg, orderBy)
         val items = HashSet<ImageItem>()
 
-        cursor.use {
-            if (cursor.moveToFirst()) {
-                do {
-                    val image = cursor.getColumnString(pathColumn)
-                    val id = cursor.getColumnString(idColumn)
-                    val file = image.toFile()
+        if (cursor.moveToFirst()) {
+            while (cursor.moveToNext()) {
+                val image = cursor.getColumnString(pathColumn)
+                val id = cursor.getColumnString(idColumn)
+                val file = image.toFile()
 
-                    if (!file.exists()) continue
+                if (!file.exists()) continue
 
-                    items.add(ImageItem(id, image))
-                } while (cursor.moveToNext())
+                items.add(ImageItem(id, image))
             }
         }
+
+        cursor.close()
 
         itemList.addAll(items)
         items.clear()
