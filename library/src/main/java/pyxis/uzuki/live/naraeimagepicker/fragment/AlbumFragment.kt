@@ -2,14 +2,12 @@ package pyxis.uzuki.live.naraeimagepicker.fragment
 
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.TimingLogger
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_list.*
 import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.fragment.adapter.AlbumAdapter
 import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
 import pyxis.uzuki.live.naraeimagepicker.utils.TimeLogger
-import pyxis.uzuki.live.naraeimagepicker.utils.filterByExtensions
 import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
@@ -58,7 +56,7 @@ class AlbumFragment : BaseFragment<AlbumItem>() {
 
                 if (!file.exists()) continue
 
-                items.add(AlbumItem(album, image, 0))
+                items.add(AlbumItem(album, image))
             }
             timeLogger.addPart("looping end")
         }

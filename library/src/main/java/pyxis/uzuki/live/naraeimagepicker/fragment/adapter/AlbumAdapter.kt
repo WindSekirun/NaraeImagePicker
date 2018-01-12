@@ -37,8 +37,8 @@ class AlbumAdapter(val mContext: Context, val itemList: ArrayList<AlbumItem>) :
 
         @SuppressLint("SetTextI18n")
         fun bind(item: AlbumItem) {
-            itemView.txtName.text = "${item.name} (${item.itemCount})"
-            Glide.with(mContext).load(item.imagePath).thumbnail(0.5f).into(itemView.imgThumbnail)
+            itemView.txtName.text = item.name
+            Glide.with(mContext).load(item.imagePath).thumbnail(0.3f).into(itemView.imgThumbnail)
             itemView.setOnClickListener { EventBus.getDefault().post(FragmentTransitionEvent(true, item.name)) }
         }
     }

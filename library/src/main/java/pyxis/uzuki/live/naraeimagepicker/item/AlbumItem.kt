@@ -10,7 +10,7 @@ import java.io.Serializable
  * Description:
  */
 
-data class AlbumItem(val name: String, val imagePath: String, val itemCount: Int) : Serializable {
+data class AlbumItem(val name: String, val imagePath: String) : Serializable {
 
     override fun equals(other: Any?): Boolean {
         return name == (other as AlbumItem).name

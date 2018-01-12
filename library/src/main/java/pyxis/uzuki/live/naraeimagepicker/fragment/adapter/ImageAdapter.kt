@@ -37,7 +37,7 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
     inner class ListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: ImageItem) {
-            Glide.with(mContext).load(item.imagePath).thumbnail(0.5f).into(itemView.imgThumbnail)
+            Glide.with(mContext).load(item.imagePath).thumbnail(0.3f).into(itemView.imgThumbnail)
             itemView.imgCheck.isSelected = SelectedItem.contains(item)
             itemView.opacity.isSelected = SelectedItem.contains(item)
 

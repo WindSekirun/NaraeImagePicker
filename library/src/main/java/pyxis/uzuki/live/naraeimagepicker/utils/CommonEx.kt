@@ -15,6 +15,6 @@ import android.database.Cursor
  */
 fun Cursor.getColumnString(columnName: String) = this.getString(this.getColumnIndex(columnName))
 
-val acceptFileExtensions = arrayOf(".png", ".jpg", ".bmp", ".jpeg", ".webp", ".bmp", ".gif")
+fun Cursor.getColumnInt(columnName: String) = this.getInt(this.getColumnIndex(columnName))
 
-fun String.filterByExtensions() = acceptFileExtensions.map { this@filterByExtensions.toLowerCase().endsWith(it) }.any { it }
+fun Cursor.getColumnLong(columnName: String) = this.getLong(this.getColumnIndex(columnName))
