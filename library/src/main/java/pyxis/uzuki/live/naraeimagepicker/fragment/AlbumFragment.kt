@@ -40,15 +40,11 @@ class AlbumFragment : BaseFragment<AlbumItem>() {
     }
 
     private fun loadItem() {
-        timeLogger.addPart("loadItem")
         val projection = arrayOf(MediaStore.Images.Media.BUCKET_DISPLAY_NAME, MediaStore.Images.Media.DATA)
         val cursor = activity.contentResolver.query(cursorUri, projection, null, null, orderBy)
         val items = HashSet<AlbumItem>()
 
-        timeLogger.addPart("before use")
-        timeLogger.addPart("now using cursor")
         if (cursor.moveToFirst()) {
-            timeLogger.addPart("moveToFirst")
             while (cursor.moveToNext()) {
                 val album = cursor.getColumnString(displayNameColumn)
                 val image = cursor.getColumnString(pathColumn)
@@ -58,17 +54,15 @@ class AlbumFragment : BaseFragment<AlbumItem>() {
 
                 items.add(AlbumItem(album, image))
             }
-            timeLogger.addPart("looping end")
         }
 
         cursor.close()
         itemList.addAll(items)
-        timeLogger.addPart("addAll")
         items.clear()
         runOnUiThread {
-            timeLogger.addPart("notify")
-            recyclerView.notifyDataSetChanged()
-            timeLogger.println()
+            if (recyclerView != null) {
+                recyclerView.notifyDataSetChanged()
+            }
         }
     }
 }

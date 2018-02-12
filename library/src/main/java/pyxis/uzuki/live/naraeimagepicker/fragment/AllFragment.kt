@@ -86,6 +86,10 @@ class AllFragment : BaseFragment<ImageItem>() {
         itemList.addAll(items)
         items.clear()
 
-        runOnUiThread { recyclerView.notifyDataSetChanged() }
+        runOnUiThread {
+            if (recyclerView != null) {
+                recyclerView.notifyDataSetChanged()
+            }
+        }
     }
 }

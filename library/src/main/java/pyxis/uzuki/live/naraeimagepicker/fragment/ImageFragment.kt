@@ -68,7 +68,9 @@ class ImageFragment : BaseFragment<ImageItem>() {
         items.clear()
 
         runOnUiThread {
-            recyclerView.notifyDataSetChanged()
+            if (recyclerView != null) {
+                recyclerView.notifyDataSetChanged()
+            }
             sendEvent(ToolbarEvent("$albumName (${itemList.size})", true))
         }
     }
