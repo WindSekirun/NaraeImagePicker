@@ -1,5 +1,6 @@
 package pyxis.uzuki.live.naraeimagepicker.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -28,16 +29,17 @@ class AllFragment : BaseFragment<ImageItem>() {
     override fun getItemList() = itemList
     override fun getItemKind() = ImageItem::class.simpleName ?: ""
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ImageAdapter(activity, itemList)
+        adapter = ImageAdapter(context as Context, itemList)
         recyclerView.adapter = adapter
         runAsync { loadItem() }
     }
 
     private fun loadItem() {
         var projection = arrayOf(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
-        val cursor = activity.contentResolver.query(cursorUri, projection, null, null, orderBy)
+        val cursor = (context as Context)
+                .contentResolver.query(cursorUri, projection, null, null, orderBy)
         val albumNameList = ArrayList<String>()
         val items = HashSet<ImageItem>()
 
@@ -61,7 +63,7 @@ class AllFragment : BaseFragment<ImageItem>() {
 
         albumNameList
                 .map { arrayOf(it) }
-                .map { activity.contentResolver.query(cursorUri, projection, selection, it, orderBy) }
+                .map { (context as Context).contentResolver.query(cursorUri, projection, selection, it, orderBy) }
                 .forEach {
                     it.use {
                         if (it.moveToFirst()) {

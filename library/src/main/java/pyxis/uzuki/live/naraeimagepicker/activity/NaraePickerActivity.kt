@@ -65,7 +65,7 @@ class NaraePickerActivity : AppCompatActivity() {
         }
 
         fragment.arguments = bundle
-        fragmentManager.beginTransaction().replace(R.id.container, fragment, mode.toString()).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().replace(R.id.container, fragment, mode.toString()).commitAllowingStateLoss()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -83,7 +83,7 @@ class NaraePickerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val fragment = fragmentManager.findFragmentByTag(lastFragmentMode.name)
+        val fragment = supportFragmentManager.findFragmentByTag(lastFragmentMode.name)
         if (fragment is ImageFragment) {
             initFragment(FragmentMode.Album)
             return

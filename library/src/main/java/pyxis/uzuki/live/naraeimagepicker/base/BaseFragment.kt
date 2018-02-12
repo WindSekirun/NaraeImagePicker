@@ -1,10 +1,11 @@
 package pyxis.uzuki.live.naraeimagepicker.base
 
-import android.app.Fragment
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.annotation.Nullable
+import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,6 @@ import pyxis.uzuki.live.naraeimagepicker.R
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
 import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration
-
 
 /**
  * NaraeImagePicker
@@ -44,11 +44,11 @@ abstract class BaseFragment<T : Any> : Fragment() {
         return mRootView
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sendEvent(ToolbarEvent(getString(R.string.narae_image_picker_album_title)))
 
-        val rectF = AdjustableGridItemDecoration.getRectFObject(activity)
+        val rectF = AdjustableGridItemDecoration.getRectFObject(context as Context)
         val column = if (getItemKind() == ImageItem::class.simpleName) 3 else 2
 
         recyclerView.layoutManager = GridLayoutManager(activity, column)

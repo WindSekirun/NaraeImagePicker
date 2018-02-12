@@ -1,8 +1,8 @@
 package pyxis.uzuki.live.naraeimagepicker.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.TimingLogger
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_list.*
 import pyxis.uzuki.live.naraeimagepicker.Constants
@@ -10,7 +10,6 @@ import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.fragment.adapter.ImageAdapter
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
-import pyxis.uzuki.live.naraeimagepicker.utils.TimeLogger
 import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
@@ -33,12 +32,12 @@ class ImageFragment : BaseFragment<ImageItem>() {
     override fun getItemList() = itemList
     override fun getItemKind() = ImageItem::class.simpleName ?: ""
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        albumName = arguments.getString(Constants.EXTRA_NAME)
+        albumName = arguments?.getString(Constants.EXTRA_NAME) ?: ""
         sendEvent(ToolbarEvent(albumName, true))
 
-        adapter = ImageAdapter(activity, itemList)
+        adapter = ImageAdapter(context as Context, itemList)
         recyclerView.adapter = adapter
         runAsync { loadItem() }
     }
@@ -47,7 +46,7 @@ class ImageFragment : BaseFragment<ImageItem>() {
         val projection = arrayOf(MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA)
         val selection = MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " =?"
         val selectionArg = arrayOf(albumName)
-        val cursor = activity.contentResolver.query(cursorUri, projection, selection, selectionArg, orderBy)
+        val cursor = (context as Context).contentResolver.query(cursorUri, projection, selection, selectionArg, orderBy)
         val items = HashSet<ImageItem>()
 
         if (cursor.moveToFirst()) {
