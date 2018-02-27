@@ -50,7 +50,7 @@ NaraeImagePicker.instance.start(this, item, new OnPickResultListener() {
 
 No need to implement ```onActivityResult```, NaraeImagePicker will handle ```startActivityForResult```, ```onActivityResult``` for you. 
 
-## Customization
+## Customization in PickerSettingItem
 
 ```kotlin
     var viewMode = ViewMode.FolderView
