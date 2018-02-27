@@ -25,33 +25,40 @@ allprojects {
 *app/build.gradle*
 ```
 dependencies {
-     implementation 'com.github.WindSekirun:NaraeImagePicker:1.1.1'
+     implementation 'com.github.WindSekirun:NaraeImagePicker:1.5.0'
 }
 ```
 
 #### Code
 ```
-NaraeImagePicker.instance.start(this, Constants.LIMIT_UNLIMITED, new OnPickResultListener() {
-            @Override
-            public void onSelect(int resultCode, @NotNull ArrayList<String> imageList) {
-               
-            }
+PickerSettingItem item = new PickerSettingItem();
+item.setPickLimit(Constants.LIMIT_UNLIMITED);
+item.setViewMode(ViewMode.FolderView);
+item.setEnableUpInParentView(true);
+
+NaraeImagePicker.instance.start(this, item, new OnPickResultListener() {
+    @Override
+    public void onSelect(int resultCode, @NotNull ArrayList<String> imageList) {
+        if (resultCode == NaraeImagePicker.PICK_SUCCESS) {
+            
+        } else {
+            Toast.makeText(MainActivity.this, "failed to pick image", Toast.LENGTH_SHORT).show();
+        }
+    }
 });
 ```
 
 No need to implement ```onActivityResult```, NaraeImagePicker will handle ```startActivityForResult```, ```onActivityResult``` for you. 
 
-* Starting folder-view activity: NaraeImagePicker.start(Context, int, OnPickResultListener)
-* Starting file-view activity: NaraeImagePicker.startAll(Context, int, OnPickResultListener)
+## Customization
 
-#### Customize
-I don't have plan of providing customize, but you can customize few options by this methods.
-
-##### Title of toolbar
-* Extends ```narae_image_picker_album_title``` resources in Strings.xml
-
-##### Error message when limit exceeded
-* Extends ```narae_image_picker_limit_exceed``` resources in Strings.xml
+```kotlin
+    var viewMode = ViewMode.FolderView
+    var pickLimit = Constants.LIMIT_UNLIMITED
+    var enableUpInParentView = false
+    var pickerTitle = "Please select picture."
+    var exceedLimitMessage = "Can\\'t select more than %s pictures"
+```
 
 ## License
 
