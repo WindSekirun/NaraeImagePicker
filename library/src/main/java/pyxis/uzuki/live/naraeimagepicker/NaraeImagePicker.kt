@@ -12,7 +12,7 @@ import android.content.Intent
 import pyxis.uzuki.live.naraeimagepicker.activity.NaraePickerActivity
 import pyxis.uzuki.live.naraeimagepicker.impl.OnPickResultListener
 import pyxis.uzuki.live.naraeimagepicker.item.PickerSettingItem
-import pyxis.uzuki.live.naraeimagepicker.module.PickerSetting
+import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 
 class NaraeImagePicker private constructor() {
@@ -43,7 +43,7 @@ class NaraeImagePicker private constructor() {
         fm.beginTransaction().add(fragment, "FRAGMENT_TAG").commitAllowingStateLoss()
         fm.executePendingTransactions()
 
-        PickerSetting.initialize(item)
+        PickerSet.setSettingItem(item)
 
         fragment.startActivityForResult(intent, requestCode)
     }

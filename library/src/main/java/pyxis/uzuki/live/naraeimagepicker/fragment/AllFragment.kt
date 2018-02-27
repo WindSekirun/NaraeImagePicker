@@ -2,13 +2,12 @@ package pyxis.uzuki.live.naraeimagepicker.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_list.*
 import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.fragment.adapter.ImageAdapter
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
-import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
+import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 import pyxis.uzuki.live.richutilskt.utils.toFile
@@ -33,60 +32,17 @@ class AllFragment : BaseFragment<ImageItem>() {
         super.onViewCreated(view, savedInstanceState)
         adapter = ImageAdapter(context as Context, itemList)
         recyclerView.adapter = adapter
-        runAsync { loadItem() }
+
+        if (PickerSet.isEmptyList()) {
+            runAsync { PickerSet.loadImageFirst(context!!) { bindList() } }
+        } else {
+            bindList()
+        }
     }
 
-    private fun loadItem() {
-        var projection = arrayOf(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
-        val cursor = (context as Context)
-                .contentResolver.query(cursorUri, projection, null, null, orderBy)
-        val albumNameList = ArrayList<String>()
-        val items = HashSet<ImageItem>()
-
-        cursor.use {
-            if (cursor.moveToFirst()) {
-                do {
-                    val album = cursor.getColumnString(displayNameColumn)
-                    if (!albumNameList.contains(album)) {
-                        albumNameList.add(album)
-                    }
-                } while (cursor.moveToNext())
-            }
-        }
-
-        projection = arrayOf(MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA)
-        val selection = MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " =?"
-
-        if (albumNameList.isEmpty()) {
-            runOnUiThread { recyclerView.notifyDataSetChanged() }
-        }
-
-        albumNameList
-                .map { arrayOf(it) }
-                .map { (context as Context).contentResolver.query(cursorUri, projection, selection, it, orderBy) }
-                .forEach {
-                    it.use {
-                        if (it.moveToFirst()) {
-                            do {
-                                val image = it.getColumnString(pathColumn)
-                                val id = it.getColumnString(idColumn)
-                                val file = image.toFile()
-
-                                if (!file.exists()) continue
-
-                                items.add(ImageItem(id, image))
-                            } while (it.moveToNext())
-                        }
-                    }
-                }
-
-        val tempItems = arrayListOf<ImageItem>()
-        tempItems.addAll(items)
-
-        items.sortedBy { it.imagePath.toFile().lastModified() }
-
-        itemList.addAll(items)
-        items.clear()
+    private fun bindList() {
+        itemList.addAll(PickerSet.getImageList())
+        itemList.sortedBy { it.imagePath.toFile().lastModified() }
 
         runOnUiThread {
             if (recyclerView != null) {

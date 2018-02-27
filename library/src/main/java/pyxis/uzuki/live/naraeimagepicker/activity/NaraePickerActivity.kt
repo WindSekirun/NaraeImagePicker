@@ -18,7 +18,7 @@ import pyxis.uzuki.live.naraeimagepicker.fragment.AlbumFragment
 import pyxis.uzuki.live.naraeimagepicker.fragment.AllFragment
 import pyxis.uzuki.live.naraeimagepicker.fragment.ImageFragment
 import pyxis.uzuki.live.naraeimagepicker.item.enumeration.ViewMode
-import pyxis.uzuki.live.naraeimagepicker.module.PickerSetting
+import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
 import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
 import pyxis.uzuki.live.richutilskt.utils.RPermission
 
@@ -34,8 +34,8 @@ class NaraePickerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_picker)
 
-        SelectedItem.setLimits(PickerSetting.getItem().pickLimit)
-        mRequestFileViewMode = PickerSetting.getItem().viewMode == ViewMode.FileView
+        SelectedItem.setLimits(PickerSet.getSettingItem().pickLimit)
+        mRequestFileViewMode = PickerSet.getSettingItem().viewMode == ViewMode.FileView
 
         EventBus.getDefault().register(this)
         RPermission.instance.checkPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -126,7 +126,7 @@ class NaraePickerActivity : AppCompatActivity() {
         if (lists.isEmpty()) return
 
         SelectedItem.clear()
-        PickerSetting.clear()
+        PickerSet.clearPickerSet()
 
         val intent = Intent()
         intent.putExtra(Constants.EXTRA_IMAGE_LIST, lists)
