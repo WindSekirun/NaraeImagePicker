@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import pyxis.uzuki.live.naraeimagepicker.R
 import pyxis.uzuki.live.naraeimagepicker.event.DetailEvent
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
+import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
 import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
 
 /**
@@ -37,7 +38,12 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
     inner class ListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: ImageItem) {
-            Glide.with(mContext).load(item.imagePath).thumbnail(0.3f).into(itemView.imgThumbnail)
+            if (item.imagePath.endsWith(".gif")) {
+                Glide.with(mContext).asGif().load(item.imagePath).thumbnail(0.3f).into(itemView.imgThumbnail)
+            } else {
+                Glide.with(mContext).load(item.imagePath).thumbnail(0.3f).into(itemView.imgThumbnail)
+            }
+
             itemView.imgCheck.isSelected = SelectedItem.contains(item)
             itemView.opacity.isSelected = SelectedItem.contains(item)
 
@@ -55,7 +61,7 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
                 SelectedItem.addItem(item, {
                     if (!it) {
                         Toast.makeText(mContext,
-                                mContext.getString(R.string.narae_image_picker_limit_exceed).format(SelectedItem.getLimits()),
+                                PickerSet.getSettingItem().exceedLimitMessage.format(SelectedItem.getLimits()),
                                 Toast.LENGTH_SHORT).show()
                     }
 
