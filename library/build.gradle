@@ -19,6 +19,8 @@ android {
     }
 }
 
+ext.anko_version='0.10.4'
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // kotlin
@@ -37,4 +39,6 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
     // PhotoView
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
+    // kursor
+    implementation 'com.github.aballano:kursor:1.1'
 }

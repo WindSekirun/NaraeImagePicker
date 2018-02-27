@@ -9,6 +9,7 @@ import pyxis.uzuki.live.naraeimagepicker.Constants
 import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.fragment.adapter.ImageAdapter
+import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
 import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.runAsync
@@ -50,7 +51,7 @@ class ImageFragment : BaseFragment<ImageItem>() {
         val items = HashSet<ImageItem>()
 
         if (cursor.moveToFirst()) {
-            while (cursor.moveToNext()) {
+            do {
                 val image = cursor.getColumnString(pathColumn)
                 val id = cursor.getColumnString(idColumn)
                 val file = image.toFile()
@@ -58,7 +59,7 @@ class ImageFragment : BaseFragment<ImageItem>() {
                 if (!file.exists()) continue
 
                 items.add(ImageItem(id, image))
-            }
+            } while (cursor.moveToNext())
         }
 
         cursor.close()

@@ -15,6 +15,7 @@ import org.greenrobot.eventbus.EventBus
 import pyxis.uzuki.live.naraeimagepicker.R
 import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
+import pyxis.uzuki.live.naraeimagepicker.module.PickerSetting
 import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration
 
 /**
@@ -33,7 +34,7 @@ abstract class BaseFragment<T : Any> : Fragment() {
     val idColumn = MediaStore.Images.Media._ID
     val pathColumn = MediaStore.Images.Media.DATA
     val displayNameColumn = MediaStore.Images.Media.BUCKET_DISPLAY_NAME
-    val orderBy = MediaStore.Images.Media.DATE_ADDED + " DESC"
+    val orderBy = MediaStore.Images.Media.DATE_MODIFIED
 
     abstract fun getItemList(): ArrayList<T>
     abstract fun getItemKind(): String
@@ -46,7 +47,7 @@ abstract class BaseFragment<T : Any> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sendEvent(ToolbarEvent(getString(R.string.narae_image_picker_album_title)))
+        sendEvent(ToolbarEvent(PickerSetting.getItem().pickerTitle, PickerSetting.getItem().enableUpInParentView))
 
         val rectF = AdjustableGridItemDecoration.getRectFObject(context as Context)
         val column = if (getItemKind() == ImageItem::class.simpleName) 3 else 2

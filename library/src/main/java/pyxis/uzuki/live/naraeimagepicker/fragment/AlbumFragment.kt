@@ -46,7 +46,7 @@ class AlbumFragment : BaseFragment<AlbumItem>() {
         val items = HashSet<AlbumItem>()
 
         if (cursor.moveToFirst()) {
-            while (cursor.moveToNext()) {
+            do {
                 val album = cursor.getColumnString(displayNameColumn)
                 val image = cursor.getColumnString(pathColumn)
                 val file = image.toFile()
@@ -54,7 +54,7 @@ class AlbumFragment : BaseFragment<AlbumItem>() {
                 if (!file.exists()) continue
 
                 items.add(AlbumItem(album, image))
-            }
+            } while (cursor.moveToNext())
         }
 
         cursor.close()

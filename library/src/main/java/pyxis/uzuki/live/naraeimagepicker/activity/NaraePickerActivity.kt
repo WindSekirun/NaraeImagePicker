@@ -17,12 +17,14 @@ import pyxis.uzuki.live.naraeimagepicker.event.ToolbarEvent
 import pyxis.uzuki.live.naraeimagepicker.fragment.AlbumFragment
 import pyxis.uzuki.live.naraeimagepicker.fragment.AllFragment
 import pyxis.uzuki.live.naraeimagepicker.fragment.ImageFragment
+import pyxis.uzuki.live.naraeimagepicker.item.enumeration.ViewMode
+import pyxis.uzuki.live.naraeimagepicker.module.PickerSetting
 import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
 import pyxis.uzuki.live.richutilskt.utils.RPermission
 
 class NaraePickerActivity : AppCompatActivity() {
-    private var lastFragmentMode = FragmentMode.Album
-    private var isRequestAllMode = false
+    private var mLastFragmentMode = FragmentMode.Album
+    private var mRequestFileViewMode = false
 
     private enum class FragmentMode {
         Album, Image, All
@@ -31,14 +33,15 @@ class NaraePickerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_picker)
-        SelectedItem.setLimits(intent.getIntExtra(Constants.EXTRA_LIMIT, Constants.LIMIT_UNLIMITED))
-        isRequestAllMode = intent.getBooleanExtra(Constants.EXTRA_REQUEST_ALL_MODE, false)
+
+        SelectedItem.setLimits(PickerSetting.getItem().pickLimit)
+        mRequestFileViewMode = PickerSetting.getItem().viewMode == ViewMode.FileView
 
         EventBus.getDefault().register(this)
         RPermission.instance.checkPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE), { integer, _ ->
             if (integer == RPermission.PERMISSION_GRANTED) {
-                initFragment(if (isRequestAllMode) FragmentMode.All else FragmentMode.Album)
+                initFragment(if (mRequestFileViewMode) FragmentMode.All else FragmentMode.Album)
             } else {
                 setResult(Activity.RESULT_CANCELED)
             }
@@ -46,7 +49,7 @@ class NaraePickerActivity : AppCompatActivity() {
     }
 
     private fun initFragment(mode: FragmentMode, map: Map<String, Any> = mapOf()) {
-        lastFragmentMode = mode
+        mLastFragmentMode = mode
 
         val fragment = when (mode) {
             NaraePickerActivity.FragmentMode.Album -> AlbumFragment()
@@ -83,7 +86,7 @@ class NaraePickerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentByTag(lastFragmentMode.name)
+        val fragment = supportFragmentManager.findFragmentByTag(mLastFragmentMode.name)
         if (fragment is ImageFragment) {
             initFragment(FragmentMode.Album)
             return
@@ -123,6 +126,7 @@ class NaraePickerActivity : AppCompatActivity() {
         if (lists.isEmpty()) return
 
         SelectedItem.clear()
+        PickerSetting.clear()
 
         val intent = Intent()
         intent.putExtra(Constants.EXTRA_IMAGE_LIST, lists)

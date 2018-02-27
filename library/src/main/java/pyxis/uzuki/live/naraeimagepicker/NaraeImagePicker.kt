@@ -11,6 +11,8 @@ import android.content.ContextWrapper
 import android.content.Intent
 import pyxis.uzuki.live.naraeimagepicker.activity.NaraePickerActivity
 import pyxis.uzuki.live.naraeimagepicker.impl.OnPickResultListener
+import pyxis.uzuki.live.naraeimagepicker.item.PickerSettingItem
+import pyxis.uzuki.live.naraeimagepicker.module.PickerSetting
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 
 class NaraeImagePicker private constructor() {
@@ -29,55 +31,43 @@ class NaraeImagePicker private constructor() {
     }
 
     @JvmOverloads
-    fun start(context: Context, limit: Int = Constants.LIMIT_UNLIMITED, callback: OnPickResultListener) =
-            requestStart(context, limit, false, { result, list -> callback.onSelect(result, list) })
-
-    fun start(context: Context, limit: Int = Constants.LIMIT_UNLIMITED, callback: (Int, ArrayList<String>) -> Unit) =
-            requestStart(context, limit, false, callback)
-
-    @JvmOverloads
-    fun startAll(context: Context, limit: Int = Constants.LIMIT_UNLIMITED, callback: OnPickResultListener) =
-            requestStart(context, limit, true, { result, list -> callback.onSelect(result, list) })
-
-    fun startAll(context: Context, limit: Int = Constants.LIMIT_UNLIMITED, callback: (Int, ArrayList<String>) -> Unit) =
-            requestStart(context, limit, true, callback)
+    fun start(context: Context, item: PickerSettingItem = PickerSettingItem(), pickResultListener: OnPickResultListener) {
+        requestStart(context, item, pickResultListener)
+    }
 
     @SuppressLint("ValidFragment")
-    private fun requestStart(context: Context, limit: Int, allMode: Boolean = false, callback: (Int, ArrayList<String>) -> Unit) {
-
+    private fun requestStart(context: Context, item: PickerSettingItem, pickResultListener: OnPickResultListener) {
         val fm = getActivity(context)?.fragmentManager
-
         val intent = Intent(getActivity(context), NaraePickerActivity::class.java)
-        intent.putExtra(Constants.EXTRA_LIMIT, limit)
-        intent.putExtra(Constants.EXTRA_REQUEST_ALL_MODE, allMode)
-
-        val fragment = ResultFragment(fm as FragmentManager, callback)
+        val fragment = ResultFragment(fm as FragmentManager, pickResultListener)
         fm.beginTransaction().add(fragment, "FRAGMENT_TAG").commitAllowingStateLoss()
         fm.executePendingTransactions()
+
+        PickerSetting.initialize(item)
 
         fragment.startActivityForResult(intent, requestCode)
     }
 
     @SuppressLint("ValidFragment")
     class ResultFragment() : Fragment() {
-        var fm: FragmentManager? = null
-        var callback: ((Int, ArrayList<String>) -> Unit)? = null
+        var mFragmentManager: FragmentManager? = null
+        lateinit var mCallback: OnPickResultListener
 
-        constructor(fm: FragmentManager, callback: (Int, ArrayList<String>) -> Unit) : this() {
-            this.fm = fm
-            this.callback = callback
+        constructor(fm: FragmentManager, callback: OnPickResultListener) : this() {
+            this.mFragmentManager = fm
+            this.mCallback = callback
         }
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             super.onActivityResult(requestCode, resultCode, data)
             if (resultCode == Activity.RESULT_OK) {
                 val imageList = data?.getStringArrayListExtra(Constants.EXTRA_IMAGE_LIST)
-                imageList?.let { runOnUiThread { callback?.invoke(PICK_SUCCESS, it) } }
+                imageList?.let { runOnUiThread { mCallback.onSelect(PICK_SUCCESS, it) } }
             } else {
-                runOnUiThread { callback?.invoke(PICK_FAILED, arrayListOf()) }
+                runOnUiThread { mCallback.onSelect(PICK_FAILED, arrayListOf()) }
             }
 
-            fm?.beginTransaction()?.remove(this)?.commit()
+            mFragmentManager?.beginTransaction()?.remove(this)?.commit()
         }
     }
 

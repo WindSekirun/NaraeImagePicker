@@ -1,5 +1,7 @@
 package pyxis.uzuki.live.naraeimagepicker.impl
 
+import java.io.Serializable
+
 /**
  * NaraeImagePicker
  * Class: OnPickResultListener
@@ -8,6 +10,6 @@ package pyxis.uzuki.live.naraeimagepicker.impl
  * Description:
  */
 
-interface OnPickResultListener {
+interface OnPickResultListener : Serializable {
     fun onSelect(resultCode: Int, imageList: ArrayList<String>)
 }

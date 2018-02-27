@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import pyxis.uzuki.live.naraeimagepicker.Constants;
 import pyxis.uzuki.live.naraeimagepicker.NaraeImagePicker;
 import pyxis.uzuki.live.naraeimagepicker.impl.OnPickResultListener;
+import pyxis.uzuki.live.naraeimagepicker.item.PickerSettingItem;
+import pyxis.uzuki.live.naraeimagepicker.item.enumeration.ViewMode;
 import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration;
 import pyxis.uzuki.live.pyxinjector.PyxInjector;
 import pyxis.uzuki.live.pyxinjector.annotation.BindView;
@@ -52,7 +54,12 @@ public class MainActivity extends InjectActivity {
 
     @OnClick(R.id.btnSelect)
     private void clickSelect() {
-        NaraeImagePicker.instance.start(this, Constants.LIMIT_UNLIMITED, new OnPickResultListener() {
+        PickerSettingItem item = new PickerSettingItem();
+        item.setPickLimit(Constants.LIMIT_UNLIMITED);
+        item.setViewMode(ViewMode.FolderView);
+        item.setEnableUpInParentView(true);
+
+        NaraeImagePicker.instance.start(this, item, new OnPickResultListener() {
             @Override
             public void onSelect(int resultCode, @NotNull ArrayList<String> imageList) {
                 if (resultCode == NaraeImagePicker.PICK_SUCCESS) {

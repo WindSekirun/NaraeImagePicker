@@ -9,11 +9,8 @@ package pyxis.uzuki.live.naraeimagepicker
  */
 
 object Constants {
-
-    const val EXTRA_LIMIT = "limit"
     const val EXTRA_NAME = "displayName"
     const val EXTRA_IMAGE_LIST = "imageList"
-    const val EXTRA_REQUEST_ALL_MODE = "requestAllMode"
-    const val EXTRA_DETAIL_IMAGE = "detailImage";
+    const val EXTRA_DETAIL_IMAGE = "detailImage"
     const val LIMIT_UNLIMITED = -1
 }

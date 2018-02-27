@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import pyxis.uzuki.live.naraeimagepicker.R
 import pyxis.uzuki.live.naraeimagepicker.event.DetailEvent
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
+import pyxis.uzuki.live.naraeimagepicker.module.PickerSetting
 import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
 
 /**
@@ -55,7 +56,7 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
                 SelectedItem.addItem(item, {
                     if (!it) {
                         Toast.makeText(mContext,
-                                mContext.getString(R.string.narae_image_picker_limit_exceed).format(SelectedItem.getLimits()),
+                                PickerSetting.getItem().exceedLimitMessage.format(SelectedItem.getLimits()),
                                 Toast.LENGTH_SHORT).show()
                     }
 
