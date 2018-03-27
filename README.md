@@ -25,7 +25,7 @@ allprojects {
 *app/build.gradle*
 ```
 dependencies {
-     implementation 'com.github.WindSekirun:NaraeImagePicker:1.5.0'
+     implementation 'com.github.WindSekirun:NaraeImagePicker:1.6.0'
 }
 ```
 
