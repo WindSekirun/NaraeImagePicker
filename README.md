@@ -35,6 +35,7 @@ PickerSettingItem item = new PickerSettingItem();
 item.setPickLimit(Constants.LIMIT_UNLIMITED);
 item.setViewMode(ViewMode.FolderView);
 item.setEnableUpInParentView(true);
+item.setDisableZoomMode(true);
 
 NaraeImagePicker.instance.start(this, item, new OnPickResultListener() {
     @Override
@@ -56,6 +57,7 @@ No need to implement ```onActivityResult```, NaraeImagePicker will handle ```sta
     var viewMode = ViewMode.FolderView
     var pickLimit = Constants.LIMIT_UNLIMITED
     var enableUpInParentView = false
+    var disableZoomMode = false
     var pickerTitle = "Please select picture."
     var exceedLimitMessage = "Can\\'t select more than %s pictures"
 ```
