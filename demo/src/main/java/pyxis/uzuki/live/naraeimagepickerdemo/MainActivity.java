@@ -55,9 +55,10 @@ public class MainActivity extends InjectActivity {
     @OnClick(R.id.btnSelect)
     private void clickSelect() {
         PickerSettingItem item = new PickerSettingItem();
-        item.setPickLimit(Constants.LIMIT_UNLIMITED);
+        item.setPickLimit(5);
         item.setViewMode(ViewMode.FolderView);
         item.setEnableUpInParentView(true);
+        item.setDisableZoomMode(true);
 
         NaraeImagePicker.instance.start(this, item, new OnPickResultListener() {
             @Override

@@ -47,8 +47,13 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
             itemView.imgCheck.isSelected = SelectedItem.contains(item)
             itemView.opacity.isSelected = SelectedItem.contains(item)
 
-            itemView.btnMaximise.setOnClickListener {
-                EventBus.getDefault().post(DetailEvent(item.imagePath))
+            if (!PickerSet.getSettingItem().disableZoomMode) {
+                itemView.btnMaximise.visibility = View.GONE
+                itemView.btnMaximise.setOnClickListener {
+                    EventBus.getDefault().post(DetailEvent(item.imagePath))
+                }
+            } else {
+                itemView.btnMaximise.visibility = View.GONE
             }
 
             itemView.setOnClickListener {

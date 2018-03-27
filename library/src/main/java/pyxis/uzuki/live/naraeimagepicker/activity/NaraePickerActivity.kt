@@ -92,6 +92,8 @@ class NaraePickerActivity : AppCompatActivity() {
             return
         }
 
+        SelectedItem.clear()
+        PickerSet.clearPickerSet()
         setResult(Activity.RESULT_CANCELED)
         finish()
     }
