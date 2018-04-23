@@ -90,11 +90,12 @@ object PickerSet {
     }
 
     fun getFolderList(): List<AlbumItem> {
-        return try {
-            mPictureMap.entries.map { it.key to it.value[0] }.map { AlbumItem(it.first, it.second.imagePath) }.sortedBy { it.name.toLowerCase() }.toList()
-        } catch (e: Exception) {
-            arrayListOf()
-        }
+        return mPictureMap.entries
+                .filter { it.value.isNotEmpty() }
+                .map { it.key to it.value[0] }
+                .map { AlbumItem(it.first, it.second.imagePath) }
+                .sortedBy { it.name.toLowerCase() }
+                .toList()
     }
 
     fun getImageList(title: String): MutableList<ImageItem> {
