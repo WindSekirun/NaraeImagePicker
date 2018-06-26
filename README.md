@@ -62,6 +62,15 @@ No need to implement ```onActivityResult```, NaraeImagePicker will handle ```sta
     var exceedLimitMessage = "Can\\'t select more than %s pictures"
 ```
 
+## resolve DuplicateRelativeFileException: More than one file...
+you should insert this statement in android block in app/build.gradle
+
+```
+packagingOptions {
+    exclude 'META-INF/library_release.kotlin_module'
+}
+```
+
 ## License
 
 ```
