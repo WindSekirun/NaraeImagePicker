@@ -18,6 +18,7 @@ class PickerSettingItem {
     var pickerTitle = "Please select picture."
     var exceedLimitMessage = "Can\\'t select more than %s pictures"
     var disableZoomMode = false
+    var themeResId: Int? = null
 
     fun clear() {
         viewMode = ViewMode.FileView
@@ -26,5 +27,6 @@ class PickerSettingItem {
         pickerTitle = "Please select picture."
         exceedLimitMessage = "Can\\'t select more than %s pictures"
         disableZoomMode = false
+        themeResId = null
     }
 }

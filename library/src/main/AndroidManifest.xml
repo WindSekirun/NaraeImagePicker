@@ -10,9 +10,9 @@
         android:largeHeap="true">
 
         <activity android:name=".activity.NaraePickerActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+            android:theme="@style/NaraeImagePickerTheme"/>
         <activity android:name=".activity.ImageDetailsActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+            android:theme="@style/NaraeImagePickerTheme"/>
     </application>
 
 </manifest>
