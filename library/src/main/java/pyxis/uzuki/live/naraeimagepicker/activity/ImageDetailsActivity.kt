@@ -9,6 +9,9 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_image_details.*
 import pyxis.uzuki.live.naraeimagepicker.Constants
 import pyxis.uzuki.live.naraeimagepicker.R
+import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
+import pyxis.uzuki.live.naraeimagepicker.utils.applyCustomPickerTheme
+
 
 /**
  * NaraeImagePicker
@@ -21,6 +24,7 @@ import pyxis.uzuki.live.naraeimagepicker.R
 class ImageDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        applyCustomPickerTheme(PickerSet.getSettingItem())
         setContentView(R.layout.activity_image_details)
 
         val path = intent.getStringExtra(Constants.EXTRA_DETAIL_IMAGE)

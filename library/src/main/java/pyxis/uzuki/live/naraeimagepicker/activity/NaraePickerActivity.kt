@@ -20,6 +20,7 @@ import pyxis.uzuki.live.naraeimagepicker.fragment.ImageFragment
 import pyxis.uzuki.live.naraeimagepicker.item.enumeration.ViewMode
 import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
 import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
+import pyxis.uzuki.live.naraeimagepicker.utils.applyCustomPickerTheme
 import pyxis.uzuki.live.richutilskt.utils.RPermission
 
 class NaraePickerActivity : AppCompatActivity() {
@@ -32,6 +33,7 @@ class NaraePickerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        applyCustomPickerTheme(PickerSet.getSettingItem())
         setContentView(R.layout.activity_picker)
 
         SelectedItem.setLimits(PickerSet.getSettingItem().pickLimit)
@@ -39,13 +41,13 @@ class NaraePickerActivity : AppCompatActivity() {
 
         EventBus.getDefault().register(this)
         RPermission.instance.checkPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE), { integer, _ ->
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)) { integer, _ ->
             if (integer == RPermission.PERMISSION_GRANTED) {
                 initFragment(if (mRequestFileViewMode) FragmentMode.All else FragmentMode.Album)
             } else {
                 setResult(Activity.RESULT_CANCELED)
             }
-        })
+        }
     }
 
     private fun initFragment(mode: FragmentMode, map: Map<String, Any> = mapOf()) {
