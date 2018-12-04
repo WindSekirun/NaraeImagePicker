@@ -21,6 +21,7 @@ import pyxis.uzuki.live.naraeimagepicker.item.enumeration.ViewMode
 import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
 import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
 import pyxis.uzuki.live.naraeimagepicker.utils.applyCustomPickerTheme
+import pyxis.uzuki.live.naraeimagepicker.utils.catchAll
 import pyxis.uzuki.live.richutilskt.utils.RPermission
 
 class NaraePickerActivity : AppCompatActivity() {
@@ -39,7 +40,6 @@ class NaraePickerActivity : AppCompatActivity() {
         SelectedItem.setLimits(PickerSet.getSettingItem().pickLimit)
         mRequestFileViewMode = PickerSet.getSettingItem().viewMode == ViewMode.FileView
 
-        EventBus.getDefault().register(this)
         RPermission.instance.checkPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) { integer, _ ->
             if (integer == RPermission.PERMISSION_GRANTED) {
@@ -138,4 +138,13 @@ class NaraePickerActivity : AppCompatActivity() {
         finish()
     }
 
+    override fun onStart() {
+        super.onStart()
+        catchAll { EventBus.getDefault().register(this) }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        catchAll { EventBus.getDefault().unregister(this) }
+    }
 }
