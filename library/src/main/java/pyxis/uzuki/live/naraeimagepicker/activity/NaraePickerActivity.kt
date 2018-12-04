@@ -21,6 +21,7 @@ import pyxis.uzuki.live.naraeimagepicker.item.enumeration.ViewMode
 import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
 import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
 import pyxis.uzuki.live.naraeimagepicker.utils.applyCustomPickerTheme
+import pyxis.uzuki.live.naraeimagepicker.utils.catchAll
 import pyxis.uzuki.live.richutilskt.utils.RPermission
 
 class NaraePickerActivity : AppCompatActivity() {
@@ -139,17 +140,11 @@ class NaraePickerActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        try {
-            EventBus.getDefault().register(this)
-        } catch (t: Throwable) {
-        }
+        catchAll { EventBus.getDefault().register(this) }
     }
 
     override fun onStop() {
         super.onStop()
-        try {
-            EventBus.getDefault().unregister(this)
-        } catch (t: Throwable) {
-        }
+        catchAll { EventBus.getDefault().unregister(this) }
     }
 }
