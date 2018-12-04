@@ -60,6 +60,8 @@ No need to implement ```onActivityResult```, NaraeImagePicker will handle ```sta
     var disableZoomMode = false
     var pickerTitle = "Please select picture."
     var exceedLimitMessage = "Can\\'t select more than %s pictures"
+    var disableZoomMode = false
+    var themeResId: Int? = null // from 1.7.0
 ```
 
 ## resolve DuplicateRelativeFileException: More than one file...
