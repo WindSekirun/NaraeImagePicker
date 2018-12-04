@@ -59,7 +59,7 @@ public class MainActivity extends InjectActivity {
         item.setViewMode(ViewMode.FolderView);
         item.setEnableUpInParentView(true);
         item.setDisableZoomMode(true);
-//        item.setThemeResId(R.style.CustomPickerTheme);
+        item.setThemeResId(R.style.CustomPickerTheme);
 
         NaraeImagePicker.instance.start(this, item, new OnPickResultListener() {
             @Override
