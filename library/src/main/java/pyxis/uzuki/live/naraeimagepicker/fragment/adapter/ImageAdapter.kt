@@ -63,7 +63,7 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
                     return@setOnClickListener
                 }
 
-                SelectedItem.addItem(item, {
+                SelectedItem.addItem(item) {
                     if (!it) {
                         Toast.makeText(mContext,
                                 PickerSet.getSettingItem().exceedLimitMessage.format(SelectedItem.getLimits()),
@@ -71,7 +71,7 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
                     }
 
                     notifyDataSetChanged()
-                })
+                }
             }
         }
     }

@@ -39,7 +39,6 @@ class NaraePickerActivity : AppCompatActivity() {
         SelectedItem.setLimits(PickerSet.getSettingItem().pickLimit)
         mRequestFileViewMode = PickerSet.getSettingItem().viewMode == ViewMode.FileView
 
-        EventBus.getDefault().register(this)
         RPermission.instance.checkPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) { integer, _ ->
             if (integer == RPermission.PERMISSION_GRANTED) {
@@ -138,4 +137,19 @@ class NaraePickerActivity : AppCompatActivity() {
         finish()
     }
 
+    override fun onStart() {
+        super.onStart()
+        try {
+            EventBus.getDefault().register(this)
+        } catch (t: Throwable) {
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        try {
+            EventBus.getDefault().unregister(this)
+        } catch (t: Throwable) {
+        }
+    }
 }
