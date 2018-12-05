@@ -26,7 +26,7 @@ class AllFragment : BaseFragment<ImageItem>() {
     private val itemList = arrayListOf<ImageItem>()
 
     override fun getItemList() = itemList
-    override fun getItemKind() = ImageItem::class.simpleName ?: ""
+    override fun getItemKind() = ImageItem::class.java.simpleName ?: ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

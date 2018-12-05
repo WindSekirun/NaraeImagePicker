@@ -28,7 +28,7 @@ class ImageFragment : BaseFragment<ImageItem>() {
     private var mAlbumName = ""
 
     override fun getItemList() = itemList
-    override fun getItemKind() = ImageItem::class.simpleName ?: ""
+    override fun getItemKind() = ImageItem::class.java.simpleName ?: ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

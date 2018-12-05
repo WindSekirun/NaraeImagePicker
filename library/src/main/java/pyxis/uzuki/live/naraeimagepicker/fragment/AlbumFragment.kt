@@ -26,7 +26,7 @@ class AlbumFragment : BaseFragment<AlbumItem>() {
     private lateinit var timeLogger: TimeLogger
 
     override fun getItemList() = itemList
-    override fun getItemKind() = AlbumItem::class.simpleName ?: ""
+    override fun getItemKind() = AlbumItem::class.java.simpleName ?: ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

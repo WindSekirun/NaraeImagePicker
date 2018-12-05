@@ -50,7 +50,7 @@ abstract class BaseFragment<T : Any> : Fragment() {
         sendEvent(ToolbarEvent(PickerSet.getSettingItem().pickerTitle, PickerSet.getSettingItem().enableUpInParentView))
 
         val rectF = AdjustableGridItemDecoration.getRectFObject(context as Context)
-        val column = if (getItemKind() == ImageItem::class.simpleName) 3 else 2
+        val column = if (getItemKind() == ImageItem::class.java.simpleName) 3 else 2
 
         recyclerView.layoutManager = GridLayoutManager(activity, column)
 

@@ -1,6 +1,7 @@
 package pyxis.uzuki.live.naraeimagepicker.module
 
 import android.content.Context
+import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
@@ -42,13 +43,9 @@ object PickerSet {
         val titleCursor = context.contentResolver.query(cursorUri, titleProjection, null, null, ORDER_BY)
         val titleItemSet = HashSet<String>()
 
-        titleCursor.use {
-            if (titleCursor.moveToFirst()) {
-                do {
-                    val album = titleCursor.getColumnString(DISPLAY_NAME_COLUMN)
-                    titleItemSet.add(album)
-                } while (titleCursor.moveToNext())
-            }
+        titleCursor.doWhile {
+            val album = titleCursor.getColumnString(DISPLAY_NAME_COLUMN)
+            titleItemSet.add(album)
         }
 
         val titleItemList = mutableListOf<String>()
@@ -62,17 +59,13 @@ object PickerSet {
             val photoCursor = context.contentResolver.query(cursorUri, photoPr, photoSelection, photoAlbumName, ORDER_BY)
 
             val list = mutableListOf<ImageItem>()
-            photoCursor.use {
-                if (photoCursor.moveToFirst()) {
-                    do {
-                        val image = photoCursor.getColumnString(PATH_COLUMN)
-                        val id = photoCursor.getColumnString(ID_COLUMN)
-                        val file = image.toFile()
+            photoCursor.doWhile {
+                val image = photoCursor.getColumnString(PATH_COLUMN)
+                val id = photoCursor.getColumnString(ID_COLUMN)
+                val file = image.toFile()
 
-                        if (!file.exists()) continue
-
-                        list.add(ImageItem(id, image))
-                    } while (photoCursor.moveToNext())
+                if (file.exists()) {
+                    list.add(ImageItem(id, image))
                 }
             }
 
@@ -83,10 +76,6 @@ object PickerSet {
         titleItemSet.clear()
         titleItemList.clear()
         callback.invoke()
-    }
-
-    private fun addPictureMap(title: String, list: MutableList<ImageItem>) {
-        mPictureMap[title] = list
     }
 
     fun getFolderList(): List<AlbumItem> {
@@ -109,4 +98,18 @@ object PickerSet {
     }
 
     fun isEmptyList() = mPictureMap.isEmpty()
+
+    private fun Cursor.doWhile(action: () -> Unit) {
+        this.use {
+            if (this.moveToFirst()) {
+                do {
+                    action()
+                } while (this.moveToNext())
+            }
+        }
+    }
+
+    private fun addPictureMap(title: String, list: MutableList<ImageItem>) {
+        mPictureMap[title] = list
+    }
 }
