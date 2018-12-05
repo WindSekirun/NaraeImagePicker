@@ -60,11 +60,14 @@ class NaraeImagePicker private constructor() {
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             super.onActivityResult(requestCode, resultCode, data)
-            if (resultCode == Activity.RESULT_OK) {
-                val imageList = data?.getStringArrayListExtra(Constants.EXTRA_IMAGE_LIST)
-                imageList?.let { runOnUiThread { mCallback.onSelect(PICK_SUCCESS, it) } }
-            } else {
-                runOnUiThread { mCallback.onSelect(PICK_FAILED, arrayListOf()) }
+
+            runOnUiThread {
+                if (resultCode == Activity.RESULT_OK) {
+                    val imageList = data?.getStringArrayListExtra(Constants.EXTRA_IMAGE_LIST)
+                    imageList?.let { mCallback.onSelect(PICK_SUCCESS, it) }
+                } else {
+                    mCallback.onSelect(PICK_FAILED, arrayListOf())
+                }
             }
 
             mFragmentManager?.beginTransaction()?.remove(this)?.commit()

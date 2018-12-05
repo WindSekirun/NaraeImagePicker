@@ -9,7 +9,7 @@ MultiImagePicker for Android Application, written in [Kotlin](http://kotlinlang.
 It provides...
 * Pick multi image
 * Provide two mode of activity, One is Folder-View, other is File-View.
-* Support show detail of Image (using PhotoView)
+* Support show detail of Image (using PhotoView) - support .gif, .webp
 * check Runtime Permissions automatically
 
 ### Usages
@@ -32,16 +32,17 @@ dependencies {
 #### Code
 ```
 PickerSettingItem item = new PickerSettingItem();
-item.setPickLimit(Constants.LIMIT_UNLIMITED);
+item.setPickLimit(5);
 item.setViewMode(ViewMode.FolderView);
-item.setEnableUpInParentView(true);
-item.setDisableZoomMode(true);
+item.getUiSetting().setEnableUpInParentView(true);
+item.getUiSetting().setThemeResId(R.style.AppTheme);
 
 NaraeImagePicker.instance.start(this, item, new OnPickResultListener() {
     @Override
     public void onSelect(int resultCode, @NotNull ArrayList<String> imageList) {
         if (resultCode == NaraeImagePicker.PICK_SUCCESS) {
-            
+            itemList.addAll(imageList);
+            adapter.notifyDataSetChanged();
         } else {
             Toast.makeText(MainActivity.this, "failed to pick image", Toast.LENGTH_SHORT).show();
         }
@@ -56,12 +57,15 @@ No need to implement ```onActivityResult```, NaraeImagePicker will handle ```sta
 ```kotlin
     var viewMode = ViewMode.FolderView
     var pickLimit = Constants.LIMIT_UNLIMITED
-    var enableUpInParentView = false
     var disableZoomMode = false
-    var pickerTitle = "Please select picture."
-    var exceedLimitMessage = "Can\\'t select more than %s pictures"
-    var disableZoomMode = false
-    var themeResId: Int? = null // from 1.7.0
+    var uiSetting: UISetting = UISetting()
+
+    class UISetting {
+        var themeResId: Int? = null
+        var pickerTitle = "Please select picture."
+        var exceedLimitMessage = "Can\\'t select more than %s pictures"
+        var enableUpInParentView = false
+    }
 ```
 
 ## resolve DuplicateRelativeFileException: More than one file...
@@ -72,6 +76,21 @@ packagingOptions {
     exclude 'META-INF/library_release.kotlin_module'
 }
 ```
+
+## Revision History
+* ver 1.8.0 (2018-12-??) **NOT RELEASED**
+* ver 1.7.1 (2018-12-04)
+ * PR #9 Fix NaraePickerActivity.kt to unregist EventBus when lifecycle onStop. (Thanks to @zeallat )
+* ver 1.7.0 (2018-12-04)
+ * PR #8 Add attribute to able to configure custom theme (thanks to @zeallat )
+ * Fix 'Zoom mode' is not working when set false to disableZoomMode in PickerSettingItem
+* ver 1.6.2 (2018-04-23)
+ * revert 64162d0 and insert getFolderList
+* ver 1.6.1 (2018-04-23)
+ * try-catch in getFolderList
+* ver 1.6.0 (2018-03-27)
+ * add disableZoomMode in PickerSettingItem
+
 
 ## License
 
