@@ -47,7 +47,6 @@ class ImageDetailsActivity : AppCompatActivity() {
             }
         }
 
-        val webp = path.endsWith(".webp")
         val gif = path.endsWith(".gif")
 
         val requestBuilder = if (gif) {
@@ -56,11 +55,7 @@ class ImageDetailsActivity : AppCompatActivity() {
             GlideApp.with(this).load(path)
         }
 
-        if (webp) {
-            requestBuilder.into(photoView)
-        } else {
-            requestBuilder.into(photoView)
-        }
+        requestBuilder.into(photoView)
     }
 
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
