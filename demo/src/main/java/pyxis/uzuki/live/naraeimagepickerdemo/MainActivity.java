@@ -58,7 +58,6 @@ public class MainActivity extends InjectActivity {
         item.setPickLimit(5);
         item.setViewMode(ViewMode.FolderView);
         item.setEnableUpInParentView(true);
-        item.setDisableZoomMode(true);
         item.setThemeResId(R.style.AppTheme);
 
         NaraeImagePicker.instance.start(this, item, new OnPickResultListener() {

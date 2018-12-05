@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import pyxis.uzuki.live.naraeimagepicker.R
 import pyxis.uzuki.live.naraeimagepicker.event.FragmentTransitionEvent
 import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
+import pyxis.uzuki.live.naraeimagepicker.module.GlideApp
 
 /**
  * NaraeImagePicker
@@ -24,13 +25,13 @@ import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
 class AlbumAdapter(val mContext: Context, val itemList: ArrayList<AlbumItem>) :
         RecyclerView.Adapter<AlbumAdapter.ListHolder>() {
 
-    override fun onBindViewHolder(holder: ListHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ListHolder, position: Int) {
         holder?.bind(itemList[position])
     }
 
     override fun getItemCount() = itemList.size
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             ListHolder(LayoutInflater.from(mContext).inflate(R.layout.fragment_album_row, parent, false))
 
     inner class ListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -38,7 +39,7 @@ class AlbumAdapter(val mContext: Context, val itemList: ArrayList<AlbumItem>) :
         @SuppressLint("SetTextI18n")
         fun bind(item: AlbumItem) {
             itemView.txtName.text = item.name
-            Glide.with(mContext).load(item.imagePath).thumbnail(0.3f).into(itemView.imgThumbnail)
+            GlideApp.with(mContext).load(item.imagePath).thumbnail(0.3f).into(itemView.imgThumbnail)
             itemView.setOnClickListener { EventBus.getDefault().post(FragmentTransitionEvent(true, item.name)) }
         }
     }
