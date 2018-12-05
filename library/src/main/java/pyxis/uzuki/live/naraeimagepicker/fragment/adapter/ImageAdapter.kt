@@ -5,16 +5,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_image_row.view.*
 import org.greenrobot.eventbus.EventBus
 import pyxis.uzuki.live.naraeimagepicker.R
 import pyxis.uzuki.live.naraeimagepicker.event.DetailEvent
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
-import pyxis.uzuki.live.naraeimagepicker.module.GlideApp
 import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
 import pyxis.uzuki.live.naraeimagepicker.module.SelectedItem
+import pyxis.uzuki.live.naraeimagepicker.utils.loadImage
+import pyxis.uzuki.live.richutilskt.utils.toast
 
 /**
  * NaraeImagePicker
@@ -39,40 +38,25 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
     inner class ListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: ImageItem) {
-            if (item.imagePath.endsWith(".gif")) {
-                GlideApp.with(mContext).asGif().load(item.imagePath).thumbnail(0.3f).into(itemView.imgThumbnail)
-            } else {
-                GlideApp.with(mContext).load(item.imagePath).thumbnail(0.3f).into(itemView.imgThumbnail)
-            }
-
+            itemView.imgThumbnail.loadImage(item.imagePath, 0.3f)
             itemView.imgCheck.isSelected = SelectedItem.contains(item)
             itemView.opacity.isSelected = SelectedItem.contains(item)
+            itemView.btnMaximise.visibility = if (!PickerSet.getSettingItem().disableZoomMode) View.VISIBLE else View.GONE
 
-            if (!PickerSet.getSettingItem().disableZoomMode) {
-                itemView.btnMaximise.visibility = View.VISIBLE
-                itemView.btnMaximise.setOnClickListener {
-                    EventBus.getDefault().post(DetailEvent(item.imagePath))
-                }
-            } else {
-                itemView.btnMaximise.visibility = View.GONE
-            }
-
+            itemView.btnMaximise.setOnClickListener { EventBus.getDefault().post(DetailEvent(item.imagePath)) }
             itemView.setOnClickListener {
                 if (SelectedItem.contains(item)) {
                     SelectedItem.removeItem(item)
-                    notifyDataSetChanged()
-                    return@setOnClickListener
-                }
-
-                SelectedItem.addItem(item) {result ->
-                    if (!result) {
-                        Toast.makeText(mContext,
-                                PickerSet.getSettingItem().exceedLimitMessage.format(SelectedItem.getLimits()),
-                                Toast.LENGTH_SHORT).show()
-                    }
-
+                } else {
+                    addSelectedItem(item)
                     notifyDataSetChanged()
                 }
+            }
+        }
+
+        private fun addSelectedItem(item: ImageItem) {
+            SelectedItem.addItem(item) {
+                if (!it) mContext.toast(PickerSet.getLimitMessage())
             }
         }
     }

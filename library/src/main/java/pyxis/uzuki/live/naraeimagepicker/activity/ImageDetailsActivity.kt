@@ -5,15 +5,12 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import com.bumptech.glide.Glide
-import com.bumptech.glide.integration.webp.decoder.WebpDrawable
 import kotlinx.android.synthetic.main.activity_image_details.*
 import pyxis.uzuki.live.naraeimagepicker.Constants
 import pyxis.uzuki.live.naraeimagepicker.R
-import pyxis.uzuki.live.naraeimagepicker.module.GlideApp
 import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
 import pyxis.uzuki.live.naraeimagepicker.utils.applyCustomPickerTheme
-import pyxis.uzuki.live.richutilskt.utils.toFile
+import pyxis.uzuki.live.naraeimagepicker.utils.loadImage
 
 
 /**
@@ -39,7 +36,7 @@ class ImageDetailsActivity : AppCompatActivity() {
             hide()
         }
 
-        photoView.setOnViewTapListener { view, x, y ->
+        photoView.setOnViewTapListener { _, _, _ ->
             if (supportActionBar?.isShowing == true) {
                 supportActionBar?.hide()
             } else {
@@ -47,15 +44,7 @@ class ImageDetailsActivity : AppCompatActivity() {
             }
         }
 
-        val gif = path.endsWith(".gif")
-
-        val requestBuilder = if (gif) {
-            GlideApp.with(this).asGif().load(path)
-        } else {
-            GlideApp.with(this).load(path)
-        }
-
-        requestBuilder.into(photoView)
+        photoView.loadImage(path)
     }
 
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {

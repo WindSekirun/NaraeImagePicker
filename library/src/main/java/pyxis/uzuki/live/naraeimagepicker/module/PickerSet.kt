@@ -39,34 +39,27 @@ object PickerSet {
     fun getSettingItem() = mItem
 
     fun loadImageFirst(context: Context, callback: () -> Unit) {
-        val titleProjection = arrayOf(MediaStore.Images.Media.BUCKET_DISPLAY_NAME, PATH_COLUMN)
-        val titleCursor = context.contentResolver.query(cursorUri, titleProjection, null, null, ORDER_BY)
+        val titleCursor = context.contentResolver.query(cursorUri,
+                arrayOf(MediaStore.Images.Media.BUCKET_DISPLAY_NAME, PATH_COLUMN), null, null, ORDER_BY)
         val titleItemSet = HashSet<String>()
 
-        titleCursor.doWhile {
-            val album = titleCursor.getColumnString(DISPLAY_NAME_COLUMN)
-            titleItemSet.add(album)
-        }
+        titleCursor.doWhile { titleItemSet.add(titleCursor.getColumnString(DISPLAY_NAME_COLUMN)) }
 
         val titleItemList = mutableListOf<String>()
         titleItemList.addAll(titleItemSet)
         titleItemList.sort()
 
         for (title in titleItemList) {
-            val photoPr = arrayOf(ID_COLUMN, PATH_COLUMN, MediaStore.Images.Media.DATE_MODIFIED)
-            val photoSelection = MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " =?"
-            val photoAlbumName = arrayOf(title)
-            val photoCursor = context.contentResolver.query(cursorUri, photoPr, photoSelection, photoAlbumName, ORDER_BY)
+            val photoCursor = context.contentResolver.query(cursorUri,
+                    arrayOf(ID_COLUMN, PATH_COLUMN, MediaStore.Images.Media.DATE_MODIFIED),
+                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " =?", arrayOf(title), ORDER_BY)
 
             val list = mutableListOf<ImageItem>()
             photoCursor.doWhile {
                 val image = photoCursor.getColumnString(PATH_COLUMN)
                 val id = photoCursor.getColumnString(ID_COLUMN)
                 val file = image.toFile()
-
-                if (file.exists()) {
-                    list.add(ImageItem(id, image))
-                }
+                if (file.exists()) list.add(ImageItem(id, image))
             }
 
             list.reverse()
@@ -98,6 +91,8 @@ object PickerSet {
     }
 
     fun isEmptyList() = mPictureMap.isEmpty()
+
+    fun getLimitMessage() = mItem.exceedLimitMessage.format(SelectedItem.getLimits())
 
     private fun Cursor.doWhile(action: () -> Unit) {
         this.use {
