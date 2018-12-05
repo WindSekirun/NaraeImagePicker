@@ -1,7 +1,7 @@
 package pyxis.uzuki.live.naraeimagepicker.utils
 
 import android.widget.ImageView
-import pyxis.uzuki.live.naraeimagepicker.module.GlideApp
+import com.bumptech.glide.Glide
 
 /**
  * NaraeImagePicker
@@ -18,9 +18,9 @@ import pyxis.uzuki.live.naraeimagepicker.module.GlideApp
 fun ImageView.loadImage(path: String, sizeMultiplier: Float = 0.0f) {
     val gif = path.endsWith(".gif")
     val requestBuilder = if (gif) {
-        GlideApp.with(this).asGif().load(path)
+        Glide.with(this).asGif().load(path)
     } else {
-        GlideApp.with(this).load(path)
+        Glide.with(this).load(path)
     }
 
     if (sizeMultiplier != 0.0f) {
