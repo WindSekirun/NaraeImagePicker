@@ -49,8 +49,8 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
                     SelectedItem.removeItem(item)
                 } else {
                     addSelectedItem(item)
-                    notifyDataSetChanged()
                 }
+                notifyDataSetChanged()
             }
         }
 
