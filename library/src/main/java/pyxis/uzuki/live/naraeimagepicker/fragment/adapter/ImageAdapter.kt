@@ -28,7 +28,7 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
         RecyclerView.Adapter<ImageAdapter.ListHolder>() {
 
     override fun onBindViewHolder(holder: ListHolder, position: Int) {
-        holder?.bind(itemList[position])
+        holder.bind(itemList[position])
     }
 
     override fun getItemCount() = itemList.size
@@ -64,8 +64,8 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
                     return@setOnClickListener
                 }
 
-                SelectedItem.addItem(item) {
-                    if (!it) {
+                SelectedItem.addItem(item) {result ->
+                    if (!result) {
                         Toast.makeText(mContext,
                                 PickerSet.getSettingItem().exceedLimitMessage.format(SelectedItem.getLimits()),
                                 Toast.LENGTH_SHORT).show()

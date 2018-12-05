@@ -26,7 +26,7 @@ class AlbumAdapter(val mContext: Context, val itemList: ArrayList<AlbumItem>) :
         RecyclerView.Adapter<AlbumAdapter.ListHolder>() {
 
     override fun onBindViewHolder(holder: ListHolder, position: Int) {
-        holder?.bind(itemList[position])
+        holder.bind(itemList[position])
     }
 
     override fun getItemCount() = itemList.size
