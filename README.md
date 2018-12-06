@@ -77,42 +77,42 @@ packagingOptions {
 
 ## Revision History
 * ver 1.8.0 (2018-12-??) **NOT RELEASED**
- * PR #11 add UISettings
- * Issue #10 Cannot load .webp image in zoom view
- * Optimize some code follows by Codebeat
- * Remove unused reflect package to reduce method count
- * Remove 'allowBackup' statement in AndroidManifest.xml
+  * PR #11 add UISettings
+  * Issue #10 Cannot load .webp image in zoom view
+  * Optimize some code follows by Codebeat
+  * Remove unused reflect package to reduce method count
+  * Remove 'allowBackup' statement in AndroidManifest.xml
 
 * ver 1.7.1 (2018-12-04)
- * PR #9 Fix NaraePickerActivity.kt to unregist EventBus when lifecycle onStop. (Thanks to @zeallat )
+  * PR #9 Fix NaraePickerActivity.kt to unregist EventBus when lifecycle onStop. (Thanks to @zeallat )
 
 * ver 1.7.0 (2018-12-04)
- * PR #8 Add attribute to able to configure custom theme (thanks to @zeallat )
- * Fix 'Zoom mode' is not working when set false to disableZoomMode in PickerSettingItem
+  * PR #8 Add attribute to able to configure custom theme (thanks to @zeallat )
+  * Fix 'Zoom mode' is not working when set false to disableZoomMode in PickerSettingItem
 
 * ver 1.6.2 (2018-04-23)
- * revert 64162d0 and insert getFolderList
+  * revert 64162d0 and insert getFolderList
 
 * ver 1.6.1 (2018-04-23)
- * try-catch in getFolderList
+  * try-catch in getFolderList
 
 * ver 1.6.0 (2018-03-27)
- * add disableZoomMode in PickerSettingItem
+  * add disableZoomMode in PickerSettingItem
 
 * ver 1.5.0 (2018-02-27)
- * Implement PickerSet instead loading content on Fragment.
+  * Implement PickerSet instead loading content on Fragment.
 
 * ver 1.1.1 (2018-02-12)
- * Issue #4 Native Fragment will deprecated in Android P
+  * Issue #4 Native Fragment will deprecated in Android P
 
 * ver 1.1.0 (2018-01-12)
- * downscaling AlbumAdapter, ImageAdapter
+  * downscaling AlbumAdapter, ImageAdapter
 
 * ver 1.0.1 (2018-01-11)
- * insert default theme
+  * insert default theme
 
 * ver 1.0.0 (2018-01-06)
- * First release of NaraeImagePicker.
+  * First release of NaraeImagePicker.
 
 ## License
 
