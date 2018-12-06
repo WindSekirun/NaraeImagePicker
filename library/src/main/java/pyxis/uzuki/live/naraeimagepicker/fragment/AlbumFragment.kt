@@ -8,7 +8,6 @@ import pyxis.uzuki.live.naraeimagepicker.base.BaseFragment
 import pyxis.uzuki.live.naraeimagepicker.fragment.adapter.AlbumAdapter
 import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
 import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
-import pyxis.uzuki.live.naraeimagepicker.utils.TimeLogger
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 
@@ -23,15 +22,12 @@ import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 class AlbumFragment : BaseFragment<AlbumItem>() {
     private lateinit var adapter: AlbumAdapter
     private val itemList = arrayListOf<AlbumItem>()
-    private lateinit var timeLogger: TimeLogger
 
     override fun getItemList() = itemList
     override fun getItemKind() = AlbumItem::class.java.simpleName ?: ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        timeLogger = TimeLogger(AlbumFragment::class.java.simpleName, "loadItem")
-        timeLogger.addPart("start")
         adapter = AlbumAdapter(context as Context, itemList)
         recyclerView.adapter = adapter
 

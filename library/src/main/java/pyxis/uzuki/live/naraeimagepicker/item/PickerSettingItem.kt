@@ -14,19 +14,23 @@ import pyxis.uzuki.live.naraeimagepicker.item.enumeration.ViewMode
 class PickerSettingItem {
     var viewMode = ViewMode.FolderView
     var pickLimit = Constants.LIMIT_UNLIMITED
-    var enableUpInParentView = false
-    var pickerTitle = "Please select picture."
-    var exceedLimitMessage = "Can\\'t select more than %s pictures"
     var disableZoomMode = false
-    var themeResId: Int? = null
+    var uiSetting: UISetting = UISetting()
+
+    class UISetting {
+        var themeResId: Int? = null
+        var pickerTitle = "Please select picture."
+        var exceedLimitMessage = "Can\\'t select more than %s pictures"
+        var enableUpInParentView = false
+    }
 
     fun clear() {
         viewMode = ViewMode.FileView
         pickLimit = Constants.LIMIT_UNLIMITED
-        enableUpInParentView = false
-        pickerTitle = "Please select picture."
-        exceedLimitMessage = "Can\\'t select more than %s pictures"
         disableZoomMode = false
-        themeResId = null
+        uiSetting.enableUpInParentView = false
+        uiSetting.pickerTitle = "Please select picture."
+        uiSetting.exceedLimitMessage = "Can\\'t select more than %s pictures"
+        uiSetting.themeResId = null
     }
 }

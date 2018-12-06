@@ -29,13 +29,6 @@ import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration
 abstract class BaseFragment<T : Any> : Fragment() {
     private lateinit var mRootView: View
 
-    // for cursor parsing
-    val cursorUri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-    val idColumn = MediaStore.Images.Media._ID
-    val pathColumn = MediaStore.Images.Media.DATA
-    val displayNameColumn = MediaStore.Images.Media.BUCKET_DISPLAY_NAME
-    val orderBy = MediaStore.Images.Media.DATE_TAKEN
-
     abstract fun getItemList(): ArrayList<T>
     abstract fun getItemKind(): String
 
@@ -47,23 +40,23 @@ abstract class BaseFragment<T : Any> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sendEvent(ToolbarEvent(PickerSet.getSettingItem().pickerTitle, PickerSet.getSettingItem().enableUpInParentView))
+        sendEvent(ToolbarEvent(PickerSet.getSettingItem().uiSetting.pickerTitle,
+                PickerSet.getSettingItem().uiSetting.enableUpInParentView))
 
         val rectF = AdjustableGridItemDecoration.getRectFObject(context as Context)
         val column = if (getItemKind() == ImageItem::class.java.simpleName) 3 else 2
 
-        recyclerView.layoutManager = GridLayoutManager(activity, column)
-
-        recyclerView.mEmptyView = containerEmpty
-        recyclerView.mLoadingView = progressBar
-        recyclerView.setHasFixedSize(true)
-        recyclerView.addItemDecoration(AdjustableGridItemDecoration(rectF, getItemList(), column))
+        recyclerView.apply {
+            layoutManager = GridLayoutManager(activity, column)
+            mEmptyView = containerEmpty
+            mLoadingView = progressBar
+            setHasFixedSize(true)
+            addItemDecoration(AdjustableGridItemDecoration(rectF, getItemList(), column))
+        }
     }
 
     override fun onDestroyView() {
-        if (mRootView.parent != null) {
-            (mRootView.parent as ViewGroup).removeView(mRootView)
-        }
+        if (mRootView.parent != null) (mRootView.parent as ViewGroup).removeView(mRootView)
         super.onDestroyView()
     }
 

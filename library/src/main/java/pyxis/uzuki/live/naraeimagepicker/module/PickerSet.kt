@@ -4,6 +4,8 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
+import android.provider.MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME
+import android.provider.MediaStore.Images.Media.DATE_MODIFIED
 import pyxis.uzuki.live.naraeimagepicker.item.AlbumItem
 import pyxis.uzuki.live.naraeimagepicker.item.ImageItem
 import pyxis.uzuki.live.naraeimagepicker.item.PickerSettingItem
@@ -39,22 +41,21 @@ object PickerSet {
     fun getSettingItem() = mItem
 
     fun loadImageFirst(context: Context, callback: () -> Unit) {
-        val titleCursor = context.contentResolver.query(cursorUri,
-                arrayOf(MediaStore.Images.Media.BUCKET_DISPLAY_NAME, PATH_COLUMN), null, null, ORDER_BY)
-        val titleItemSet = HashSet<String>()
+        val titleCursor = context.contentResolver.query(cursorUri, arrayOf(BUCKET_DISPLAY_NAME, PATH_COLUMN), null, null, ORDER_BY)
 
+        val titleItemSet = HashSet<String>()
         titleCursor.doWhile { titleItemSet.add(titleCursor.getColumnString(DISPLAY_NAME_COLUMN)) }
 
-        val titleItemList = mutableListOf<String>()
-        titleItemList.addAll(titleItemSet)
-        titleItemList.sort()
+        val titleItemList = mutableListOf<String>().apply {
+            addAll(titleItemSet)
+            sort()
+        }
 
         for (title in titleItemList) {
-            val photoCursor = context.contentResolver.query(cursorUri,
-                    arrayOf(ID_COLUMN, PATH_COLUMN, MediaStore.Images.Media.DATE_MODIFIED),
-                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " =?", arrayOf(title), ORDER_BY)
-
             val list = mutableListOf<ImageItem>()
+            val photoCursor = context.contentResolver.query(cursorUri,
+                    arrayOf(ID_COLUMN, PATH_COLUMN, DATE_MODIFIED), "$BUCKET_DISPLAY_NAME =?", arrayOf(title), ORDER_BY)
+
             photoCursor.doWhile {
                 val image = photoCursor.getColumnString(PATH_COLUMN)
                 val id = photoCursor.getColumnString(ID_COLUMN)
@@ -92,7 +93,7 @@ object PickerSet {
 
     fun isEmptyList() = mPictureMap.isEmpty()
 
-    fun getLimitMessage() = mItem.exceedLimitMessage.format(SelectedItem.getLimits())
+    fun getLimitMessage() = mItem.uiSetting.exceedLimitMessage.format(SelectedItem.getLimits())
 
     private fun Cursor.doWhile(action: () -> Unit) {
         this.use {

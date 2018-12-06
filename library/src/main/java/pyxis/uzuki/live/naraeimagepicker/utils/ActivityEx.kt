@@ -7,7 +7,7 @@ import pyxis.uzuki.live.naraeimagepicker.item.PickerSettingItem
  * Apply [PickerSettingItem] theme into Activity if configured.
  */
 internal fun AppCompatActivity.applyCustomPickerTheme(settingItem: PickerSettingItem) {
-    settingItem.themeResId?.let { themeResId ->
+    settingItem.uiSetting.themeResId?.let { themeResId ->
         setTheme(themeResId)
     }
 }
