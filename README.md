@@ -25,7 +25,7 @@ allprojects {
 *app/build.gradle*
 ```
 dependencies {
-     implementation 'com.github.WindSekirun:NaraeImagePicker:1.7.1'
+     implementation 'com.github.WindSekirun:NaraeImagePicker:1.8.0'
 }
 ```
 
@@ -76,7 +76,7 @@ packagingOptions {
 ```
 
 ## Revision History
-* ver 1.8.0 (2018-12-??) **NOT RELEASED**
+* ver 1.8.0 (2018-12-06)
   * PR #11 add UISettings
   * Issue #10 Cannot load .webp image in zoom view
   * Optimize some code follows by Codebeat
