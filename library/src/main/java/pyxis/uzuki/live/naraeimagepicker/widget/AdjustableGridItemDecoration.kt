@@ -16,7 +16,7 @@ import pyxis.uzuki.live.richutilskt.utils.dip2px
  */
 class AdjustableGridItemDecoration(private val spacing: RectF, private val collection: List<*>, private val column: Int) : RecyclerView.ItemDecoration() {
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val position = parent.getChildAdapterPosition(view)
         val row = position / column
         val cell = position % column

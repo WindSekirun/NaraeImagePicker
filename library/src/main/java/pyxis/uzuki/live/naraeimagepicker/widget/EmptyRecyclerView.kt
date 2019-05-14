@@ -30,8 +30,8 @@ open class EmptyRecyclerView(context: Context, private val attrs: AttributeSet? 
 
             mLoadingView!!.visibility = View.GONE // whatever state is changed, mLoadingView need to gone.
 
-            val newStateEmptyView = if (adapter.itemCount == 0) View.VISIBLE else View.GONE
-            val newStateRecyclerView = if (adapter.itemCount == 0) View.GONE else View.VISIBLE
+            val newStateEmptyView = if (adapter?.itemCount == 0) View.VISIBLE else View.GONE
+            val newStateRecyclerView = if (adapter?.itemCount == 0) View.GONE else View.VISIBLE
 
             mEmptyView!!.visibility = newStateEmptyView
             this@EmptyRecyclerView.visibility = newStateRecyclerView

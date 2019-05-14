@@ -23,7 +23,8 @@ import pyxis.uzuki.live.richutilskt.utils.toast
  * Description:
  */
 
-class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
+class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>,
+                   val listener: (ImageItem, Int, View) -> Unit) :
         RecyclerView.Adapter<ImageAdapter.ListHolder>() {
 
     override fun onBindViewHolder(holder: ListHolder, position: Int) {
@@ -45,12 +46,13 @@ class ImageAdapter(val mContext: Context, val itemList: ArrayList<ImageItem>) :
 
             itemView.btnMaximise.setOnClickListener { EventBus.getDefault().post(DetailEvent(item.imagePath)) }
             itemView.setOnClickListener {
-                if (SelectedItem.contains(item)) {
+                /*if (SelectedItem.contains(item)) {
                     SelectedItem.removeItem(item)
                 } else {
                     addSelectedItem(item)
                 }
-                notifyDataSetChanged()
+                notifyDataSetChanged()*/
+                listener(item, adapterPosition, it)
             }
         }
 
