@@ -37,6 +37,8 @@ class NaraePickerActivity : AppCompatActivity() {
         applyCustomPickerTheme(PickerSet.getSettingItem())
         setContentView(R.layout.activity_picker)
 
+        catchAll { EventBus.getDefault().register(this) }
+
         SelectedItem.setLimits(PickerSet.getSettingItem().pickLimit)
         mRequestFileViewMode = PickerSet.getSettingItem().viewMode == ViewMode.FileView
 
@@ -138,13 +140,8 @@ class NaraePickerActivity : AppCompatActivity() {
         finish()
     }
 
-    override fun onStart() {
-        super.onStart()
-        catchAll { EventBus.getDefault().register(this) }
-    }
-
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         catchAll { EventBus.getDefault().unregister(this) }
     }
 }
