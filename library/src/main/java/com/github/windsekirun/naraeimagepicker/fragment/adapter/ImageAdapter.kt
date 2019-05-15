@@ -14,7 +14,7 @@ import org.greenrobot.eventbus.EventBus
 import pyxis.uzuki.live.naraeimagepicker.R
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: ImageAdapter
  * Created by Pyxis on 1/6/18.
  *
@@ -40,7 +40,7 @@ class ImageAdapter(private val itemList: ArrayList<ImageItem>,
             itemView.imgThumbnail.loadImage(item.imagePath, 0.3f)
             itemView.imgCheck.isSelected = SelectedItem.contains(item)
             itemView.opacity.isSelected = SelectedItem.contains(item)
-            itemView.btnMaximise.visibility = if (!PickerSet.getSettingItem().disableZoomMode) View.VISIBLE else View.GONE
+            itemView.btnMaximise.visibility = if (PickerSet.getSettingItem().enableDetailMode) View.VISIBLE else View.GONE
 
             itemView.btnMaximise.setOnClickListener { EventBus.getDefault().post(DetailEvent(item.imagePath)) }
             itemView.setOnClickListener {

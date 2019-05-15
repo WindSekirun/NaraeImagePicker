@@ -1,4 +1,4 @@
-@file:JvmName("NaraePicker")
+@file:JvmName("NaraeImagePicker")
 
 package com.github.windsekirun.naraeimagepicker
 
@@ -16,7 +16,7 @@ import com.github.windsekirun.naraeimagepicker.item.PickerSettingItem
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 
-class NaraePicker private constructor() {
+class NaraeImagePicker private constructor() {
     private val requestCode = 72
 
     private fun getActivity(context: Context): FragmentActivity? {
@@ -38,11 +38,12 @@ class NaraePicker private constructor() {
 
     @SuppressLint("ValidFragment")
     private fun requestStart(context: Context, item: PickerSettingItem, pickResultListener: OnPickResultListener) {
-        val fm = getActivity(context)?.supportFragmentManager
         val intent = Intent(getActivity(context), NaraePickerActivity::class.java)
-        val fragment = ResultFragment(fm as FragmentManager, pickResultListener)
-        fm.beginTransaction().add(fragment, "FRAGMENT_TAG").commitAllowingStateLoss()
-        fm.executePendingTransactions()
+
+        val fragmentManager = getActivity(context)?.supportFragmentManager
+        val fragment = ResultFragment(fragmentManager as FragmentManager, pickResultListener)
+        fragmentManager.beginTransaction().add(fragment, "FRAGMENT_TAG").commitAllowingStateLoss()
+        fragmentManager.executePendingTransactions()
 
         PickerSet.setSettingItem(item)
 
@@ -77,7 +78,7 @@ class NaraePicker private constructor() {
 
     companion object {
         @JvmField
-        var instance: NaraePicker = NaraePicker()
+        var instance: NaraeImagePicker = NaraeImagePicker()
 
         @JvmField
         val PICK_SUCCESS = 1

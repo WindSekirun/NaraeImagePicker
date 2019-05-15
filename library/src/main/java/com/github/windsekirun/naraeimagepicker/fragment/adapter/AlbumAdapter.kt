@@ -13,7 +13,7 @@ import org.greenrobot.eventbus.EventBus
 import pyxis.uzuki.live.naraeimagepicker.R
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: AlbumAdapter
  * Created by Pyxis on 1/6/18.
  *

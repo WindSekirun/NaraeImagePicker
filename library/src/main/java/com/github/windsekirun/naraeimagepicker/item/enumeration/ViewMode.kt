@@ -1,7 +1,7 @@
 package com.github.windsekirun.naraeimagepicker.item.enumeration
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: ViewMode
  * Created by Pyxis on 2018-02-27.
  *

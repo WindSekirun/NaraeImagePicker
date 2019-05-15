@@ -73,7 +73,8 @@ class NaraePickerActivity : AppCompatActivity() {
         }
 
         fragment.arguments = bundle
-        supportFragmentManager.beginTransaction().replace(R.id.container, fragment, mode.toString()).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.container, fragment, mode.toString()).commitAllowingStateLoss()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

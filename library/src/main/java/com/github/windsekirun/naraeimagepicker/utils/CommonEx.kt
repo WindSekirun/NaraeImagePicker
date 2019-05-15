@@ -4,7 +4,7 @@ import android.database.Cursor
 import android.util.Log
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: CommonEx
  * Created by Pyxis on 1/6/18.
  *
@@ -21,6 +21,6 @@ inline fun catchAll(action: () -> Unit) {
     try {
         action()
     } catch (t: Throwable) {
-        Log.e("NaraePicker", "Catch an exception. ${t.message}", t)
+        Log.e("NaraeImagePicker", "Catch an exception. ${t.message}", t)
     }
 }

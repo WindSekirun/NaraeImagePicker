@@ -15,7 +15,7 @@ import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: ImageFragment
  * Created by Pyxis on 1/6/18.
  *
@@ -25,22 +25,21 @@ import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 class ImageFragment : BaseFragment<ImageItem>() {
     private lateinit var adapter: ImageAdapter
     private val itemList = arrayListOf<ImageItem>()
-    private var selectCount = 0
 
     private var albumName = ""
 
     override fun getItemList() = itemList
-    override fun getItemKind() = ImageItem::class.java.simpleName ?: ""
+    override fun getColumnCount(): Int = PickerSet.getSettingItem().uiSetting.fileSpanCount
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         albumName = arguments?.getString(Constants.EXTRA_NAME) ?: ""
         sendEvent(ToolbarEvent(albumName, true))
 
-        adapter = ImageAdapter( itemList) { imageItem, _, _ ->
+        adapter = ImageAdapter(itemList) { imageItem, _, _ ->
             onImageClick(imageItem)
         }
-//        recyclerView.adapter = adapter
+        recyclerView.adapter = adapter
         runAsync { bindList() }
     }
 
@@ -48,22 +47,20 @@ class ImageFragment : BaseFragment<ImageItem>() {
         itemList.addAll(PickerSet.getImageList(albumName))
 
         runOnUiThread {
-//            if (recyclerView != null) {
-//                recyclerView.notifyDataSetChanged()
-//            }
-            sendEvent(ToolbarEvent("$albumName ($selectCount)", true))
+            if (recyclerView != null) {
+                recyclerView.notifyDataSetChanged()
+            }
+            sendEvent(ToolbarEvent("$albumName (${SelectedItem.size})", true))
         }
     }
 
     private fun onImageClick(imageItem: ImageItem) {
         if (SelectedItem.contains(imageItem)) {
             SelectedItem.removeItem(imageItem)
-            selectCount--
         } else {
-            selectCount++
             addSelectedItem(imageItem)
         }
-        sendEvent(ToolbarEvent("$albumName($selectCount)", true))
+        sendEvent(ToolbarEvent("$albumName (${SelectedItem.size})", true))
         adapter.notifyDataSetChanged()
     }
 

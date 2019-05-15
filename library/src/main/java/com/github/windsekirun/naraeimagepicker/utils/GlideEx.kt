@@ -4,7 +4,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: GlideEx
  * Created by Pyxis on 2018-12-05.
  *

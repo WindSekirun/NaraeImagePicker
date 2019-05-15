@@ -6,34 +6,34 @@ import android.util.AttributeSet
 import android.view.View
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: EmptyRecyclerView
  * Created by Pyxis on 1/6/18.
  *
  * Description:
  */
 
-open class EmptyRecyclerView(context: Context, private val attrs: AttributeSet? = null) : RecyclerView(context, attrs) {
-    var mEmptyView: View? = null
-    var mLoadingView: View? = null
+open class EmptyRecyclerView(context: Context, attrs: AttributeSet? = null) : RecyclerView(context, attrs) {
+    var emptyView: View? = null
+    var loadingView: View? = null
 
-    private var mObserver: RecyclerView.AdapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+    private var observer: RecyclerView.AdapterDataObserver = object : RecyclerView.AdapterDataObserver() {
 
         override fun onChanged() {
             if (adapter == null) {
                 return
             }
 
-            if (mEmptyView == null) {
+            if (emptyView == null) {
                 throw NullPointerException("Empty view in RecyclerView is null-state")
             }
 
-            mLoadingView!!.visibility = View.GONE // whatever state is changed, mLoadingView need to gone.
+            loadingView!!.visibility = View.GONE // whatever state is changed, loadingView need to gone.
 
             val newStateEmptyView = if (adapter?.itemCount == 0) View.VISIBLE else View.GONE
             val newStateRecyclerView = if (adapter?.itemCount == 0) View.GONE else View.VISIBLE
 
-            mEmptyView!!.visibility = newStateEmptyView
+            emptyView?.visibility = newStateEmptyView
             this@EmptyRecyclerView.visibility = newStateRecyclerView
         }
     }
@@ -41,17 +41,17 @@ open class EmptyRecyclerView(context: Context, private val attrs: AttributeSet? 
     override fun setAdapter(adapter: RecyclerView.Adapter<*>?) {
         super.setAdapter(adapter)
 
-        if (mLoadingView == null) {
+        if (loadingView == null) {
             throw NullPointerException("Loading view in RecyclerView is null-state")
         }
 
-        mLoadingView!!.visibility = View.VISIBLE
+        loadingView?.visibility = View.VISIBLE
     }
 
     fun notifyDataSetChanged() {
-        adapter?.registerAdapterDataObserver(mObserver)
+        adapter?.registerAdapterDataObserver(observer)
         adapter?.notifyDataSetChanged()
-        mObserver.onChanged()
+        observer.onChanged()
     }
 }
 

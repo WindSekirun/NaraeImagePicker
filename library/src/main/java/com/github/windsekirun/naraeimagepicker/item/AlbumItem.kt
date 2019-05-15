@@ -3,7 +3,7 @@ package com.github.windsekirun.naraeimagepicker.item
 import java.io.Serializable
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: AlbumItem
  * Created by Pyxis on 1/6/18.
  *

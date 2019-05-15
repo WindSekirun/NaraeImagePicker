@@ -1,7 +1,7 @@
 package com.github.windsekirun.naraeimagepicker.event
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: FragmentTransitionEvent
  * Created by Pyxis on 1/6/18.
  *

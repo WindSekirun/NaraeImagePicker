@@ -1,4 +1,4 @@
-## NaraePicker (old: NaraeImagePicker)
+## NaraeImagePicker
 
 [![Kotlin](https://img.shields.io/badge/kotlin-1.2.0-blue.svg)](http://kotlinlang.org)	[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 

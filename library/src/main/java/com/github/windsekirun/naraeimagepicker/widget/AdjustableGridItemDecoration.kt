@@ -8,7 +8,7 @@ import android.view.View
 import pyxis.uzuki.live.richutilskt.utils.dip2px
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: AdjustableGridItemDecoration
  * Created by Pyxis on 1/6/18.
  *

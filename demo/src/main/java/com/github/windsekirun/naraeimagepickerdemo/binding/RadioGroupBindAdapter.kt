@@ -6,7 +6,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 
 /**
- * NaraePicker Demo
+ * NaraeImagePicker Demo
  * Class: RadioGroupBindAdapter
  * Created by Pyxis on 7/7/18.
  *

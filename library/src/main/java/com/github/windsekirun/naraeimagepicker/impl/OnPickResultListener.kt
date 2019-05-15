@@ -3,7 +3,7 @@ package com.github.windsekirun.naraeimagepicker.impl
 import java.io.Serializable
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: OnPickResultListener
  * Created by Pyxis on 1/6/18.
  *

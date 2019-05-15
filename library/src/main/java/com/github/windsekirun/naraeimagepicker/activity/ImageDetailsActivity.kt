@@ -14,7 +14,7 @@ import pyxis.uzuki.live.naraeimagepicker.R
 
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: ImageDetailsActivity
  * Created by Pyxis on 1/6/18.
  *

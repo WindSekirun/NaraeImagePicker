@@ -4,7 +4,7 @@ import com.github.windsekirun.naraeimagepicker.Constants
 import com.github.windsekirun.naraeimagepicker.item.ImageItem
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: SelectedItem
  * Created by Pyxis on 1/6/18.
  *
@@ -24,15 +24,15 @@ object SelectedItem {
             return
         }
 
-        com.github.windsekirun.naraeimagepicker.module.SelectedItem.items.add(item)
+       items.add(item)
         listener.invoke(true)
     }
 
     fun removeItem(item: ImageItem) {
-        com.github.windsekirun.naraeimagepicker.module.SelectedItem.items.remove(item)
+        items.remove(item)
     }
 
-    fun contains(item: ImageItem) = com.github.windsekirun.naraeimagepicker.module.SelectedItem.items.contains(item)
+    fun contains(item: ImageItem) = items.contains(item)
 
     fun setLimits(limit: Int) {
         count = limit

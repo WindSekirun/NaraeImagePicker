@@ -12,15 +12,15 @@ import com.github.windsekirun.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.toFile
 
 /**
- * NaraePicker
+ * NaraeImagePicker
  * Class: PickerSet
  * Created by Pyxis on 2018-02-27.
  *
  * Description:
  */
 object PickerSet {
-    private lateinit var mItem: PickerSettingItem
-    private val mPictureMap: HashMap<String, MutableList<ImageItem>> = hashMapOf()
+    private lateinit var item: PickerSettingItem
+    private val pictureMap: HashMap<String, MutableList<ImageItem>> = hashMapOf()
 
     private val cursorUri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
     private const val ID_COLUMN = MediaStore.Images.Media._ID
@@ -29,15 +29,15 @@ object PickerSet {
     private const val ORDER_BY = MediaStore.Images.Media.DATE_TAKEN
 
     fun clearPickerSet() {
-        mItem.clear()
-        mPictureMap.clear()
+        item.clear()
+        pictureMap.clear()
     }
 
     fun setSettingItem(item: PickerSettingItem) {
-        mItem = item
+        this.item = item
     }
 
-    fun getSettingItem() = mItem
+    fun getSettingItem() = item
 
     fun loadImageFirst(context: Context, callback: () -> Unit) {
         val titleCursor = context.contentResolver.query(cursorUri, arrayOf(BUCKET_DISPLAY_NAME, PATH_COLUMN), null, null, ORDER_BY)
@@ -72,7 +72,7 @@ object PickerSet {
     }
 
     fun getFolderList(): List<com.github.windsekirun.naraeimagepicker.item.AlbumItem> {
-        return mPictureMap.entries
+        return pictureMap.entries
                 .asSequence()
                 .filter { it.value.isNotEmpty() }
                 .map { it.key to it.value[0] }
@@ -82,18 +82,18 @@ object PickerSet {
     }
 
     fun getImageList(title: String): MutableList<ImageItem> {
-        return mPictureMap[title]?.toMutableList() ?: mutableListOf()
+        return pictureMap[title]?.toMutableList() ?: mutableListOf()
     }
 
     fun getImageList(): MutableList<ImageItem> {
         val list = mutableListOf<ImageItem>()
-        mPictureMap.values.forEach { list.addAll(it) }
+        pictureMap.values.forEach { list.addAll(it) }
         return list
     }
 
-    fun isEmptyList() = mPictureMap.isEmpty()
+    fun isEmptyList() = pictureMap.isEmpty()
 
-    fun getLimitMessage() = mItem.uiSetting.exceedLimitMessage.format(SelectedItem.getLimits())
+    fun getLimitMessage() = item.uiSetting.exceedLimitMessage.format(SelectedItem.getLimits())
 
     private fun Cursor.doWhile(action: () -> Unit) {
         this.use {
@@ -106,6 +106,6 @@ object PickerSet {
     }
 
     private fun addPictureMap(title: String, list: MutableList<ImageItem>) {
-        mPictureMap[title] = list
+        pictureMap[title] = list
     }
 }
