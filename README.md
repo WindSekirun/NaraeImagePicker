@@ -1,8 +1,8 @@
 ## NaraeImagePicker [![Build Status](https://build.uzuki.live/job/NaraeImagePicker/job/master/badge/icon)](https://build.uzuki.live/job/NaraeImagePicker/job/master/)
 
-[![Kotlin](https://img.shields.io/badge/kotlin-1.3.3-blue.svg)](http://kotlinlang.org)	[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.3.3-blue.svg)](http://kotlinlang.org)	[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-NaraeImagePicker-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/6695)
 
-MultiImagePicker for Android Application, written in [Kotlin](http://kotlinlang.org) [Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-NaraeImagePicker-green.svg?style=flat)](https://android-arsenal.com/details/1/6695 ) 
+MultiImagePicker for Android Application, written in [Kotlin](http://kotlinlang.org) 
 
 <img src="https://github.com/WindSekirun/NaraeImagePicker/blob/master/sample.png" width="600" height="308">
 
@@ -71,13 +71,13 @@ packagingOptions {
 
 ## Revision History
 * ver 2.0.0 (2019-05-15)
- * Fix #12 Show selected image count in the FileView, FolderView (thanks to @deepakkumardk)
- * Fix #13 Change row layout to ConstraintLayout
- * Fix #15 Remaining appName when starting NaraeImagePicker
- * Change Package Name
- * New Sample Application Design
- * Add functionality to change span count in FileView, FolderView
- * Update library version to latest version
+  * Fix #12 Show selected image count in the FileView, FolderView (thanks to @deepakkumardk)
+  * Fix #13 Change row layout to ConstraintLayout
+  * Fix #15 Remaining appName when starting NaraeImagePicker
+  * Change Package Name
+  * New Sample Application Design
+  * Add functionality to change span count in FileView, FolderView
+  * Update library version to latest version
 
 * ver 1.8.0 (2018-12-06)
   * PR #11 add UISettings
