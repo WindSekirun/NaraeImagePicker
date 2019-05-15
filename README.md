@@ -1,4 +1,4 @@
-## NaraeImagePicker [![Build Status](https://build.uzuki.live/job/NaraeImagePicker/job/master/badge/icon)](https://build.uzuki.live/job/NaraeImagePicker/job/master/)
+## NaraeImagePicker [![Build Status](https://build.uzuki.live/job/NaraeImagePicker/job/master/badge/icon)](https://build.uzuki.live/job/NaraeImagePicker/job/master/) [![](https://jitpack.io/v/WindSekirun/NaraeImagePicker.svg)](https://jitpack.io/#WindSekirun/NaraeImagePicker)
 
 [![Kotlin](https://img.shields.io/badge/kotlin-1.3.3-blue.svg)](http://kotlinlang.org)	[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-NaraeImagePicker-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/6695)
 
