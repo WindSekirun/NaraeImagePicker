@@ -6,7 +6,7 @@ import com.github.windsekirun.naraeimagepicker.item.PickerSettingItem
 /**
  * Apply [PickerSettingItem] theme into Activity if configured.
  */
-internal fun AppCompatActivity.applyCustomPickerTheme(settingItem: com.github.windsekirun.naraeimagepicker.item.PickerSettingItem) {
+internal fun AppCompatActivity.applyCustomPickerTheme(settingItem: PickerSettingItem) {
     settingItem.uiSetting.themeResId?.let { themeResId ->
         setTheme(themeResId)
     }

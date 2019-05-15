@@ -5,14 +5,16 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.github.windsekirun.naraeimagepicker.Constants
+import com.github.windsekirun.naraeimagepicker.module.PickerSet
+import com.github.windsekirun.naraeimagepicker.utils.applyCustomPickerTheme
+import com.github.windsekirun.naraeimagepicker.utils.loadImage
 import kotlinx.android.synthetic.main.activity_image_details.*
 import pyxis.uzuki.live.naraeimagepicker.R
-import pyxis.uzuki.live.naraeimagepicker.utils.applyCustomPickerTheme
-import pyxis.uzuki.live.naraeimagepicker.utils.loadImage
 
 
 /**
- * NaraeImagePicker
+ * NaraePicker
  * Class: ImageDetailsActivity
  * Created by Pyxis on 1/6/18.
  *
@@ -22,10 +24,10 @@ import pyxis.uzuki.live.naraeimagepicker.utils.loadImage
 class ImageDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        applyCustomPickerTheme(com.github.windsekirun.naraeimagepicker.module.PickerSet.getSettingItem())
+        applyCustomPickerTheme(PickerSet.getSettingItem())
         setContentView(R.layout.activity_image_details)
 
-        val path = intent.getStringExtra(com.github.windsekirun.naraeimagepicker.Constants.EXTRA_DETAIL_IMAGE)
+        val path = intent.getStringExtra(Constants.EXTRA_DETAIL_IMAGE)
 
         supportActionBar?.apply {
             setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this@ImageDetailsActivity, android.R.color.black)))

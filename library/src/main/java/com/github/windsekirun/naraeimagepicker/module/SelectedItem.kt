@@ -1,7 +1,10 @@
 package com.github.windsekirun.naraeimagepicker.module
 
+import com.github.windsekirun.naraeimagepicker.Constants
+import com.github.windsekirun.naraeimagepicker.item.ImageItem
+
 /**
- * NaraeImagePicker
+ * NaraePicker
  * Class: SelectedItem
  * Created by Pyxis on 1/6/18.
  *
@@ -9,11 +12,14 @@ package com.github.windsekirun.naraeimagepicker.module
  */
 
 object SelectedItem {
-    private val items: ArrayList<com.github.windsekirun.naraeimagepicker.item.ImageItem> = arrayListOf()
-    private var count = com.github.windsekirun.naraeimagepicker.Constants.LIMIT_UNLIMITED
+    private val items: ArrayList<ImageItem> = arrayListOf()
+    private var count = Constants.LIMIT_UNLIMITED
 
-    fun addItem(item: com.github.windsekirun.naraeimagepicker.item.ImageItem, listener: (Boolean) -> Unit) {
-        if (com.github.windsekirun.naraeimagepicker.module.SelectedItem.count != com.github.windsekirun.naraeimagepicker.Constants.LIMIT_UNLIMITED && com.github.windsekirun.naraeimagepicker.module.SelectedItem.items.size == com.github.windsekirun.naraeimagepicker.module.SelectedItem.count) {
+    val size: Int
+        get() = items.size
+
+    fun addItem(item: ImageItem, listener: (Boolean) -> Unit) {
+        if (count != Constants.LIMIT_UNLIMITED && SelectedItem.items.size == count) {
             listener.invoke(false)
             return
         }
@@ -22,26 +28,26 @@ object SelectedItem {
         listener.invoke(true)
     }
 
-    fun removeItem(item: com.github.windsekirun.naraeimagepicker.item.ImageItem) {
+    fun removeItem(item: ImageItem) {
         com.github.windsekirun.naraeimagepicker.module.SelectedItem.items.remove(item)
     }
 
-    fun contains(item: com.github.windsekirun.naraeimagepicker.item.ImageItem) = com.github.windsekirun.naraeimagepicker.module.SelectedItem.items.contains(item)
+    fun contains(item: ImageItem) = com.github.windsekirun.naraeimagepicker.module.SelectedItem.items.contains(item)
 
     fun setLimits(limit: Int) {
-        com.github.windsekirun.naraeimagepicker.module.SelectedItem.count = limit
+        count = limit
     }
 
-    fun getLimits() = com.github.windsekirun.naraeimagepicker.module.SelectedItem.count
+    fun getLimits() = count
 
     fun getImageList(): ArrayList<String> = ArrayList<String>().apply {
-        addAll(com.github.windsekirun.naraeimagepicker.module.SelectedItem.items.map { it.imagePath }.toList())
+        addAll(items.map { it.imagePath }.toList())
     }
 
-    fun isNotEmpty() = com.github.windsekirun.naraeimagepicker.module.SelectedItem.items.isNotEmpty()
+    fun isNotEmpty() = items.isNotEmpty()
 
     fun clear() {
-        com.github.windsekirun.naraeimagepicker.module.SelectedItem.items.clear()
-        com.github.windsekirun.naraeimagepicker.module.SelectedItem.items.trimToSize()
+        items.clear()
+        items.trimToSize()
     }
 }

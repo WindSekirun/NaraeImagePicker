@@ -1,69 +1,75 @@
 package com.github.windsekirun.naraeimagepicker.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.github.windsekirun.naraeimagepicker.Constants
+import com.github.windsekirun.naraeimagepicker.base.BaseFragment
+import com.github.windsekirun.naraeimagepicker.event.ToolbarEvent
+import com.github.windsekirun.naraeimagepicker.fragment.adapter.ImageAdapter
+import com.github.windsekirun.naraeimagepicker.item.ImageItem
+import com.github.windsekirun.naraeimagepicker.module.PickerSet
+import com.github.windsekirun.naraeimagepicker.module.SelectedItem
 import kotlinx.android.synthetic.main.fragment_list.*
 import pyxis.uzuki.live.richutilskt.utils.runAsync
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 
 /**
- * NaraeImagePicker
+ * NaraePicker
  * Class: ImageFragment
  * Created by Pyxis on 1/6/18.
  *
  * Description:
  */
 
-class ImageFragment : com.github.windsekirun.naraeimagepicker.base.BaseFragment<com.github.windsekirun.naraeimagepicker.item.ImageItem>() {
-    private lateinit var mAdapter: com.github.windsekirun.naraeimagepicker.fragment.adapter.ImageAdapter
-    private val itemList = arrayListOf<com.github.windsekirun.naraeimagepicker.item.ImageItem>()
+class ImageFragment : BaseFragment<ImageItem>() {
+    private lateinit var adapter: ImageAdapter
+    private val itemList = arrayListOf<ImageItem>()
     private var selectCount = 0
 
-    private var mAlbumName = ""
+    private var albumName = ""
 
     override fun getItemList() = itemList
-    override fun getItemKind() = com.github.windsekirun.naraeimagepicker.item.ImageItem::class.java.simpleName ?: ""
+    override fun getItemKind() = ImageItem::class.java.simpleName ?: ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mAlbumName = arguments?.getString(com.github.windsekirun.naraeimagepicker.Constants.EXTRA_NAME) ?: ""
-        sendEvent(com.github.windsekirun.naraeimagepicker.event.ToolbarEvent(mAlbumName, true))
+        albumName = arguments?.getString(Constants.EXTRA_NAME) ?: ""
+        sendEvent(ToolbarEvent(albumName, true))
 
-        mAdapter = com.github.windsekirun.naraeimagepicker.fragment.adapter.ImageAdapter(context as Context, itemList) { imageItem, _, _ ->
+        adapter = ImageAdapter( itemList) { imageItem, _, _ ->
             onImageClick(imageItem)
         }
-        recyclerView.adapter = mAdapter
+//        recyclerView.adapter = adapter
         runAsync { bindList() }
     }
 
     private fun bindList() {
-        itemList.addAll(com.github.windsekirun.naraeimagepicker.module.PickerSet.getImageList(mAlbumName))
+        itemList.addAll(PickerSet.getImageList(albumName))
 
         runOnUiThread {
-            if (recyclerView != null) {
-                recyclerView.notifyDataSetChanged()
-            }
-            sendEvent(com.github.windsekirun.naraeimagepicker.event.ToolbarEvent("$mAlbumName ($selectCount)", true))
+//            if (recyclerView != null) {
+//                recyclerView.notifyDataSetChanged()
+//            }
+            sendEvent(ToolbarEvent("$albumName ($selectCount)", true))
         }
     }
 
-    private fun onImageClick(imageItem: com.github.windsekirun.naraeimagepicker.item.ImageItem) {
-        if (com.github.windsekirun.naraeimagepicker.module.SelectedItem.contains(imageItem)) {
-            com.github.windsekirun.naraeimagepicker.module.SelectedItem.removeItem(imageItem)
+    private fun onImageClick(imageItem: ImageItem) {
+        if (SelectedItem.contains(imageItem)) {
+            SelectedItem.removeItem(imageItem)
             selectCount--
         } else {
             selectCount++
             addSelectedItem(imageItem)
         }
-        sendEvent(com.github.windsekirun.naraeimagepicker.event.ToolbarEvent("$mAlbumName($selectCount)", true))
-        mAdapter.notifyDataSetChanged()
+        sendEvent(ToolbarEvent("$albumName($selectCount)", true))
+        adapter.notifyDataSetChanged()
     }
 
-    private fun addSelectedItem(item: com.github.windsekirun.naraeimagepicker.item.ImageItem) {
-        com.github.windsekirun.naraeimagepicker.module.SelectedItem.addItem(item) {
-            if (!it) Toast.makeText(this.activity, com.github.windsekirun.naraeimagepicker.module.PickerSet.getLimitMessage(), Toast.LENGTH_SHORT).show()
+    private fun addSelectedItem(item: ImageItem) {
+        SelectedItem.addItem(item) {
+            if (!it) Toast.makeText(this.activity, PickerSet.getLimitMessage(), Toast.LENGTH_SHORT).show()
         }
     }
 }

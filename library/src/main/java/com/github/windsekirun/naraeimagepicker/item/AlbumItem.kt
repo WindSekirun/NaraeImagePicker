@@ -3,7 +3,7 @@ package com.github.windsekirun.naraeimagepicker.item
 import java.io.Serializable
 
 /**
- * NaraeImagePicker
+ * NaraePicker
  * Class: AlbumItem
  * Created by Pyxis on 1/6/18.
  *
@@ -13,7 +13,7 @@ import java.io.Serializable
 data class AlbumItem(val name: String, val imagePath: String) : Serializable {
 
     override fun equals(other: Any?): Boolean {
-        return name == (other as com.github.windsekirun.naraeimagepicker.item.AlbumItem).name
+        return name == (other as AlbumItem).name
     }
 
     override fun hashCode(): Int {

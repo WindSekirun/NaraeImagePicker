@@ -4,17 +4,17 @@ import android.content.Context
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_list.*
+import com.github.windsekirun.naraeimagepicker.event.ToolbarEvent
+import com.github.windsekirun.naraeimagepicker.module.PickerSet
+import com.github.windsekirun.naraeimagepicker.widget.AdjustableGridItemDecoration
 import org.greenrobot.eventbus.EventBus
 import pyxis.uzuki.live.naraeimagepicker.R
-import pyxis.uzuki.live.naraeimagepicker.widget.AdjustableGridItemDecoration
 
 /**
- * NaraeImagePicker
+ * NaraePicker
  * Class: BaseFragment
  * Created by Pyxis on 1/6/18.
  *
@@ -35,19 +35,19 @@ abstract class BaseFragment<T : Any> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sendEvent(com.github.windsekirun.naraeimagepicker.event.ToolbarEvent(com.github.windsekirun.naraeimagepicker.module.PickerSet.getSettingItem().uiSetting.pickerTitle,
-                com.github.windsekirun.naraeimagepicker.module.PickerSet.getSettingItem().uiSetting.enableUpInParentView))
+        sendEvent(ToolbarEvent(PickerSet.getSettingItem().uiSetting.pickerTitle,
+                PickerSet.getSettingItem().uiSetting.enableUpInParentView))
 
         val rectF = AdjustableGridItemDecoration.getRectFObject(context as Context)
         val column = if (getItemKind() == com.github.windsekirun.naraeimagepicker.item.ImageItem::class.java.simpleName) 3 else 2
 
-        recyclerView.apply {
-            layoutManager = GridLayoutManager(activity, column)
-            mEmptyView = containerEmpty
-            mLoadingView = progressBar
-            setHasFixedSize(true)
-            addItemDecoration(AdjustableGridItemDecoration(rectF, getItemList(), column))
-        }
+//        recyclerView.apply {
+//            layoutManager = GridLayoutManager(activity, column)
+//            mEmptyView = containerEmpty
+//            mLoadingView = progressBar
+//            setHasFixedSize(true)
+//            addItemDecoration(AdjustableGridItemDecoration(rectF, getItemList(), column))
+//        }
     }
 
     override fun onDestroyView() {

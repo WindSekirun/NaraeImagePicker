@@ -1,7 +1,10 @@
 package com.github.windsekirun.naraeimagepicker.item
 
+import com.github.windsekirun.naraeimagepicker.Constants
+import com.github.windsekirun.naraeimagepicker.item.enumeration.ViewMode
+
 /**
- * NaraeImagePicker
+ * NaraePicker
  * Class: PickerSettingItem
  * Created by Pyxis on 2018-02-27.
  *
@@ -9,10 +12,10 @@ package com.github.windsekirun.naraeimagepicker.item
  */
 
 class PickerSettingItem {
-    var viewMode = com.github.windsekirun.naraeimagepicker.item.enumeration.ViewMode.FolderView
-    var pickLimit = com.github.windsekirun.naraeimagepicker.Constants.LIMIT_UNLIMITED
+    var viewMode = ViewMode.FolderView
+    var pickLimit = Constants.LIMIT_UNLIMITED
     var disableZoomMode = false
-    var uiSetting: com.github.windsekirun.naraeimagepicker.item.PickerSettingItem.UISetting = com.github.windsekirun.naraeimagepicker.item.PickerSettingItem.UISetting()
+    var uiSetting: UISetting = UISetting()
 
     class UISetting {
         var themeResId: Int? = null
@@ -22,8 +25,8 @@ class PickerSettingItem {
     }
 
     fun clear() {
-        viewMode = com.github.windsekirun.naraeimagepicker.item.enumeration.ViewMode.FileView
-        pickLimit = com.github.windsekirun.naraeimagepicker.Constants.LIMIT_UNLIMITED
+        viewMode = ViewMode.FileView
+        pickLimit = Constants.LIMIT_UNLIMITED
         disableZoomMode = false
         uiSetting.enableUpInParentView = false
         uiSetting.pickerTitle = "Please select picture."

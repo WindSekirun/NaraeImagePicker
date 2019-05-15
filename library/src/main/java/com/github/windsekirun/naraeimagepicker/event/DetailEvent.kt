@@ -1,7 +1,7 @@
 package com.github.windsekirun.naraeimagepicker.event
 
 /**
- * NaraeImagePicker
+ * NaraePicker
  * Class: DetailEvent
  * Created by Pyxis on 1/6/18.
  *

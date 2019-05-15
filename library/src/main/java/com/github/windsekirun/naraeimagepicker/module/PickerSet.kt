@@ -6,18 +6,21 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.provider.MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME
 import android.provider.MediaStore.Images.Media.DATE_MODIFIED
-import pyxis.uzuki.live.naraeimagepicker.utils.getColumnString
+import com.github.windsekirun.naraeimagepicker.item.ImageItem
+import com.github.windsekirun.naraeimagepicker.item.PickerSettingItem
+import com.github.windsekirun.naraeimagepicker.utils.getColumnString
+import pyxis.uzuki.live.richutilskt.utils.toFile
 
 /**
- * NaraeImagePicker
+ * NaraePicker
  * Class: PickerSet
  * Created by Pyxis on 2018-02-27.
  *
  * Description:
  */
 object PickerSet {
-    private lateinit var mItem: com.github.windsekirun.naraeimagepicker.item.PickerSettingItem
-    private val mPictureMap: HashMap<String, MutableList<com.github.windsekirun.naraeimagepicker.item.ImageItem>> = hashMapOf()
+    private lateinit var mItem: PickerSettingItem
+    private val mPictureMap: HashMap<String, MutableList<ImageItem>> = hashMapOf()
 
     private val cursorUri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
     private const val ID_COLUMN = MediaStore.Images.Media._ID
@@ -26,21 +29,21 @@ object PickerSet {
     private const val ORDER_BY = MediaStore.Images.Media.DATE_TAKEN
 
     fun clearPickerSet() {
-        com.github.windsekirun.naraeimagepicker.module.PickerSet.mItem.clear()
-        com.github.windsekirun.naraeimagepicker.module.PickerSet.mPictureMap.clear()
+        mItem.clear()
+        mPictureMap.clear()
     }
 
-    fun setSettingItem(item: com.github.windsekirun.naraeimagepicker.item.PickerSettingItem) {
-        com.github.windsekirun.naraeimagepicker.module.PickerSet.mItem = item
+    fun setSettingItem(item: PickerSettingItem) {
+        mItem = item
     }
 
-    fun getSettingItem() = com.github.windsekirun.naraeimagepicker.module.PickerSet.mItem
+    fun getSettingItem() = mItem
 
     fun loadImageFirst(context: Context, callback: () -> Unit) {
-        val titleCursor = context.contentResolver.query(com.github.windsekirun.naraeimagepicker.module.PickerSet.cursorUri, arrayOf(BUCKET_DISPLAY_NAME, com.github.windsekirun.naraeimagepicker.module.PickerSet.PATH_COLUMN), null, null, com.github.windsekirun.naraeimagepicker.module.PickerSet.ORDER_BY)
+        val titleCursor = context.contentResolver.query(cursorUri, arrayOf(BUCKET_DISPLAY_NAME, PATH_COLUMN), null, null, ORDER_BY)
 
         val titleItemSet = HashSet<String>()
-        titleCursor.doWhile { titleItemSet.add(titleCursor.getColumnString(com.github.windsekirun.naraeimagepicker.module.PickerSet.DISPLAY_NAME_COLUMN)) }
+        titleCursor.doWhile { titleItemSet.add(titleCursor.getColumnString(DISPLAY_NAME_COLUMN)) }
 
         val titleItemList = mutableListOf<String>().apply {
             addAll(titleItemSet)
@@ -48,19 +51,19 @@ object PickerSet {
         }
 
         for (title in titleItemList) {
-            val list = mutableListOf<com.github.windsekirun.naraeimagepicker.item.ImageItem>()
-            val photoCursor = context.contentResolver.query(com.github.windsekirun.naraeimagepicker.module.PickerSet.cursorUri,
-                    arrayOf(com.github.windsekirun.naraeimagepicker.module.PickerSet.ID_COLUMN, com.github.windsekirun.naraeimagepicker.module.PickerSet.PATH_COLUMN, DATE_MODIFIED), "$BUCKET_DISPLAY_NAME =?", arrayOf(title), com.github.windsekirun.naraeimagepicker.module.PickerSet.ORDER_BY)
+            val list = mutableListOf<ImageItem>()
+            val photoCursor = context.contentResolver.query(cursorUri,
+                    arrayOf(ID_COLUMN, PATH_COLUMN, DATE_MODIFIED), "$BUCKET_DISPLAY_NAME =?", arrayOf(title), ORDER_BY)
 
             photoCursor.doWhile {
-                val image = photoCursor.getColumnString(com.github.windsekirun.naraeimagepicker.module.PickerSet.PATH_COLUMN)
-                val id = photoCursor.getColumnString(com.github.windsekirun.naraeimagepicker.module.PickerSet.ID_COLUMN)
+                val image = photoCursor.getColumnString(PATH_COLUMN)
+                val id = photoCursor.getColumnString(ID_COLUMN)
                 val file = image.toFile()
-                if (file.exists()) list.add(com.github.windsekirun.naraeimagepicker.item.ImageItem(id, image))
+                if (file.exists()) list.add(ImageItem(id, image))
             }
 
             list.reverse()
-            com.github.windsekirun.naraeimagepicker.module.PickerSet.addPictureMap(title, list)
+            addPictureMap(title, list)
         }
 
         titleItemSet.clear()
@@ -69,7 +72,8 @@ object PickerSet {
     }
 
     fun getFolderList(): List<com.github.windsekirun.naraeimagepicker.item.AlbumItem> {
-        return com.github.windsekirun.naraeimagepicker.module.PickerSet.mPictureMap.entries
+        return mPictureMap.entries
+                .asSequence()
                 .filter { it.value.isNotEmpty() }
                 .map { it.key to it.value[0] }
                 .map { com.github.windsekirun.naraeimagepicker.item.AlbumItem(it.first, it.second.imagePath) }
@@ -77,19 +81,19 @@ object PickerSet {
                 .toList()
     }
 
-    fun getImageList(title: String): MutableList<com.github.windsekirun.naraeimagepicker.item.ImageItem> {
-        return com.github.windsekirun.naraeimagepicker.module.PickerSet.mPictureMap[title]?.toMutableList() ?: mutableListOf()
+    fun getImageList(title: String): MutableList<ImageItem> {
+        return mPictureMap[title]?.toMutableList() ?: mutableListOf()
     }
 
-    fun getImageList(): MutableList<com.github.windsekirun.naraeimagepicker.item.ImageItem> {
-        val list = mutableListOf<com.github.windsekirun.naraeimagepicker.item.ImageItem>()
-        com.github.windsekirun.naraeimagepicker.module.PickerSet.mPictureMap.values.forEach { list.addAll(it) }
+    fun getImageList(): MutableList<ImageItem> {
+        val list = mutableListOf<ImageItem>()
+        mPictureMap.values.forEach { list.addAll(it) }
         return list
     }
 
-    fun isEmptyList() = com.github.windsekirun.naraeimagepicker.module.PickerSet.mPictureMap.isEmpty()
+    fun isEmptyList() = mPictureMap.isEmpty()
 
-    fun getLimitMessage() = com.github.windsekirun.naraeimagepicker.module.PickerSet.mItem.uiSetting.exceedLimitMessage.format(com.github.windsekirun.naraeimagepicker.module.SelectedItem.getLimits())
+    fun getLimitMessage() = mItem.uiSetting.exceedLimitMessage.format(SelectedItem.getLimits())
 
     private fun Cursor.doWhile(action: () -> Unit) {
         this.use {
@@ -101,7 +105,7 @@ object PickerSet {
         }
     }
 
-    private fun addPictureMap(title: String, list: MutableList<com.github.windsekirun.naraeimagepicker.item.ImageItem>) {
-        com.github.windsekirun.naraeimagepicker.module.PickerSet.mPictureMap[title] = list
+    private fun addPictureMap(title: String, list: MutableList<ImageItem>) {
+        mPictureMap[title] = list
     }
 }

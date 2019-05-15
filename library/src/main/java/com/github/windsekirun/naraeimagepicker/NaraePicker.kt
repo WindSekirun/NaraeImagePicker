@@ -1,28 +1,29 @@
-@file:JvmName("NaraeImagePicker")
+@file:JvmName("NaraePicker")
 
-package pyxis.uzuki.live.naraeimagepicker
+package com.github.windsekirun.naraeimagepicker
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Fragment
-import android.app.FragmentManager
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
-import pyxis.uzuki.live.naraeimagepicker.activity.NaraePickerActivity
-import pyxis.uzuki.live.naraeimagepicker.impl.OnPickResultListener
-import pyxis.uzuki.live.naraeimagepicker.item.PickerSettingItem
-import pyxis.uzuki.live.naraeimagepicker.module.PickerSet
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
+import android.support.v4.app.FragmentManager
+import com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity
+import com.github.windsekirun.naraeimagepicker.impl.OnPickResultListener
+import com.github.windsekirun.naraeimagepicker.item.PickerSettingItem
+import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 
-class NaraeImagePicker private constructor() {
+class NaraePicker private constructor() {
     private val requestCode = 72
 
-    private fun getActivity(context: Context): Activity? {
+    private fun getActivity(context: Context): FragmentActivity? {
         var c = context
 
         while (c is ContextWrapper) {
-            if (c is Activity) {
+            if (c is FragmentActivity) {
                 return c
             }
             c = c.baseContext
@@ -37,7 +38,7 @@ class NaraeImagePicker private constructor() {
 
     @SuppressLint("ValidFragment")
     private fun requestStart(context: Context, item: PickerSettingItem, pickResultListener: OnPickResultListener) {
-        val fm = getActivity(context)?.fragmentManager
+        val fm = getActivity(context)?.supportFragmentManager
         val intent = Intent(getActivity(context), NaraePickerActivity::class.java)
         val fragment = ResultFragment(fm as FragmentManager, pickResultListener)
         fm.beginTransaction().add(fragment, "FRAGMENT_TAG").commitAllowingStateLoss()
@@ -50,12 +51,12 @@ class NaraeImagePicker private constructor() {
 
     @SuppressLint("ValidFragment")
     class ResultFragment() : Fragment() {
-        var mFragmentManager: FragmentManager? = null
-        lateinit var mCallback: OnPickResultListener
+        private var _fragmentManager: FragmentManager? = null
+        private lateinit var _callback: OnPickResultListener
 
         constructor(fm: FragmentManager, callback: OnPickResultListener) : this() {
-            this.mFragmentManager = fm
-            this.mCallback = callback
+            this._fragmentManager = fm
+            this._callback = callback
         }
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -64,19 +65,19 @@ class NaraeImagePicker private constructor() {
             runOnUiThread {
                 if (resultCode == Activity.RESULT_OK) {
                     val imageList = data?.getStringArrayListExtra(Constants.EXTRA_IMAGE_LIST)
-                    imageList?.let { mCallback.onSelect(PICK_SUCCESS, it) }
+                    imageList?.let { _callback.onSelect(PICK_SUCCESS, it) }
                 } else {
-                    mCallback.onSelect(PICK_FAILED, arrayListOf())
+                    _callback.onSelect(PICK_FAILED, arrayListOf())
                 }
             }
 
-            mFragmentManager?.beginTransaction()?.remove(this)?.commit()
+            _fragmentManager?.beginTransaction()?.remove(this)?.commit()
         }
     }
 
     companion object {
         @JvmField
-        var instance: NaraeImagePicker = NaraeImagePicker()
+        var instance: NaraePicker = NaraePicker()
 
         @JvmField
         val PICK_SUCCESS = 1

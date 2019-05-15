@@ -1,7 +1,7 @@
 package com.github.windsekirun.naraeimagepicker
 
 /**
- * NaraeImagePicker
+ * NaraePicker
  * Class: Constants
  * Created by Pyxis on 1/6/18.
  *

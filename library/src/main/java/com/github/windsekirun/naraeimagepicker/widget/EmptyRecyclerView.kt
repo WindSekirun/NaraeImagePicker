@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 
 /**
- * NaraeImagePicker
+ * NaraePicker
  * Class: EmptyRecyclerView
  * Created by Pyxis on 1/6/18.
  *

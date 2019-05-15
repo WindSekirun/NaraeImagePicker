@@ -7,16 +7,27 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.github.windsekirun.naraeimagepicker.Constants
+import com.github.windsekirun.naraeimagepicker.Constants.EXTRA_NAME
+import com.github.windsekirun.naraeimagepicker.event.DetailEvent
+import com.github.windsekirun.naraeimagepicker.event.FragmentTransitionEvent
+import com.github.windsekirun.naraeimagepicker.event.ToolbarEvent
+import com.github.windsekirun.naraeimagepicker.fragment.AlbumFragment
+import com.github.windsekirun.naraeimagepicker.fragment.AllFragment
+import com.github.windsekirun.naraeimagepicker.fragment.ImageFragment
+import com.github.windsekirun.naraeimagepicker.item.enumeration.ViewMode
+import com.github.windsekirun.naraeimagepicker.module.PickerSet
+import com.github.windsekirun.naraeimagepicker.module.SelectedItem
+import com.github.windsekirun.naraeimagepicker.utils.applyCustomPickerTheme
+import com.github.windsekirun.naraeimagepicker.utils.catchAll
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pyxis.uzuki.live.naraeimagepicker.R
-import pyxis.uzuki.live.naraeimagepicker.utils.applyCustomPickerTheme
-import pyxis.uzuki.live.naraeimagepicker.utils.catchAll
 import pyxis.uzuki.live.richutilskt.utils.RPermission
 
 class NaraePickerActivity : AppCompatActivity() {
-    private var mLastFragmentMode = com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity.FragmentMode.Album
-    private var mRequestFileViewMode = false
+    private var lastFragmentMode = FragmentMode.Album
+    private var requestFileViewMode = false
 
     private enum class FragmentMode {
         Album, Image, All
@@ -24,31 +35,31 @@ class NaraePickerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        applyCustomPickerTheme(com.github.windsekirun.naraeimagepicker.module.PickerSet.getSettingItem())
+        applyCustomPickerTheme(PickerSet.getSettingItem())
         setContentView(R.layout.activity_picker)
 
         catchAll { EventBus.getDefault().register(this) }
 
-        com.github.windsekirun.naraeimagepicker.module.SelectedItem.setLimits(com.github.windsekirun.naraeimagepicker.module.PickerSet.getSettingItem().pickLimit)
-        mRequestFileViewMode = com.github.windsekirun.naraeimagepicker.module.PickerSet.getSettingItem().viewMode == com.github.windsekirun.naraeimagepicker.item.enumeration.ViewMode.FileView
+        SelectedItem.setLimits(PickerSet.getSettingItem().pickLimit)
+        requestFileViewMode = PickerSet.getSettingItem().viewMode == ViewMode.FileView
 
         RPermission.instance.checkPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) { integer, _ ->
             if (integer == RPermission.PERMISSION_GRANTED) {
-                initFragment(if (mRequestFileViewMode) com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity.FragmentMode.All else com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity.FragmentMode.Album)
+                initFragment(if (requestFileViewMode) FragmentMode.All else FragmentMode.Album)
             } else {
                 setResult(Activity.RESULT_CANCELED)
             }
         }
     }
 
-    private fun initFragment(mode: com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity.FragmentMode, map: Map<String, Any> = mapOf()) {
-        mLastFragmentMode = mode
+    private fun initFragment(mode: FragmentMode, map: Map<String, Any> = mapOf()) {
+        lastFragmentMode = mode
 
         val fragment = when (mode) {
-            com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity.FragmentMode.Album -> com.github.windsekirun.naraeimagepicker.fragment.AlbumFragment()
-            com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity.FragmentMode.Image -> com.github.windsekirun.naraeimagepicker.fragment.ImageFragment()
-            com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity.FragmentMode.All -> com.github.windsekirun.naraeimagepicker.fragment.AllFragment()
+            FragmentMode.Album -> AlbumFragment()
+            FragmentMode.Image -> ImageFragment()
+            FragmentMode.All -> AllFragment()
         }
 
         val bundle = Bundle()
@@ -80,52 +91,51 @@ class NaraePickerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentByTag(mLastFragmentMode.name)
-        if (fragment is com.github.windsekirun.naraeimagepicker.fragment.ImageFragment) {
-            initFragment(com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity.FragmentMode.Album)
+        val fragment = supportFragmentManager.findFragmentByTag(lastFragmentMode.name)
+        if (fragment is ImageFragment) {
+            initFragment(FragmentMode.Album)
             return
         }
 
-        com.github.windsekirun.naraeimagepicker.module.SelectedItem.clear()
-        com.github.windsekirun.naraeimagepicker.module.PickerSet.clearPickerSet()
+        SelectedItem.clear()
+        PickerSet.clearPickerSet()
         setResult(Activity.RESULT_CANCELED)
         finish()
     }
 
     @Subscribe
-    fun onToolbarChange(event: com.github.windsekirun.naraeimagepicker.event.ToolbarEvent) {
+    fun onToolbarChange(event: ToolbarEvent) {
         supportActionBar?.title = event.item
         supportActionBar?.setDisplayHomeAsUpEnabled(event.isUp)
     }
 
     @Subscribe
-    fun onFragmentTransition(event: com.github.windsekirun.naraeimagepicker.event.FragmentTransitionEvent) {
+    fun onFragmentTransition(event: FragmentTransitionEvent) {
         if (event.isImage) {
-            initFragment(com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity.FragmentMode.Image,
-                    mapOf(com.github.windsekirun.naraeimagepicker.Constants.EXTRA_NAME to event.name))
+            initFragment(FragmentMode.Image, mapOf(EXTRA_NAME to event.name))
         } else {
-            initFragment(com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity.FragmentMode.Album)
+            initFragment(FragmentMode.Album)
         }
     }
 
     @Subscribe
-    fun onShowDetail(event: com.github.windsekirun.naraeimagepicker.event.DetailEvent) {
-        val intent = Intent(this, com.github.windsekirun.naraeimagepicker.activity.ImageDetailsActivity::class.java)
-        intent.putExtra(com.github.windsekirun.naraeimagepicker.Constants.EXTRA_DETAIL_IMAGE, event.path)
+    fun onShowDetail(event: DetailEvent) {
+        val intent = Intent(this, ImageDetailsActivity::class.java)
+        intent.putExtra(Constants.EXTRA_DETAIL_IMAGE, event.path)
         startActivity(intent)
     }
 
     private fun sendTo() {
         val lists = arrayListOf<String>()
-        lists.addAll(com.github.windsekirun.naraeimagepicker.module.SelectedItem.getImageList())
+        lists.addAll(SelectedItem.getImageList())
 
         if (lists.isEmpty()) return
 
-        com.github.windsekirun.naraeimagepicker.module.SelectedItem.clear()
-        com.github.windsekirun.naraeimagepicker.module.PickerSet.clearPickerSet()
+        SelectedItem.clear()
+        PickerSet.clearPickerSet()
 
         val intent = Intent()
-        intent.putExtra(com.github.windsekirun.naraeimagepicker.Constants.EXTRA_IMAGE_LIST, lists)
+        intent.putExtra(Constants.EXTRA_IMAGE_LIST, lists)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
