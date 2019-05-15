@@ -6,9 +6,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application android:largeHeap="true">
-        <activity android:name=".activity.NaraePickerActivity"
+        <activity android:name="com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
-        <activity android:name=".activity.ImageDetailsActivity"
+        <activity android:name="com.github.windsekirun.naraeimagepicker.activity.ImageDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
     </application>
 

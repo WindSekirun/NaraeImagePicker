@@ -1,33 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/imgThumbnail"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:scaleType="centerCrop"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,1.1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/opacity"
-        android:background="@drawable/image_opacity"/>
+        <ImageView
+            android:id="@+id/imgThumbnail"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imgCheck"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/check_selector"
-        android:layout_gravity="top"
-        android:layout_margin="6dp" />
+        <View
+            android:id="@+id/opacity"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/image_opacity"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/btnMaximise"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_photo_maximise"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="6dp" />
-</FrameLayout>
+        <ImageView
+            android:id="@+id/imgCheck"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/check_selector"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btnMaximise"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_photo_maximise"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>

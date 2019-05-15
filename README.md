@@ -1,18 +1,22 @@
-## NaraeImagePicker [![](https://jitpack.io/v/WindSekirun/NaraeImagePicker.svg)](https://jitpack.io/#WindSekirun/NaraeImagePicker) <a href="https://codebeat.co/projects/github-com-windsekirun-naraeimagepicker-master"><img alt="codebeat badge" src="https://codebeat.co/badges/d974046a-c9a9-40f8-95f6-70ffbf77a3ee" /></a>
+## NaraeImagePicker [![Build Status](https://build.uzuki.live/job/NaraeImagePicker/job/master/badge/icon)](https://build.uzuki.live/job/NaraeImagePicker/job/master/)
 
-[![Kotlin](https://img.shields.io/badge/kotlin-1.2.0-blue.svg)](http://kotlinlang.org)	[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-NaraeImagePicker-green.svg?style=flat )]( https://android-arsenal.com/details/1/6695 ) 
+[![Kotlin](https://img.shields.io/badge/kotlin-1.3.3-blue.svg)](http://kotlinlang.org)	[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-NaraeImagePicker-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/6695)
 
-MultiImagePicker for Android Application, written in [Kotlin](http://kotlinlang.org)
+MultiImagePicker for Android Application, written in [Kotlin](http://kotlinlang.org) 
 
 <img src="https://github.com/WindSekirun/NaraeImagePicker/blob/master/sample.png" width="600" height="308">
 
 It provides...
-* Pick multi image
-* Provide two mode of activity, One is Folder-View, other is File-View.
-* Support show detail of Image (using PhotoView) - support .gif, .webp
-* Check 'Runtime Permissions' automatically
+ * Pick multiple image
+ * Provide two viewMode, FolderView and FileView
+ * Check Runtime Permissions automatically
+ * Show detail of Image
+ * Support Tablet Layout
 
-### Usages
+## Usages
+
+### Import
+
 *rootProject/build.gradle*
 ```
 allprojects {
@@ -25,49 +29,39 @@ allprojects {
 *app/build.gradle*
 ```
 dependencies {
-     implementation 'com.github.WindSekirun:NaraeImagePicker:1.8.0'
+     implementation 'com.github.WindSekirun:NaraeImagePicker:2.0.0'
 }
 ```
 
-#### Code
-```Java
-PickerSettingItem item = new PickerSettingItem();
-item.setPickLimit(Constants.LIMIT_UNLIMITED);
-item.setViewMode(ViewMode.FolderView);
+**Warning, I changed package name starting from 2.0.0.**
 
-NaraeImagePicker.instance.start(this, item, new OnPickResultListener() {
-    @Override
-    public void onSelect(int resultCode, @NotNull ArrayList<String> imageList) {
-        if (resultCode == NaraeImagePicker.PICK_SUCCESS) {
-            itemList.addAll(imageList);
-            adapter.notifyDataSetChanged();
-        } else {
-            Toast.makeText(MainActivity.this, "failed to pick image", Toast.LENGTH_SHORT).show();
-        }
-    }
-});
-```
-
-No need to implement ```onActivityResult```, NaraeImagePicker will handle ```startActivityForResult```, ```onActivityResult``` for you. 
-
-## Customization in PickerSettingItem
-
+### Activity
 ```kotlin
-    var viewMode = ViewMode.FolderView
-    var pickLimit = Constants.LIMIT_UNLIMITED
-    var disableZoomMode = false
-    var uiSetting: UISetting = UISetting()
+val settingItem = PickerSettingItem().apply {
+    pickLimit = Constants.LIMIT_UNLIMITED
+    viewMode = ViewMode.FolderView
+    enableDetailMode = true
+    uiSetting.enableUpInParentView = true
+    uiSetting.themeResId = R.style.AppTheme
+    uiSetting.pickerTitle = "Custom Picker Title"
+    uiSetting.fileSpanCount = 3
+    uiSetting.folderSpanCount = 2
+}
 
-    class UISetting {
-        var themeResId: Int? = null
-        var pickerTitle = "Please select picture."
-        var exceedLimitMessage = "Can\\'t select more than %s pictures"
-        var enableUpInParentView = false
+NaraeImagePicker.instance.start(this, settingItem, object : OnPickResultListener {
+    override fun onSelect(resultCode: Int, imageList: ArrayList<String>) {
+        if (resultCode != NaraeImagePicker.PICK_SUCCESS) {
+            toast("Failed to pick image")
+            return
+        }
+
+        
     }
+})
 ```
 
-## resolve DuplicateRelativeFileException: More than one file...
-you should insert this statement in android block in app/build.gradle
+### resolve DuplicateRelativeFileException: More than one file...
+You should insert this statement in android block in app/build.gradle
 
 ```
 packagingOptions {
@@ -76,6 +70,15 @@ packagingOptions {
 ```
 
 ## Revision History
+* ver 2.0.0 (2019-05-15)
+  * Fix #12 Show selected image count in the FileView, FolderView (thanks to @deepakkumardk)
+  * Fix #13 Change row layout to ConstraintLayout
+  * Fix #15 Remaining appName when starting NaraeImagePicker
+  * Change Package Name
+  * New Sample Application Design
+  * Add functionality to change span count in FileView, FolderView
+  * Update library version to latest version
+
 * ver 1.8.0 (2018-12-06)
   * PR #11 add UISettings
   * Issue #10 Cannot load .webp image in zoom view
@@ -87,32 +90,10 @@ packagingOptions {
   * PR #9 Fix NaraePickerActivity.kt to unregist EventBus when lifecycle onStop. (Thanks to @zeallat )
 
 * ver 1.7.0 (2018-12-04)
-  * PR #8 Add attribute to able to configure custom theme (thanks to @zeallat )
+  * PR #8 Add attribute to able to configure custom theme (thanks to @zeallat)
   * Fix 'Zoom mode' is not working when set false to disableZoomMode in PickerSettingItem
 
-* ver 1.6.2 (2018-04-23)
-  * revert 64162d0 and insert getFolderList
-
-* ver 1.6.1 (2018-04-23)
-  * try-catch in getFolderList
-
-* ver 1.6.0 (2018-03-27)
-  * add disableZoomMode in PickerSettingItem
-
-* ver 1.5.0 (2018-02-27)
-  * Implement PickerSet instead loading content on Fragment.
-
-* ver 1.1.1 (2018-02-12)
-  * Issue #4 Native Fragment will deprecated in Android P
-
-* ver 1.1.0 (2018-01-12)
-  * downscaling AlbumAdapter, ImageAdapter
-
-* ver 1.0.1 (2018-01-11)
-  * insert default theme
-
-* ver 1.0.0 (2018-01-06)
-  * First release of NaraeImagePicker.
+For older history, refer to [RELEASE.md](RELEASE.md)
 
 ## License
 
