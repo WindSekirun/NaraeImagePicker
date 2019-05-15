@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.windsekirun.naraeimagepicker.event.ToolbarEvent
-import com.github.windsekirun.naraeimagepicker.item.ImageItem
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.widget.AdjustableGridItemDecoration
 import kotlinx.android.synthetic.main.fragment_list.*

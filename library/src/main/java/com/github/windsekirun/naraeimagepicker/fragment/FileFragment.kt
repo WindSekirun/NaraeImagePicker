@@ -7,7 +7,7 @@ import com.github.windsekirun.naraeimagepicker.Constants
 import com.github.windsekirun.naraeimagepicker.base.BaseFragment
 import com.github.windsekirun.naraeimagepicker.event.ToolbarEvent
 import com.github.windsekirun.naraeimagepicker.fragment.adapter.ImageAdapter
-import com.github.windsekirun.naraeimagepicker.item.ImageItem
+import com.github.windsekirun.naraeimagepicker.item.FileItem
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.module.SelectedItem
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -16,15 +16,15 @@ import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 
 /**
  * NaraeImagePicker
- * Class: ImageFragment
+ * Class: FileFragment
  * Created by Pyxis on 1/6/18.
  *
  * Description:
  */
 
-class ImageFragment : BaseFragment<ImageItem>() {
+class FileFragment : BaseFragment<FileItem>() {
     private lateinit var adapter: ImageAdapter
-    private val itemList = arrayListOf<ImageItem>()
+    private val itemList = arrayListOf<FileItem>()
 
     private var albumName = ""
 
@@ -47,24 +47,22 @@ class ImageFragment : BaseFragment<ImageItem>() {
         itemList.addAll(PickerSet.getImageList(albumName))
 
         runOnUiThread {
-            if (recyclerView != null) {
-                recyclerView.notifyDataSetChanged()
-            }
+            recyclerView?.notifyDataSetChanged()
             sendEvent(ToolbarEvent("$albumName (${SelectedItem.size})", true))
         }
     }
 
-    private fun onImageClick(imageItem: ImageItem) {
-        if (SelectedItem.contains(imageItem)) {
-            SelectedItem.removeItem(imageItem)
+    private fun onImageClick(fileItem: FileItem) {
+        if (SelectedItem.contains(fileItem)) {
+            SelectedItem.removeItem(fileItem)
         } else {
-            addSelectedItem(imageItem)
+            addSelectedItem(fileItem)
         }
         sendEvent(ToolbarEvent("$albumName (${SelectedItem.size})", true))
         adapter.notifyDataSetChanged()
     }
 
-    private fun addSelectedItem(item: ImageItem) {
+    private fun addSelectedItem(item: FileItem) {
         SelectedItem.addItem(item) {
             if (!it) Toast.makeText(this.activity, PickerSet.getLimitMessage(), Toast.LENGTH_SHORT).show()
         }

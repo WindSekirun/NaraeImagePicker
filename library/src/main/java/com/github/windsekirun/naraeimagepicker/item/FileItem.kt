@@ -4,16 +4,16 @@ import java.io.Serializable
 
 /**
  * NaraeImagePicker
- * Class: AlbumItem
+ * Class: FolderItem
  * Created by Pyxis on 1/6/18.
  *
  * Description:
  */
 
-data class ImageItem(val id: String, val imagePath: String) : Serializable {
+data class FileItem(val id: String, val imagePath: String) : Serializable {
 
     override fun equals(other: Any?): Boolean {
-        return id == (other as ImageItem).id
+        return id == (other as FileItem).id
     }
 
     override fun hashCode(): Int {

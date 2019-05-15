@@ -5,7 +5,7 @@ import android.view.View
 import com.github.windsekirun.naraeimagepicker.base.BaseFragment
 import com.github.windsekirun.naraeimagepicker.event.ToolbarEvent
 import com.github.windsekirun.naraeimagepicker.fragment.adapter.ImageAdapter
-import com.github.windsekirun.naraeimagepicker.item.ImageItem
+import com.github.windsekirun.naraeimagepicker.item.FileItem
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.module.SelectedItem
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -22,9 +22,9 @@ import pyxis.uzuki.live.richutilskt.utils.toast
  * Description:
  */
 
-class AllFragment : BaseFragment<ImageItem>() {
+class AllFragment : BaseFragment<FileItem>() {
     private lateinit var adapter: ImageAdapter
-    private val itemList = arrayListOf<ImageItem>()
+    private val itemList = arrayListOf<FileItem>()
 
     override fun getItemList() = itemList
     override fun getColumnCount(): Int = PickerSet.getSettingItem().uiSetting.fileSpanCount
@@ -32,8 +32,8 @@ class AllFragment : BaseFragment<ImageItem>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ImageAdapter(itemList) { imageItem: ImageItem, _: Int, _: View ->
-            onImageClick(imageItem)
+        adapter = ImageAdapter(itemList) { fileItem: FileItem, _: Int, _: View ->
+             onImageClick(fileItem)
         }
         recyclerView.adapter = adapter
 
@@ -49,23 +49,21 @@ class AllFragment : BaseFragment<ImageItem>() {
         itemList.sortedBy { it.imagePath.toFile().lastModified() }
 
         runOnUiThread {
-            if (recyclerView != null) {
-                recyclerView.notifyDataSetChanged()
-            }
+            recyclerView?.notifyDataSetChanged()
         }
     }
 
-    private fun onImageClick(imageItem: ImageItem) {
-        if (SelectedItem.contains(imageItem)) {
-            SelectedItem.removeItem(imageItem)
+    private fun onImageClick(fileItem: FileItem) {
+        if (SelectedItem.contains(fileItem)) {
+            SelectedItem.removeItem(fileItem)
         } else {
-            addSelectedItem(imageItem)
+            addSelectedItem(fileItem)
         }
         sendEvent(ToolbarEvent("${SelectedItem.size} Selected", PickerSet.getSettingItem().uiSetting.enableUpInParentView))
         adapter.notifyDataSetChanged()
     }
 
-    private fun addSelectedItem(item: ImageItem) {
+    private fun addSelectedItem(item: FileItem) {
         SelectedItem.addItem(item) {
             if (!it) this.activity?.toast(PickerSet.getLimitMessage())
         }

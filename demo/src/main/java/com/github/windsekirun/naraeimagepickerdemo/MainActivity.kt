@@ -48,6 +48,8 @@ class MainActivity : AppCompatActivity() {
             uiSetting.enableUpInParentView = true
             uiSetting.themeResId = R.style.AppTheme
             uiSetting.pickerTitle = "Custom Picker Title"
+            uiSetting.fileSpanCount = 3
+            uiSetting.folderSpanCount = 2
         }
 
         NaraeImagePicker.instance.start(this, settingItem, object : OnPickResultListener {

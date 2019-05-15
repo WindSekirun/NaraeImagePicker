@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.windsekirun.naraeimagepicker.event.DetailEvent
-import com.github.windsekirun.naraeimagepicker.item.ImageItem
+import com.github.windsekirun.naraeimagepicker.item.FileItem
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.module.SelectedItem
 import com.github.windsekirun.naraeimagepicker.utils.loadImage
@@ -21,8 +21,8 @@ import pyxis.uzuki.live.naraeimagepicker.R
  * Description:
  */
 
-class ImageAdapter(private val itemList: ArrayList<ImageItem>,
-                   val listener: (ImageItem, Int, View) -> Unit) :
+class ImageAdapter(private val itemList: ArrayList<FileItem>,
+                   val listener: (FileItem, Int, View) -> Unit) :
         RecyclerView.Adapter<ImageAdapter.ListHolder>() {
 
     override fun onBindViewHolder(holder: ListHolder, position: Int) {
@@ -36,7 +36,7 @@ class ImageAdapter(private val itemList: ArrayList<ImageItem>,
 
     inner class ListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: ImageItem) {
+        fun bind(item: FileItem) {
             itemView.imgThumbnail.loadImage(item.imagePath, 0.3f)
             itemView.imgCheck.isSelected = SelectedItem.contains(item)
             itemView.opacity.isSelected = SelectedItem.contains(item)

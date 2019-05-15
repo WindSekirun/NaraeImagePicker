@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.windsekirun.naraeimagepicker.event.FragmentTransitionEvent
-import com.github.windsekirun.naraeimagepicker.item.AlbumItem
+import com.github.windsekirun.naraeimagepicker.item.FolderItem
 import com.github.windsekirun.naraeimagepicker.utils.loadImage
 import kotlinx.android.synthetic.main.fragment_album_row.view.*
 import org.greenrobot.eventbus.EventBus
@@ -20,7 +20,7 @@ import pyxis.uzuki.live.naraeimagepicker.R
  * Description:
  */
 
-class AlbumAdapter(private val itemList: ArrayList<AlbumItem>) : RecyclerView.Adapter<AlbumAdapter.ListHolder>() {
+class AlbumAdapter(private val itemList: ArrayList<FolderItem>) : RecyclerView.Adapter<AlbumAdapter.ListHolder>() {
 
     override fun onBindViewHolder(holder: ListHolder, position: Int) {
         holder.bind(itemList[position])
@@ -34,7 +34,7 @@ class AlbumAdapter(private val itemList: ArrayList<AlbumItem>) : RecyclerView.Ad
     inner class ListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: AlbumItem) {
+        fun bind(item: FolderItem) {
             itemView.txtName.text = item.name
             itemView.imgThumbnail.loadImage(item.imagePath, 0.3f)
             itemView.setOnClickListener { EventBus.getDefault().post(FragmentTransitionEvent(true, item.name)) }

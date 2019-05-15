@@ -12,9 +12,9 @@ import com.github.windsekirun.naraeimagepicker.Constants.EXTRA_NAME
 import com.github.windsekirun.naraeimagepicker.event.DetailEvent
 import com.github.windsekirun.naraeimagepicker.event.FragmentTransitionEvent
 import com.github.windsekirun.naraeimagepicker.event.ToolbarEvent
-import com.github.windsekirun.naraeimagepicker.fragment.AlbumFragment
+import com.github.windsekirun.naraeimagepicker.fragment.FolderFragment
 import com.github.windsekirun.naraeimagepicker.fragment.AllFragment
-import com.github.windsekirun.naraeimagepicker.fragment.ImageFragment
+import com.github.windsekirun.naraeimagepicker.fragment.FileFragment
 import com.github.windsekirun.naraeimagepicker.item.enumeration.ViewMode
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.module.SelectedItem
@@ -57,8 +57,8 @@ class NaraePickerActivity : AppCompatActivity() {
         lastFragmentMode = mode
 
         val fragment = when (mode) {
-            FragmentMode.Album -> AlbumFragment()
-            FragmentMode.Image -> ImageFragment()
+            FragmentMode.Album -> FolderFragment()
+            FragmentMode.Image -> FileFragment()
             FragmentMode.All -> AllFragment()
         }
 
@@ -93,7 +93,7 @@ class NaraePickerActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         val fragment = supportFragmentManager.findFragmentByTag(lastFragmentMode.name)
-        if (fragment is ImageFragment) {
+        if (fragment is FileFragment) {
             initFragment(FragmentMode.Album)
             return
         }
