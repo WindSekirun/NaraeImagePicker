@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     fun clickPick(view: View) {
         val settingItem = PickerSettingItem().apply {
+            includeGif = false
             pickLimit = Constants.LIMIT_UNLIMITED
             viewMode = if (viewModeCheck.value == 0) ViewMode.FolderView else ViewMode.FileView
             enableDetailMode = detailModeEnable.value ?: false

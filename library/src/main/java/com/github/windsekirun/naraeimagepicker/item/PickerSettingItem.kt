@@ -15,6 +15,7 @@ class PickerSettingItem {
     var viewMode = ViewMode.FolderView
     var pickLimit = Constants.LIMIT_UNLIMITED
     var enableDetailMode = false
+    var includeGif = false
     var uiSetting: UISetting = UISetting()
 
     class UISetting {

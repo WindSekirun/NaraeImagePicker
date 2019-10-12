@@ -7,9 +7,12 @@ import android.provider.MediaStore
 import android.provider.MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME
 import android.provider.MediaStore.Images.Media.DATE_MODIFIED
 import com.github.windsekirun.naraeimagepicker.item.FileItem
+import com.github.windsekirun.naraeimagepicker.item.FolderItem
 import com.github.windsekirun.naraeimagepicker.item.PickerSettingItem
 import com.github.windsekirun.naraeimagepicker.utils.getColumnString
 import pyxis.uzuki.live.richutilskt.utils.toFile
+import java.util.*
+import kotlin.collections.HashSet
 
 /**
  * NaraeImagePicker
@@ -43,7 +46,7 @@ object PickerSet {
         val titleCursor = context.contentResolver.query(cursorUri, arrayOf(BUCKET_DISPLAY_NAME, PATH_COLUMN), null, null, ORDER_BY)
 
         val titleItemSet = HashSet<String>()
-        titleCursor.doWhile { titleItemSet.add(titleCursor.getColumnString(DISPLAY_NAME_COLUMN)) }
+        titleCursor?.doWhile { titleItemSet.add(titleCursor.getColumnString(DISPLAY_NAME_COLUMN)) }
 
         val titleItemList = mutableListOf<String>().apply {
             addAll(titleItemSet)
@@ -55,29 +58,37 @@ object PickerSet {
             val photoCursor = context.contentResolver.query(cursorUri,
                     arrayOf(ID_COLUMN, PATH_COLUMN, DATE_MODIFIED), "$BUCKET_DISPLAY_NAME =?", arrayOf(title), ORDER_BY)
 
-            photoCursor.doWhile {
+            photoCursor?.doWhile {
                 val image = photoCursor.getColumnString(PATH_COLUMN)
                 val id = photoCursor.getColumnString(ID_COLUMN)
                 val file = image.toFile()
-                if (file.exists()) list.add(FileItem(id, image))
+                if (file.exists())
+                    if (item.includeGif) {
+                        list.add(FileItem(id, image))
+                    } else
+                        if (file.extension != "gif")
+                            list.add(FileItem(id, image))
+
             }
 
+            photoCursor?.close()
             list.reverse()
             addPictureMap(title, list)
         }
 
+        titleCursor?.close()
         titleItemSet.clear()
         titleItemList.clear()
         callback.invoke()
     }
 
-    fun getFolderList(): List<com.github.windsekirun.naraeimagepicker.item.FolderItem> {
+    fun getFolderList(): List<FolderItem> {
         return PICTURE_MAP.entries
                 .asSequence()
                 .filter { it.value.isNotEmpty() }
                 .map { it.key to it.value[0] }
-                .map { com.github.windsekirun.naraeimagepicker.item.FolderItem(it.first, it.second.imagePath) }
-                .sortedBy { it.name.toLowerCase() }
+                .map { FolderItem(it.first, it.second.imagePath) }
+                .sortedBy { it.name.toLowerCase(Locale.ENGLISH) }
                 .toList()
     }
 
