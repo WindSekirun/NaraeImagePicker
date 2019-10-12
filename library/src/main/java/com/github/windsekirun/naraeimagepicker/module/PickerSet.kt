@@ -62,13 +62,7 @@ object PickerSet {
                 val image = photoCursor.getColumnString(PATH_COLUMN)
                 val id = photoCursor.getColumnString(ID_COLUMN)
                 val file = image.toFile()
-                if (file.exists())
-                    if (item.includeGif) {
-                        list.add(FileItem(id, image))
-                    } else
-                        if (file.extension != "gif")
-                            list.add(FileItem(id, image))
-
+                if (file.exists() && (item.includeGif || file.extension != "gif")) list.add(FileItem(id, image))
             }
 
             photoCursor?.close()
@@ -88,7 +82,7 @@ object PickerSet {
                 .filter { it.value.isNotEmpty() }
                 .map { it.key to it.value[0] }
                 .map { FolderItem(it.first, it.second.imagePath) }
-                .sortedBy { it.name.toLowerCase(Locale.ENGLISH) }
+                .sortedBy { it.name.toLowerCase(Locale.getDefault()) }
                 .toList()
     }
 
