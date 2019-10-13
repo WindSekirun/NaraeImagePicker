@@ -71,7 +71,7 @@ packagingOptions {
 
 ## Revision History
 * ver 2.0.5 (2019-10-13)
- * Fix #19 Add field to include and remove gif (thanks to @deepakkumardk )
+  * Fix #19 Add field to include and remove gif (thanks to @deepakkumardk )
 
 * ver 2.0.0 (2019-05-15)
   * Fix #12 Show selected image count in the FileView, FolderView (thanks to @deepakkumardk )
