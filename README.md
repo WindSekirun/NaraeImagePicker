@@ -29,7 +29,7 @@ allprojects {
 *app/build.gradle*
 ```
 dependencies {
-     implementation 'com.github.WindSekirun:NaraeImagePicker:2.0.0'
+     implementation 'com.github.WindSekirun:NaraeImagePicker:2.0.6'
 }
 ```
 
@@ -70,6 +70,9 @@ packagingOptions {
 ```
 
 ## Revision History
+* ver 2.0.6 (2019-10-21)
+  * Fix #20 Fix maintain state of fragment while selecting images (thanks to @deepakkumardk )
+
 * ver 2.0.5 (2019-10-13)
   * Fix #19 Add field to include and remove gif (thanks to @deepakkumardk )
 
