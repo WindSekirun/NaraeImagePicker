@@ -21,7 +21,6 @@ import pyxis.uzuki.live.naraeimagepicker.R
 class ImageDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        applyCustomPickerTheme(PickerSet.getSettingItem())
         setContentView(R.layout.activity_image_details)
 
         val path = intent.getStringExtra(Constants.EXTRA_DETAIL_IMAGE)
@@ -31,14 +30,10 @@ class ImageDetailsActivity : AppCompatActivity() {
             title = ""
             setDisplayHomeAsUpEnabled(true)
         }
-        card_toolbar.visibility = View.GONE
+        cardToolbar.visibility = View.GONE
 
         photoView.setOnViewTapListener { _, _, _ ->
-            if (card_toolbar.visibility == View.VISIBLE) {
-                card_toolbar.visibility = View.GONE
-            } else {
-                card_toolbar.visibility = View.VISIBLE
-            }
+            cardToolbar.visibility = if (cardToolbar.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         }
 
         photoView.loadImage(path)
