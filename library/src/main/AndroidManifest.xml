@@ -7,9 +7,10 @@
 
     <application android:largeHeap="true">
         <activity android:name="com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
         <activity android:name="com.github.windsekirun.naraeimagepicker.activity.ImageDetailsActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+            android:theme="@style/NoActionBar"/>
     </application>
 
 </manifest>
