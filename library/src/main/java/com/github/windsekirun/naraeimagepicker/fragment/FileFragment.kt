@@ -10,9 +10,9 @@ import com.github.windsekirun.naraeimagepicker.fragment.adapter.ImageAdapter
 import com.github.windsekirun.naraeimagepicker.item.FileItem
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.module.SelectedItem
+import com.github.windsekirun.naraeimagepicker.utils.runOnUiThread
 import kotlinx.android.synthetic.main.fragment_list.*
-import pyxis.uzuki.live.richutilskt.utils.runAsync
-import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
+import org.jetbrains.anko.doAsync
 
 /**
  * NaraeImagePicker
@@ -40,7 +40,7 @@ class FileFragment : BaseFragment<FileItem>() {
             onImageClick(imageItem)
         }
         recyclerView.adapter = adapter
-        runAsync { bindList() }
+        doAsync { bindList() }
     }
 
     private fun bindList() {

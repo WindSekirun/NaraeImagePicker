@@ -1,7 +1,11 @@
 package com.github.windsekirun.naraeimagepicker.utils
 
+import android.app.Activity
 import android.database.Cursor
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 
 /**
  * NaraeImagePicker
@@ -24,3 +28,9 @@ inline fun catchAll(action: () -> Unit) {
         Log.e("NaraeImagePicker", "Catch an exception. ${t.message}", t)
     }
 }
+
+fun Activity?.toast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun runOnUiThread(action: () -> Unit) = Handler(Looper.getMainLooper()).post(Runnable(action))

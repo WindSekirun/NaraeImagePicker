@@ -3,18 +3,22 @@ package com.github.windsekirun.naraeimagepicker.activity
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.github.windsekirun.naraeimagepicker.Constants
 import com.github.windsekirun.naraeimagepicker.Constants.EXTRA_NAME
+import com.github.windsekirun.naraeimagepicker.Constants.RC_READ_STORAGE
 import com.github.windsekirun.naraeimagepicker.event.DetailEvent
 import com.github.windsekirun.naraeimagepicker.event.FragmentTransitionEvent
 import com.github.windsekirun.naraeimagepicker.event.ToolbarEvent
-import com.github.windsekirun.naraeimagepicker.fragment.FolderFragment
 import com.github.windsekirun.naraeimagepicker.fragment.AllFragment
 import com.github.windsekirun.naraeimagepicker.fragment.FileFragment
+import com.github.windsekirun.naraeimagepicker.fragment.FolderFragment
 import com.github.windsekirun.naraeimagepicker.item.enumeration.ViewMode
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.module.SelectedItem
@@ -23,7 +27,6 @@ import com.github.windsekirun.naraeimagepicker.utils.catchAll
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pyxis.uzuki.live.naraeimagepicker.R
-import pyxis.uzuki.live.richutilskt.utils.RPermission
 
 class NaraePickerActivity : AppCompatActivity() {
     private var lastFragmentMode = FragmentMode.Album
@@ -43,12 +46,47 @@ class NaraePickerActivity : AppCompatActivity() {
         SelectedItem.setLimits(PickerSet.getSettingItem().pickLimit)
         requestFileViewMode = PickerSet.getSettingItem().viewMode == ViewMode.FileView
 
-        RPermission.instance.checkPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)) { integer, _ ->
-            if (integer == RPermission.PERMISSION_GRANTED) {
+        checkPermission()
+    }
+
+    private fun checkPermission() {
+        val storageReadPermission = ContextCompat.checkSelfPermission(
+                this, Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+        when {
+            storageReadPermission -> {
                 initFragment(if (requestFileViewMode) FragmentMode.All else FragmentMode.Album)
-            } else {
-                setResult(Activity.RESULT_CANCELED)
+            }
+            else -> when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                    requestPermissions(
+                            arrayOf(
+                                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            ), RC_READ_STORAGE
+                    )
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            RC_READ_STORAGE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initFragment(if (requestFileViewMode) FragmentMode.All else FragmentMode.Album)
+                } else {
+                    setResult(Activity.RESULT_CANCELED)
+                }
+                return
+            }
+            else -> {
+                //other requests
             }
         }
     }

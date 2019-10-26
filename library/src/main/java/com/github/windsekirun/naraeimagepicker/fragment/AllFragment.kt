@@ -8,11 +8,11 @@ import com.github.windsekirun.naraeimagepicker.fragment.adapter.ImageAdapter
 import com.github.windsekirun.naraeimagepicker.item.FileItem
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.module.SelectedItem
+import com.github.windsekirun.naraeimagepicker.utils.runOnUiThread
+import com.github.windsekirun.naraeimagepicker.utils.toast
 import kotlinx.android.synthetic.main.fragment_list.*
-import pyxis.uzuki.live.richutilskt.utils.runAsync
-import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
-import pyxis.uzuki.live.richutilskt.utils.toFile
-import pyxis.uzuki.live.richutilskt.utils.toast
+import org.jetbrains.anko.doAsync
+import java.io.File
 
 /**
  * NaraeImagePicker
@@ -33,12 +33,12 @@ class AllFragment : BaseFragment<FileItem>() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = ImageAdapter(itemList) { fileItem: FileItem, _: Int, _: View ->
-             onImageClick(fileItem)
+            onImageClick(fileItem)
         }
         recyclerView.adapter = adapter
 
         if (PickerSet.isEmptyList()) {
-            runAsync { PickerSet.loadImageFirst(requireContext()) { bindList() } }
+            doAsync { PickerSet.loadImageFirst(requireContext()) { bindList() } }
         } else {
             bindList()
         }
@@ -46,7 +46,7 @@ class AllFragment : BaseFragment<FileItem>() {
 
     private fun bindList() {
         itemList.addAll(PickerSet.getImageList())
-        itemList.sortedBy { it.imagePath.toFile().lastModified() }
+        itemList.sortedBy { File(it.imagePath).lastModified() }
 
         runOnUiThread {
             recyclerView?.notifyDataSetChanged()
