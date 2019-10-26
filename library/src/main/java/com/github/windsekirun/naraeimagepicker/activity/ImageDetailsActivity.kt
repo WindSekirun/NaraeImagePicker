@@ -2,13 +2,14 @@ package com.github.windsekirun.naraeimagepicker.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.CardView
+import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
+import com.github.chrisbanes.photoview.PhotoView
 import com.github.windsekirun.naraeimagepicker.Constants
 import com.github.windsekirun.naraeimagepicker.utils.loadImage
-import kotlinx.android.synthetic.main.activity_image_details.*
 import pyxis.uzuki.live.naraeimagepicker.R
-
 
 /**
  * NaraeImagePicker
@@ -19,12 +20,17 @@ import pyxis.uzuki.live.naraeimagepicker.R
  */
 
 class ImageDetailsActivity : AppCompatActivity() {
+    private lateinit var toolbar: Toolbar
+    private lateinit var cardToolbar: CardView
+    private lateinit var photoView: PhotoView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_details)
 
         val path = intent.getStringExtra(Constants.EXTRA_DETAIL_IMAGE)
 
+        initView()
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             title = ""
@@ -44,5 +50,11 @@ class ImageDetailsActivity : AppCompatActivity() {
             menuItem.itemId == android.R.id.home -> onBackPressed()
         }
         return super.onOptionsItemSelected(menuItem)
+    }
+
+    private fun initView() {
+        toolbar = findViewById(R.id.toolbar)
+        cardToolbar = findViewById(R.id.cardToolbar)
+        photoView = findViewById(R.id.photoView)
     }
 }

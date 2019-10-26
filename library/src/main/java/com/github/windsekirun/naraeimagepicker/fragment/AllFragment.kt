@@ -11,7 +11,8 @@ import com.github.windsekirun.naraeimagepicker.module.SelectedItem
 import com.github.windsekirun.naraeimagepicker.utils.doAsync
 import com.github.windsekirun.naraeimagepicker.utils.runOnUiThread
 import com.github.windsekirun.naraeimagepicker.utils.toast
-import kotlinx.android.synthetic.main.fragment_list.*
+import com.github.windsekirun.naraeimagepicker.widget.EmptyRecyclerView
+import pyxis.uzuki.live.naraeimagepicker.R
 import java.io.File
 
 /**
@@ -26,6 +27,8 @@ class AllFragment : BaseFragment<FileItem>() {
     private lateinit var adapter: ImageAdapter
     private val itemList = arrayListOf<FileItem>()
 
+    private lateinit var recyclerView: EmptyRecyclerView
+
     override fun getItemList() = itemList
     override fun getColumnCount(): Int = PickerSet.getSettingItem().uiSetting.fileSpanCount
 
@@ -35,6 +38,7 @@ class AllFragment : BaseFragment<FileItem>() {
         adapter = ImageAdapter(itemList) { fileItem: FileItem, _: Int, _: View ->
             onImageClick(fileItem)
         }
+        recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.adapter = adapter
 
         if (PickerSet.isEmptyList()) {
@@ -49,7 +53,7 @@ class AllFragment : BaseFragment<FileItem>() {
         itemList.sortedBy { File(it.imagePath).lastModified() }
 
         runOnUiThread {
-            recyclerView?.notifyDataSetChanged()
+            recyclerView.notifyDataSetChanged()
         }
     }
 

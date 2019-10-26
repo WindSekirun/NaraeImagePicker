@@ -5,13 +5,16 @@ import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import com.github.windsekirun.naraeimagepicker.event.ToolbarEvent
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.widget.AdjustableGridItemDecoration
-import kotlinx.android.synthetic.main.fragment_list.*
+import com.github.windsekirun.naraeimagepicker.widget.EmptyRecyclerView
 import org.greenrobot.eventbus.EventBus
 import pyxis.uzuki.live.naraeimagepicker.R
 
@@ -25,6 +28,10 @@ import pyxis.uzuki.live.naraeimagepicker.R
 
 abstract class BaseFragment<T : Any> : Fragment() {
     private lateinit var mRootView: View
+    private lateinit var toolbar: Toolbar
+    private lateinit var recyclerView: EmptyRecyclerView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var containerEmpty: LinearLayout
 
     abstract fun getItemList(): ArrayList<T>
     abstract fun getColumnCount(): Int
@@ -43,6 +50,8 @@ abstract class BaseFragment<T : Any> : Fragment() {
         val rectF = AdjustableGridItemDecoration.getRectFObject(context as Context)
         val column: Int = getColumnCount()
 
+        view.initView()
+
         recyclerView.apply {
             layoutManager = GridLayoutManager(activity, column)
             emptyView = containerEmpty
@@ -55,6 +64,12 @@ abstract class BaseFragment<T : Any> : Fragment() {
     override fun onDestroyView() {
         if (mRootView.parent != null) (mRootView.parent as ViewGroup).removeView(mRootView)
         super.onDestroyView()
+    }
+
+    private fun View.initView() {
+        recyclerView = findViewById(R.id.recyclerView)
+        progressBar = findViewById(R.id.progressBar)
+        containerEmpty = findViewById(R.id.containerEmpty)
     }
 
     fun <T> sendEvent(event: T) {
