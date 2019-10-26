@@ -8,10 +8,10 @@ import com.github.windsekirun.naraeimagepicker.fragment.adapter.ImageAdapter
 import com.github.windsekirun.naraeimagepicker.item.FileItem
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.module.SelectedItem
+import com.github.windsekirun.naraeimagepicker.utils.doAsync
 import com.github.windsekirun.naraeimagepicker.utils.runOnUiThread
 import com.github.windsekirun.naraeimagepicker.utils.toast
 import kotlinx.android.synthetic.main.fragment_list.*
-import org.jetbrains.anko.doAsync
 import java.io.File
 
 /**
