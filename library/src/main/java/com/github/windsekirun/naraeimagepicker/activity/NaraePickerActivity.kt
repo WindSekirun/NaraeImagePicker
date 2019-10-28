@@ -51,22 +51,16 @@ class NaraePickerActivity : AppCompatActivity() {
 
     private fun checkPermission() {
         val storageReadPermission = ContextCompat.checkSelfPermission(
-                this, Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-        when {
-            storageReadPermission -> {
-                initFragment(if (requestFileViewMode) FragmentMode.All else FragmentMode.Album)
-            }
-            else -> when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                    requestPermissions(
-                            arrayOf(
-                                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                            ), RC_READ_STORAGE
-                    )
-                }
-            }
+                this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        if (storageReadPermission) {
+            initFragment(if (requestFileViewMode) FragmentMode.All else FragmentMode.Album)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                    arrayOf(
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), RC_READ_STORAGE
+            )
         }
     }
 
@@ -76,18 +70,12 @@ class NaraePickerActivity : AppCompatActivity() {
             grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            RC_READ_STORAGE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initFragment(if (requestFileViewMode) FragmentMode.All else FragmentMode.Album)
-                } else {
-                    setResult(Activity.RESULT_CANCELED)
-                }
-                return
-            }
-            else -> {
-                //other requests
-            }
+        if (requestCode != RC_READ_STORAGE) return
+
+        if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
+            initFragment(if (requestFileViewMode) FragmentMode.All else FragmentMode.Album)
+        } else {
+            setResult(Activity.RESULT_CANCELED)
         }
     }
 
