@@ -14,7 +14,7 @@ import com.github.windsekirun.naraeimagepicker.activity.NaraePickerActivity
 import com.github.windsekirun.naraeimagepicker.impl.OnPickResultListener
 import com.github.windsekirun.naraeimagepicker.item.PickerSettingItem
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
-import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
+import com.github.windsekirun.naraeimagepicker.utils.runOnUiThread
 
 class NaraeImagePicker private constructor() {
     private val requestCode = 72

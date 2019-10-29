@@ -10,7 +10,7 @@ import com.github.windsekirun.naraeimagepicker.item.FileItem
 import com.github.windsekirun.naraeimagepicker.item.FolderItem
 import com.github.windsekirun.naraeimagepicker.item.PickerSettingItem
 import com.github.windsekirun.naraeimagepicker.utils.getColumnString
-import pyxis.uzuki.live.richutilskt.utils.toFile
+import java.io.File
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -61,7 +61,7 @@ object PickerSet {
             photoCursor?.doWhile {
                 val image = photoCursor.getColumnString(PATH_COLUMN)
                 val id = photoCursor.getColumnString(ID_COLUMN)
-                val file = image.toFile()
+                val file = File(image)
                 if (file.exists() && (item.includeGif || file.extension != "gif")) list.add(FileItem(id, image))
             }
 

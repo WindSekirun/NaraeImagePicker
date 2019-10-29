@@ -11,8 +11,8 @@ import com.github.windsekirun.naraeimagepicker.NaraeImagePicker
 import com.github.windsekirun.naraeimagepicker.impl.OnPickResultListener
 import com.github.windsekirun.naraeimagepicker.item.PickerSettingItem
 import com.github.windsekirun.naraeimagepicker.item.enumeration.ViewMode
+import com.github.windsekirun.naraeimagepicker.utils.toast
 import com.github.windsekirun.naraeimagepickerdemo.databinding.MainActivityBinding
-import pyxis.uzuki.live.richutilskt.utils.toast
 
 
 /**

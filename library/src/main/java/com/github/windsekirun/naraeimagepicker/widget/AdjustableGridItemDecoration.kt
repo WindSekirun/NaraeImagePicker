@@ -5,7 +5,6 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import pyxis.uzuki.live.richutilskt.utils.dip2px
 
 /**
  * NaraeImagePicker
@@ -49,5 +48,7 @@ class AdjustableGridItemDecoration(private val spacing: RectF, private val colle
         fun getRectFObject(context: Context): RectF {
             return context.getRectFObject(1, 1, 1, 1)
         }
+
+        fun Context.dip2px(value: Int): Int = (value * resources.displayMetrics.density).toInt()
     }
 }
