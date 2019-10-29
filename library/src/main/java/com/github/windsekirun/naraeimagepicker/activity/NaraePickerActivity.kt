@@ -65,9 +65,9 @@ class NaraePickerActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode != RC_READ_STORAGE) return
@@ -89,12 +89,10 @@ class NaraePickerActivity : AppCompatActivity() {
         }
 
         val bundle = Bundle()
-        if (map.isNotEmpty()) {
-            for (item in map.entries) {
-                when (item.value) {
-                    is String -> bundle.putString(item.key, item.value as String)
-                    is Int -> bundle.putInt(item.key, item.value as Int)
-                }
+        for (item in map.entries) {
+            when (item.value) {
+                is String -> bundle.putString(item.key, item.value as String)
+                is Int -> bundle.putInt(item.key, item.value as Int)
             }
         }
 
