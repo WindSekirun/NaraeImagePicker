@@ -30,9 +30,10 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
 
     // Glide
-    implementation "com.zlc.glide:webpdecoder:1.3.4.8.0"
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    def glide_version = "4.9.0"
+    implementation "com.zlc.glide:webpdecoder:1.4.$glide_version"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
     // EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
     // PhotoView
