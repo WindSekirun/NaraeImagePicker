@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.github.windsekirun.naraeimagepicker.utils.loadImage
-import kotlinx.android.synthetic.main.main_item.view.*
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.ListHolder>() {
     private val itemList = mutableListOf<String>()
@@ -26,9 +26,10 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListHolder>() {
     }
 
     inner class ListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val imgThumbnail: ImageView = itemView.findViewById(R.id.imgThumbnail)
 
         fun bind(item: String) {
-            itemView.imgThumbnail.loadImage(item, 1.0f)
+            imgThumbnail.loadImage(item, 1.0f)
         }
     }
 }

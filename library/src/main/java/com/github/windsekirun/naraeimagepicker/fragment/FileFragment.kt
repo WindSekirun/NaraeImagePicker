@@ -12,7 +12,8 @@ import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.module.SelectedItem
 import com.github.windsekirun.naraeimagepicker.utils.doAsync
 import com.github.windsekirun.naraeimagepicker.utils.runOnUiThread
-import kotlinx.android.synthetic.main.fragment_list.*
+import com.github.windsekirun.naraeimagepicker.widget.EmptyRecyclerView
+import pyxis.uzuki.live.naraeimagepicker.R
 
 /**
  * NaraeImagePicker
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_list.*
 class FileFragment : BaseFragment<FileItem>() {
     private lateinit var adapter: ImageAdapter
     private val itemList = arrayListOf<FileItem>()
+    private lateinit var recyclerView: EmptyRecyclerView
 
     private var albumName = ""
 
@@ -39,6 +41,7 @@ class FileFragment : BaseFragment<FileItem>() {
         adapter = ImageAdapter(itemList) { imageItem, _, _ ->
             onImageClick(imageItem)
         }
+        recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.adapter = adapter
         doAsync { bindList() }
     }
@@ -47,7 +50,7 @@ class FileFragment : BaseFragment<FileItem>() {
         itemList.addAll(PickerSet.getImageList(albumName))
 
         runOnUiThread {
-            recyclerView?.notifyDataSetChanged()
+            recyclerView.notifyDataSetChanged()
             sendEvent(ToolbarEvent("$albumName (${SelectedItem.size})", true))
         }
     }

@@ -14,7 +14,6 @@ import com.github.windsekirun.naraeimagepicker.item.enumeration.ViewMode
 import com.github.windsekirun.naraeimagepicker.utils.toast
 import com.github.windsekirun.naraeimagepickerdemo.databinding.MainActivityBinding
 
-
 /**
  * NaraeImagePicker
  * Class: MainActivity

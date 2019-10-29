@@ -8,7 +8,8 @@ import com.github.windsekirun.naraeimagepicker.item.FolderItem
 import com.github.windsekirun.naraeimagepicker.module.PickerSet
 import com.github.windsekirun.naraeimagepicker.utils.doAsync
 import com.github.windsekirun.naraeimagepicker.utils.runOnUiThread
-import kotlinx.android.synthetic.main.fragment_list.*
+import com.github.windsekirun.naraeimagepicker.widget.EmptyRecyclerView
+import pyxis.uzuki.live.naraeimagepicker.R
 
 /**
  * NaraeImagePicker
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_list.*
 
 class FolderFragment : BaseFragment<FolderItem>() {
     private lateinit var adapter: AlbumAdapter
+    private lateinit var recyclerView: EmptyRecyclerView
 
     private val itemList = arrayListOf<FolderItem>()
 
@@ -29,6 +31,8 @@ class FolderFragment : BaseFragment<FolderItem>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = AlbumAdapter(itemList)
+
+        recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.adapter = adapter
 
         if (PickerSet.isEmptyList()) {
@@ -41,7 +45,7 @@ class FolderFragment : BaseFragment<FolderItem>() {
     private fun bindList() {
         itemList.addAll(PickerSet.getFolderList())
         runOnUiThread {
-            recyclerView?.notifyDataSetChanged()
+            recyclerView.notifyDataSetChanged()
         }
     }
 }
