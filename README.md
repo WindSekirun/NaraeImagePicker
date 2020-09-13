@@ -70,6 +70,9 @@ packagingOptions {
 ```
 
 ## Revision History
+* ver 2.0.7 (2020-09-13)
+  * Migrate to AndroidX, update dependencies
+
 * ver 2.0.6 (2019-10-21)
   * Fix #20 Fix maintain state of fragment while selecting images (thanks to @deepakkumardk )
 
