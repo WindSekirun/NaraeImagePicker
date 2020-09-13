@@ -1,6 +1,6 @@
 package com.github.windsekirun.naraeimagepickerdemo.binding
 
-import android.databinding.*
+import androidx.databinding.*
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup

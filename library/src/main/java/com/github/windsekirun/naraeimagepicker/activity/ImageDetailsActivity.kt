@@ -1,9 +1,9 @@
 package com.github.windsekirun.naraeimagepicker.activity
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.CardView
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
 import com.github.chrisbanes.photoview.PhotoView

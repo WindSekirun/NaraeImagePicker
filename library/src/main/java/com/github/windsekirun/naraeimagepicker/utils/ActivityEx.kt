@@ -1,6 +1,6 @@
 package com.github.windsekirun.naraeimagepicker.utils
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.github.windsekirun.naraeimagepicker.item.PickerSettingItem
 
 /**

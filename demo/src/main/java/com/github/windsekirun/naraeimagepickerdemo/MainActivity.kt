@@ -1,10 +1,10 @@
 package com.github.windsekirun.naraeimagepickerdemo
 
-import android.arch.lifecycle.MutableLiveData
-import android.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.GridLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import android.view.View
 import com.github.windsekirun.naraeimagepicker.Constants
 import com.github.windsekirun.naraeimagepicker.NaraeImagePicker
@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         binding.activity = this
         binding.lifecycleOwner = this
 
-        binding.recyclerView.layoutManager = GridLayoutManager(this, 3)
+        binding.recyclerView.layoutManager =
+            GridLayoutManager(this, 3)
         binding.recyclerView.adapter = adapter
     }
 
